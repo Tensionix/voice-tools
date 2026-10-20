@@ -8,15 +8,15 @@
   <a href="https://github.com/Tensionix/voice-tools/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/Tensionix/voice-tools?style=flat-square&color=5fd08a&logo=apache&logoColor=white&cacheSeconds=3600"></a>
 </p>
 
-**Version 3.1.0** · 2026-10-20 · 497.6 MB
+**Version 3.1.0** · 2026-10-20 · 73.6 MB
 
-- [Direct download](https://dl.audion.dev/voice-tools/3.1.0/Audion_Voice_Tools_v3.1.0_Full.zip) — unmetered, no rate limits
+- [Direct download](https://dl.audion.dev/voice-tools/3.1.0/Audion_Voice_Tools_v3.1.0.zip) — unmetered, no rate limits
 - [Project page](https://audion.dev/downloads/voice-tools) — every version and how to install
 - [GitHub release](https://github.com/Tensionix/voice-tools/releases/tag/v3.1.0)
 
 <p align="center"><img src="Docs/screenshot.png" alt="The program window" width="560"></p>
 
-`SHA-256: 5ae30787e78e886fc355afe48849c5cdf03d176892bd5e631687396ed65a0d50`
+`SHA-256: 17520709c68e8b96eac03e51a5489a58e62aacf758200d2453ee5f54497a4f79`
 
 ---
 
