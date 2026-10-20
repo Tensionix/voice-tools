@@ -2,7 +2,7 @@
 setlocal EnableExtensions EnableDelayedExpansion
 chcp 65001 >nul
 
-title Audion Voice AI - Cleanup
+title Audion Voice Tools - Cleanup
 
 set "BASE_DIR=%~dp0"
 if "%BASE_DIR:~-1%"=="\" set "BASE_DIR=%BASE_DIR:~0,-1%"
@@ -42,11 +42,11 @@ goto usage_error
 
 :args_done
 call :CheckMarker "%BASE_DIR%\system_core\main.py" || goto abort
-call :CheckMarker "%BASE_DIR%\system_core\ui\app.py" || goto abort
+call :CheckMarker "%BASE_DIR%\system_core\cli.py" || goto abort
 call :CheckMarker "%BASE_DIR%\config\app_settings.yaml" || goto abort
 
 echo ======================================================================
-echo   AUDION VOICE AI - LEAN SOURCE CLEANUP
+echo   AUDION VOICE TOOLS - LEAN SOURCE CLEANUP
 echo ======================================================================
 echo Root:
 echo   %BASE_DIR%
@@ -56,14 +56,15 @@ echo It keeps source code, configs, docs, tests, launchers and install scripts.
 echo It clears wheelhouse too; rebuild it from builder_main.cmd when needed.
 echo It clears reproducible runtime payloads and generated working data:
 echo   - runtime, Tools, models, install\download and wheelhouse contents
-echo   - system_core\fzf.exe and system_core\_fzf_tmp
+echo   - system_core\fzf.exe, system_core\_fzf_tmp, system_core\7zip (install\Ensure-7zip.ps1 brings it back)
 echo   - portable FFmpeg, GigaAM ONNX payloads, whisper.cpp/Vulkan, Python/pip caches
-echo   - input, output, logs, report, work, workspace, release contents
+echo   - input, output, logs, report, work, workspace, release, library contents
+echo   - config\window_settings.json and config\dictation_history.json: the window's state, the texts of dictations
 echo   - all folders named .runtime, _runtime, ._runtime, __pycache__
 echo   - pytest/mypy/ruff caches, root build/dist folders
 echo   - generated *.pyc, *.pyo, *.tmp, *.bak, *.log, Thumbs.db, desktop.ini
 echo.
-echo Protected: config, Docs, tests, system_core source, launchers, install scripts.
+echo Protected: config but the two files above, Docs, tests, system_core source, launchers, install scripts.
 if "%DRY_RUN%"=="1" echo Dry-run: ON. Nothing will be deleted.
 echo.
 
@@ -112,6 +113,7 @@ call :ClearDir "%BASE_DIR%\logs"
 call :ClearDir "%BASE_DIR%\report"
 call :ClearDir "%BASE_DIR%\work"
 call :ClearDir "%BASE_DIR%\workspace"
+call :ClearDir "%BASE_DIR%\library"
 call :ClearDir "%BASE_DIR%\release"
 call :ClearDir "%BASE_DIR%\runtime"
 call :ClearDir "%BASE_DIR%\Tools"
@@ -129,6 +131,8 @@ call :RemoveDir "%BASE_DIR%\system_core\_ffmpeg_tmp"
 call :RemoveDir "%BASE_DIR%\system_core\_ffmpeg_btbn_tmp"
 call :RemoveDir "%BASE_DIR%\system_core\7zip"
 call :RemoveFile "%BASE_DIR%\system_core\fzf.exe"
+call :RemoveFile "%BASE_DIR%\config\window_settings.json"
+call :RemoveFile "%BASE_DIR%\config\dictation_history.json"
 
 call :RemoveFilesByPattern "*.pyc"
 call :RemoveFilesByPattern "*.pyo"

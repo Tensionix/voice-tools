@@ -12,8 +12,8 @@ name of its own.
 ## What is allowed
 
 - Stating, plainly and truthfully, that your work is based on this project:
-  "based on Audion Voice AI Live", "a fork of Audion Voice AI Live",
-  "compatible with Audion Voice AI Live".
+  "based on Audion Voice Tools", "a fork of Audion Voice Tools",
+  "compatible with Audion Voice Tools".
 - Keeping the copyright and licence notices that the licence requires, including
   the ones that mention Audion.
 - Referring to the project by its name when writing about it, reviewing it or

@@ -15,7 +15,6 @@ _KEY_FILES = {
     "gemini": ("api_key_gemini.txt", "GEMINI_API_KEY"),
     "gigachat": ("api_key_gigachat.txt", "GIGACHAT_AUTH_KEY"),
     "giga": ("api_key_gigachat.txt", "GIGACHAT_AUTH_KEY"),
-    "notion": ("api_key_notion.txt", "NOTION_API_KEY"),
     # Optional. Speeds up model downloads; in Studio it also unlocks the gated
     # pyannote diarization weights once the model terms are accepted.
     "huggingface": ("api_key_huggingface.txt", "HF_TOKEN"),

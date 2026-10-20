@@ -1,5 +1,5 @@
 @echo off
-rem Audion Voice AI - CLI pipeline launcher (iteration 1)
+rem Audion Voice Tools - CLI pipeline launcher (iteration 1)
 rem Usage: launcher_cli.cmd "C:\path\to\file_or_folder" [options]
 chcp 65001 >nul
 setlocal

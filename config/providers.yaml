@@ -1,7 +1,7 @@
 schema_version: 1
 stt:
   provider: openai
-  model: gpt-4o-transcribe-diarize
+  model: gpt-transcribe
   xai_model: grok-transcribe
   gemini_model: gemini-3.5-flash
   gigachat_model: GigaChat
@@ -9,7 +9,7 @@ stt:
   gigachat_base_url: https://gigachat.devices.sberbank.ru/api/v1
   gigachat_verify_ssl: false
 postprocess:
-  model: gpt-3.5-turbo
+  model: gpt-6-luna
 assemblyai:
   enabled: false
 local:

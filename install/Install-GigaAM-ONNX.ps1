@@ -216,6 +216,25 @@ if "CUDAExecutionProvider" in desired:
             pass
         except Exception as exc:
             print("NVIDIA site-packages preload failed:", exc)
+    # The rest of the cuDNN set from the folder ort took cudnn64_9.dll from (torch\lib or the NVIDIA wheels), as
+    # system_core\core\local_hardware.py preload_cuda_libraries does: a newer cuDNN loads parts of itself by name only
+    # when a Conv runs.
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.GetModuleHandleW.argtypes = [ctypes.c_wchar_p]
+    kernel32.GetModuleHandleW.restype = ctypes.c_void_p
+    kernel32.GetModuleFileNameW.argtypes = [ctypes.c_void_p, ctypes.c_wchar_p, ctypes.c_uint32]
+    handle = kernel32.GetModuleHandleW("cudnn64_9.dll")
+    buffer = ctypes.create_unicode_buffer(32768)
+    if handle and kernel32.GetModuleFileNameW(handle, buffer, len(buffer)):
+        cudnn_dir = Path(buffer.value).parent
+        print("cuDNN from:", cudnn_dir)
+        os.add_dll_directory(str(cudnn_dir))
+        os.environ["PATH"] = str(cudnn_dir) + os.pathsep + os.environ.get("PATH", "")
+        for dll in sorted(cudnn_dir.glob("cudnn*64_9.dll")):
+            try:
+                ctypes.WinDLL(str(dll))
+            except OSError as exc:
+                print("cuDNN library not loaded:", dll.name, exc)
 
 def provider_loadable(provider):
     if provider not in available:
@@ -248,7 +267,7 @@ if accelerators and not any(item in loadable for item in accelerators):
     Invoke-PythonCode -Name "verify_gigaam_onnx.py" -Code $verifyCode
 }
 
-Write-Host "[Audion Voice AI] Installing GigaAM ONNX pack..."
+Write-Host "[Audion Voice Tools] Installing GigaAM ONNX pack..."
 Write-Host "Root: $Root"
 Write-Host ""
 
@@ -333,6 +352,21 @@ if "CUDAExecutionProvider" in desired:
             pass
         except Exception as exc:
             print("NVIDIA site-packages preload failed:", exc)
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.GetModuleHandleW.argtypes = [ctypes.c_wchar_p]
+    kernel32.GetModuleHandleW.restype = ctypes.c_void_p
+    kernel32.GetModuleFileNameW.argtypes = [ctypes.c_void_p, ctypes.c_wchar_p, ctypes.c_uint32]
+    handle = kernel32.GetModuleHandleW("cudnn64_9.dll")
+    buffer = ctypes.create_unicode_buffer(32768)
+    if handle and kernel32.GetModuleFileNameW(handle, buffer, len(buffer)):
+        cudnn_dir = Path(buffer.value).parent
+        os.add_dll_directory(str(cudnn_dir))
+        os.environ["PATH"] = str(cudnn_dir) + os.pathsep + os.environ.get("PATH", "")
+        for dll in sorted(cudnn_dir.glob("cudnn*64_9.dll")):
+            try:
+                ctypes.WinDLL(str(dll))
+            except OSError:
+                pass
 available = set(ort.get_available_providers())
 def provider_loadable(provider):
     if provider not in available:
@@ -360,7 +394,16 @@ def onnx_asr_kwargs():
 print("selected providers:", ", ".join(providers) or "onnxruntime default")
 for model_name in ("gigaam-v3-e2e-ctc", "gigaam-v3-e2e-rnnt"):
     print(f"GigaAM payload: {model_name}")
-    onnx_asr.load_model(model_name, **onnx_asr_kwargs())
+    model = onnx_asr.load_model(model_name, **onnx_asr_kwargs())
+    if "CUDAExecutionProvider" in providers:
+        # A second of silence runs every layer: a CUDA library missing at the first Conv shows here, not in a file.
+        import numpy as np
+        model.recognize(np.zeros(16000, dtype=np.float32), sample_rate=16000)
+        encoder = getattr(getattr(model, "asr", None), "_encoder", None)
+        running = encoder.get_providers() if encoder is not None and hasattr(encoder, "get_providers") else []
+        if running and "CUDAExecutionProvider" not in running:
+            raise SystemExit(f"{model_name}: CUDA fell back to {', '.join(running)} at the first run")
+        print(f"GigaAM {model_name} on CUDA: OK")
 print("Silero VAD payload (pause-based splitting of long audio)")
 onnx_asr.load_vad("silero", providers=["CPUExecutionProvider"])
 print("GigaAM payloads OK")

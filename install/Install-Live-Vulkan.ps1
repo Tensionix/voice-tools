@@ -3,7 +3,9 @@ param(
     [ValidateSet("auto", "cpu", "cublas")]
     [string]$Pack = "auto",
     [switch]$SkipModel,
-    [switch]$Force
+    [switch]$Force,
+    # SETUP of the window: put the newest release in place - a pack left in install\download is not reused.
+    [switch]$Update
 )
 
 $ErrorActionPreference = "Stop"
@@ -71,7 +73,7 @@ function Download-FileWithProgress {
     $client.Timeout = [TimeSpan]::FromHours(6)
 
     $request = [System.Net.Http.HttpRequestMessage]::new([System.Net.Http.HttpMethod]::Get, $Url)
-    $request.Headers.UserAgent.ParseAdd("Audion-Voice-AI")
+    $request.Headers.UserAgent.ParseAdd("Audion-Voice-Tools")
     if ($existing -gt 0) {
         $request.Headers.Range = [System.Net.Http.Headers.RangeHeaderValue]::new($existing, $null)
         Write-Host "$Label resume: $(Format-Size $existing)"
@@ -157,10 +159,13 @@ function Find-WhisperCppBinary {
 }
 
 function Get-LocalPack {
+    param([string]$DesiredKind)
     if (-not (Test-Path -LiteralPath $Download)) {
         return $null
     }
+    # Only a pack of the kind asked for: the CPU pack left by the last install is no CUDA pack.
     Get-ChildItem -LiteralPath $Download -Filter "*.zip" -File -ErrorAction SilentlyContinue |
+        Where-Object { (Get-PackKindFromName $_.Name) -eq $DesiredKind } |
         Sort-Object LastWriteTime -Descending |
         Select-Object -First 1
 }
@@ -207,12 +212,27 @@ function Get-PackKindFromName {
     return "manual"
 }
 
+# whisper.cpp stopped attaching its Windows packs to the versioned releases from v1.9.3 on: the packs come with the
+# builds (tags bNNNN), many of them pre-releases. The newest release that is no pre-release and carries the pack is
+# taken; v1.9.2 - the last versioned one that carries it - when GitHub cannot be asked.
+$FallbackTag = "v1.9.2"
+
+function Test-AssetUrl {
+    param([string]$Url, [hashtable]$Headers)
+    try {
+        $null = Invoke-WebRequest -Uri $Url -Method Head -Headers $Headers -TimeoutSec 30 -ErrorAction Stop
+        return $true
+    } catch {
+        return $false
+    }
+}
+
 function Get-ReleasePack {
     param([Parameter(Mandatory = $true)][string]$DesiredKind)
 
     $repo = "https://github.com/ggml-org/whisper.cpp"
-    $api = "https://api.github.com/repos/ggml-org/whisper.cpp/releases/latest"
-    $headers = @{ "User-Agent" = "Audion-Voice-AI" }
+    $api = "https://api.github.com/repos/ggml-org/whisper.cpp/releases?per_page=20"
+    $headers = @{ "User-Agent" = "Audion-Voice-Tools" }
 
     $assetName = if ($DesiredKind -eq "cublas") {
         "whisper-cublas-12.4.0-bin-x64.zip"
@@ -220,53 +240,36 @@ function Get-ReleasePack {
         "whisper-bin-x64.zip"
     }
 
-    Write-Host "Querying whisper.cpp latest release..."
+    Write-Host "Querying whisper.cpp releases for $assetName..."
     try {
-        $release = Invoke-RestMethod -Uri $api -Headers $headers -TimeoutSec 30 -ErrorAction Stop
-        $asset = $release.assets |
-            Where-Object { $_.name -eq $assetName } |
-            Select-Object -First 1
-        if ($asset) {
-            Write-Host "[INFO] Resolved through GitHub API."
-            return [pscustomobject]@{ Asset = $asset; Kind = $DesiredKind; Tag = $release.tag_name }
+        $releases = Invoke-RestMethod -Uri $api -Headers $headers -TimeoutSec 30 -ErrorAction Stop
+        foreach ($release in @($releases)) {
+            if ($release.draft -or $release.prerelease) {
+                continue
+            }
+            $asset = $release.assets |
+                Where-Object { $_.name -eq $assetName } |
+                Select-Object -First 1
+            if ($asset) {
+                Write-Host "[INFO] The newest release with $assetName`: $($release.tag_name)"
+                return [pscustomobject]@{ Asset = $asset; Kind = $DesiredKind; Tag = $release.tag_name }
+            }
         }
-        Write-Host "[WARN] Expected asset was not listed by GitHub API; using releases/latest redirect."
+        Write-Host "[WARN] No recent release lists $assetName; trying $FallbackTag."
     } catch {
-        Write-Host "[WARN] GitHub API unavailable, using releases/latest redirect: $($_.Exception.Message)"
+        Write-Host "[WARN] GitHub API unavailable ($($_.Exception.Message)); trying $FallbackTag."
     }
 
-    $response = $null
-    try {
-        $response = Invoke-WebRequest `
-            -Uri "$repo/releases/latest" `
-            -Headers $headers `
-            -MaximumRedirection 0 `
-            -TimeoutSec 30 `
-            -ErrorAction Stop
-    } catch {
-        $response = $_.Exception.Response
+    $downloadUrl = "$repo/releases/download/$FallbackTag/$assetName"
+    if (-not (Test-AssetUrl -Url $downloadUrl -Headers $headers)) {
+        throw "whisper.cpp $FallbackTag carries no $assetName either: $downloadUrl"
     }
-
-    $location = $null
-    if ($response) {
-        if ($response.Headers.Location) {
-            $location = [string]$response.Headers.Location
-        } elseif ($response.Headers["Location"]) {
-            $location = [string]$response.Headers["Location"]
-        }
-    }
-    if (-not $location -or $location -notmatch "/tag/(?<tag>[^/?#]+)$") {
-        throw "Could not resolve latest whisper.cpp release tag without GitHub API."
-    }
-
-    $tag = $Matches.tag
-    $downloadUrl = "$repo/releases/download/$tag/$assetName"
     $asset = [pscustomobject]@{
         name = $assetName
         browser_download_url = $downloadUrl
     }
-    Write-Host "[INFO] Resolved through releases/latest redirect: $tag"
-    return [pscustomobject]@{ Asset = $asset; Kind = $DesiredKind; Tag = $tag }
+    Write-Host "[INFO] Resolved to $FallbackTag."
+    return [pscustomobject]@{ Asset = $asset; Kind = $DesiredKind; Tag = $FallbackTag }
 }
 
 function Get-InstalledPackKind {
@@ -305,7 +308,7 @@ function Expand-Pack {
     Copy-Item -Path (Join-Path $source "*") -Destination $Tools -Recurse -Force
 }
 
-Write-Host "[Audion Voice AI] Installing whisper.cpp local pack..."
+Write-Host "[Audion Voice Tools] Installing whisper.cpp local pack..."
 Write-Host "Root: $Root"
 Write-Host ""
 
@@ -314,16 +317,16 @@ New-Item -ItemType Directory -Force -Path $Tools, $Models, $Download | Out-Null
 $desiredKind = Resolve-DesiredPackKind
 Write-Host "Desired pack kind: $desiredKind"
 
-$localPack = Get-LocalPack
+$localPack = if ($Update) { $null } else { Get-LocalPack -DesiredKind $desiredKind }
 $installedKind = Get-InstalledPackKind
 $binary = Find-WhisperCppBinary $Tools
 $packReady = $binary -and ($installedKind -eq $desiredKind)
-if ($packReady -and -not $localPack -and -not $Force) {
+if ($packReady -and -not $localPack -and -not $Force -and -not $Update) {
     Write-Host "whisper.cpp binary already present: $($binary.FullName)"
     Write-Host "Installed pack kind: $installedKind"
 } else {
     if ($binary -and -not $localPack) {
-        $reason = if ($Force) { "forced reinstall" } else { "installed kind '$installedKind' does not match '$desiredKind'" }
+        $reason = if ($Update) { "update to the newest release" } elseif ($Force) { "forced reinstall" } else { "installed kind '$installedKind' does not match '$desiredKind'" }
         Write-Host "Reinstalling whisper.cpp pack: $reason"
     }
 
@@ -369,19 +372,46 @@ if ($packReady -and -not $localPack -and -not $Force) {
     )
 }
 
-if (-not $SkipModel -and -not (Test-Path -LiteralPath $TurboModel)) {
-    Download-FileWithProgress -Url $TurboUrl -Destination $TurboModel -Label "Turbo model"
-} elseif (Test-Path -LiteralPath $TurboModel) {
-    Write-Host "Turbo model already present."
+# The model goes with the pack. The CPU pack: turbo, the one Whisper a processor carries. The CUDA pack: large-v2 alone
+# (Install-WhisperCpp-Large-Models.cmd) - turbo loops on CUDA, so it is not downloaded, and one left from the CPU pack
+# goes to the Recycle Bin.
+$LargeV2Model = Join-Path $Models "ggml-large-v2.bin"
+if ((Get-InstalledPackKind) -eq "cublas") {
+    if (Test-Path -LiteralPath $TurboModel) {
+        try {
+            # The Recycle Bin of the shell: 0x14 - no question, no progress window; the move ends on its own thread.
+            (New-Object -ComObject Shell.Application).Namespace(10).MoveHere($TurboModel, 0x14)
+            for ($wait = 0; $wait -lt 40 -and (Test-Path -LiteralPath $TurboModel); $wait++) { Start-Sleep -Milliseconds 250 }
+        } catch {
+        }
+        if (Test-Path -LiteralPath $TurboModel) {
+            Write-Warning "Turbo model stays in $TurboModel - it is not used on CUDA: move it to the Recycle Bin to free 1.5 GB."
+        } else {
+            Write-Host "Turbo model went to the Recycle Bin: it is not used on CUDA (it repeats phrases there)."
+        }
+    } else {
+        Write-Host "Turbo model: not used on CUDA, not downloaded."
+    }
+    $RequiredModel = $LargeV2Model
+    $ModelHint = "install\Install-WhisperCpp-Large-Models.cmd"
 } else {
-    Write-Host "Turbo model skipped by request."
+    if (-not $SkipModel -and -not (Test-Path -LiteralPath $TurboModel)) {
+        Download-FileWithProgress -Url $TurboUrl -Destination $TurboModel -Label "Turbo model"
+    } elseif (Test-Path -LiteralPath $TurboModel) {
+        Write-Host "Turbo model already present."
+    } else {
+        Write-Host "Turbo model skipped by request."
+    }
+    $RequiredModel = $TurboModel
+    $ModelHint = "install\Install-Live-Vulkan.cmd"
 }
 
 Write-Host "Installed binary: $($binary.FullName)"
 if (Test-Path -LiteralPath $PackMarker) {
     Write-Host "Installed pack kind: $(Get-InstalledPackKind)"
 }
-Write-Host "Required model: $TurboModel"
-Write-Host "Optional models:"
-Write-Host "  ggml-small.bin"
-Write-Host "  ggml-large-v2.bin"
+if (Test-Path -LiteralPath $RequiredModel) {
+    Write-Host "Required model: $RequiredModel"
+} else {
+    Write-Host "Required model: $RequiredModel - missing, $ModelHint puts it in place"
+}

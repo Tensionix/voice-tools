@@ -1,391 +1,245 @@
-# Audion Voice AI - User Guide
+# Audion Voice Tools — User Guide
+
+[Русский](USER_GUIDE_RU.md) · [About](README_EN.md)
 
 **Contents**
 
-- [1. Choose an Edition](#1-choose-an-edition)
-- [2. Installation](#2-installation)
-- [3. API Keys](#3-api-keys)
-- [4. Main Window](#4-main-window)
-- [5. App Language and Transcription Language](#5-app-language-and-transcription-language)
-- [6. File Transcription](#6-file-transcription)
-- [7. Supported Formats](#7-supported-formats)
-- [8. API Workflow](#8-api-workflow)
-- [9. Local Models Workflow](#9-local-models-workflow)
-- [10. CUDA Workflow in Studio](#10-cuda-workflow-in-studio)
-- [11. Live Dictation](#11-live-dictation)
-- [12. Overlay](#12-overlay)
-- [13. Live Text Cleanup](#13-live-text-cleanup)
-- [14. Export](#14-export)
-- [15. Tray](#15-tray)
-- [16. Settings Persistence](#16-settings-persistence)
-- [17. Reset App](#17-reset-app)
-- [18. Cleanup](#18-cleanup)
-- [19. Recommendations](#19-recommendations)
-- [20. Troubleshooting](#20-troubleshooting)
-- [Live Session Checklist](#live-session-checklist)
-- [Local And API Boundaries](#local-and-api-boundaries)
-- [Long Sessions](#long-sessions)
-- [Failure Recovery](#failure-recovery)
-- [Interface As Documentation](#interface-as-documentation)
+- [First Start](#first-start)
+- [Dictation](#dictation)
+- [Tray](#tray)
+- [The Dictations Section](#the-dictations-section)
+- [The Recordings Section and the Recorder](#the-recordings-section-and-the-recorder)
+- [The Files Section](#the-files-section)
+- [The Journal Section](#the-journal-section)
+- [SETUP](#setup)
+- [SETTINGS](#settings)
+- [What Goes to the Network](#what-goes-to-the-network)
 
-This guide describes the current workflow for Audion Voice AI Live and Audion Voice AI Studio.
+## First Start
 
-## 1. Choose an Edition
+1. Start `Start.exe`. The window opens, a capsule — a narrow strip — appears at the top of the screen, and the program's
+   icon is in the tray. Windows 11 hides new tray icons behind the «^» arrow: drag the icon onto the taskbar to keep it
+   in sight.
+2. The window asks about installing the components recommended for this machine: the dictation engine, FFmpeg, GigaAM and
+   Whisper for files; with an NVIDIA card Whisper on CUDA and Whisper large-v2 come in place of Whisper for files (why —
+   in the Files section). Every component has a tick, the dictation engine a choice of the model: GigaAM v3 first, the
+   best model for Russian, then the models for other languages. INSTALL puts in place what is ticked, one by one; the
+   progress is in SETUP — the step, the percentage, the speed, the time left. "Install later" postpones the question until
+   the next start; OPEN SETUP closes the question and opens the sheet SETUP at once.
+3. While the dictation engine is being installed, the DICTATION button of the capsule is dimmed. Once the Journal section
+   shows the line `[OK] gigaam-…: load …, warm-up …`, dictation is ready.
 
-Use **Audion Voice AI Live** when you need a compact distribution with API Live and local models. This is the primary laptop and daily-use build.
+## Dictation
 
-Use **Audion Voice AI Studio** when you have a CUDA workstation and need fast local large-model processing, faster-whisper, PyTorch, and GPU diarization.
+- **Right Alt + F12** — start; again — stop and paste. **Esc** — cancel.
+- Point at the capsule or click it — it opens: DICTATION and RECORDING, each with its hotkey. The right button on the
+  capsule opens the same menu as ⌄: the text modes, the engine of dictation, the place of the panel.
+- The text is pasted where the cursor was, through the clipboard; the former content of the clipboard comes back.
 
-## 2. Installation
+While you speak, the capsule shows:
 
-### Installing the recognition models
+| Left to right | What it is |
+|---|---|
+| × | cancel: nothing is pasted, the sound stays in the history |
+| dot, bars, time | recording, the microphone level, the time spent |
+| ↻ | start again: this take is cancelled, a new one starts at once |
+| the last words | what was heard (with cloud streams — as you speak) |
+| the engine's name | GigaAM, Whisper, or a cloud with the ☁ sign |
+| red square | stop and paste |
+| ⌄ | text modes and the dictation engine |
 
-The build ships without model weights: the GigaAM cache and the whisper.cpp pack
-come to about 3.3 GB together. Weights carry their own licences, apart
-from the licence of this program, so they are downloaded by you — under your own
-account where that is required.
+After the stop the capsule says "Recognizing…", with a text mode — "Working over: …", then shows the pasted text for a
+moment.
 
-Until the models are installed, transcription will not run: the window opens,
-but there is nothing behind it to recognise speech.
+### Dictation Engine
 
-On the first start the app offers to download what is missing: the
-"Download models and engines" window lists the modules with their download
-size, for Live that is GigaAM and whisper.cpp with the Turbo model, about
-3.3 GB. "Download and install" installs them one after another; progress is
-shown on the Maintenance page, and once everything is in place every mode
-there is green. "Later" postpones the question until the next start, "Don't
-ask again" hides the window for good. Modules can still be installed by hand
-on the same page.
+The Dictations section → ADVANCED, the blocks LOCAL MODELS and API: SERVICES AND MODELS; the same choice is ⌄ of the
+capsule → "Engine of dictation ›" and the tray menu:
 
-The same can be done by hand: run `builder_main.cmd` and pick, in order:
+- **Local models** on transcribe.cpp — on this machine, no network, no key; a list across the window, a row a model: its
+  name, what it is for and its languages, its size, "installed" or INSTALL. GigaAM v3 — Russian speech, the default;
+  Parakeet V3 — 25 European languages; Parakeet EN — English; Whisper Small, Medium, Turbo, Large v3, Large v2 —
+  multilingual. INSTALL downloads a model from Hugging Face, checks it by SHA-256 and chooses it; SETUP has the same
+  models. Another model chosen is loaded at once; a dictation under way finishes first. The NOW line names what runs:
+  `gigaam-v3-e2e-rnnt-Q8_0 · Vulkan0`.
+- **xAI**, **OpenAI Realtime**, **ElevenLabs** — cloud streams: the words come into the capsule while you speak.
+- **OpenAI · after the stop** — one request after the stop to an endpoint compatible with OpenAI; it writes English
+  terms best of all.
 
-| # | Menu entry | What it installs |
-|---|---|---|
-| 08 | `GIGAAM ONNX` | the main Russian speech recognition model |
-| 09 | `WHISPER.CPP CPU FALLBACK` | the CPU fallback engine |
+The MODEL of a cloud comes from the list of the service itself, the button with the arrow: OpenAI Realtime —
+`gpt-realtime-whisper` by default, OpenAI after the stop — `gpt-transcribe`; xAI and ElevenLabs choose their model
+themselves. The window asks the service for its list once a day, ↻ beside it — at once: the services change their models
+every month. SPEECH of a cloud — AUTO, RU, EN.
 
-Both steps are required. The download comes from HuggingFace and takes as long
-as several gigabytes usually take.
+A cloud needs its own key (SETUP → KEYS OF THE SERVICES). If the cloud does not answer within eight seconds, GigaAM on this
+machine recognizes the same take, and the history marks it on the dictation.
 
+### Text Modes
 
-Open `builder_main.cmd` or the `Maintenance` tab in the GUI.
+⌄ of the capsule — the modes, as in Letterly; the same choice is Dictations → ADVANCED → TEXT AND SUMMARY. A mode chosen during a
+dictation already applies to it.
 
-Recommended order:
+| Mode | What the model does |
+|---|---|
+| Original text | nothing: the text of the engine is pasted (the default) |
+| Magic | chooses the form itself by the text and by the window it goes into: lightly, clean, a list, parts, minutes |
+| Lightly | punctuation, capitals, paragraphs; fillers and accidental repeats removed, the words stay |
+| Thoroughly | a clean written text: grammar and slips corrected, the meaning and details stay |
+| As a list | every thought or task is an item «- » |
+| Structured | parts by meaning with short headings |
+| Minutes of the meeting | subject, gist, decisions, tasks with owners and dates, open questions |
 
-1. Start the app. On the first start the "Download models and engines" window installs everything recommended with one button; the remaining steps are for manual repair or checks.
-2. `builder_main.cmd` is only needed when the app is not built yet: it checks the folder structure and installs the Python runtime.
-3. FFmpeg ships with the distribution. `Reinstall` on the `Maintenance` page is only needed after an NVIDIA driver change, because the build is picked to match the driver.
-4. `Dependency wheel cache` (`wheelhouse`) ships with the distribution and shows as `Installed`. `Reinstall` is only needed if the folder was deleted: it downloads the GigaAM/ONNX Runtime wheels again.
-5. Live dependencies (microphone, streaming dictation) are installed by the GUI itself at start-up from `wheelhouse\live`, without Internet access. The manual row remains available for repair.
-6. Click `Check` in the `Microphone check` card: it tests the Windows default recording device, then a separate communications default, including native 44.1/48 kHz modes. Audio is not saved.
-7. `GigaAM ONNX pack`: onnx-asr, the ONNX Runtime provider, the GigaAM v3 models and Silero VAD for splitting long recordings.
-8. `whisper.cpp pack`: Live installs the CPU build, Studio the CUDA/cuBLAS build; the Turbo model comes with it.
-9. Studio: `whisper.cpp Large V2 model` is the primary file model in CUDA mode. `GPU diarization` (torch + pyannote Community-1) is optional, NVIDIA only and needs a HuggingFace key; the first-start window never installs it.
-10. `Speaker separation (no key)`: sherpa-onnx and two models, about 65 MB, optional; the first-start window does not install it because the separation is coarse.
-11. Run base verify/smoke checks.
+Text modes and summaries are on with a cloud service; with the local model — when config holds an OpenAI or xAI key.
+SERVICE — OPENAI, XAI or OWN SERVER, MODEL — from its list. By default —
+OpenAI and `gpt-6-luna`: it makes the minutes of a meeting at the highest reasoning effort (`max`), the other modes at a
+low one (`low`), so the paste does not wait. The key of its service is needed, and goes only to it: `api.openai.com` —
+the OpenAI key, `api.x.ai` — the xAI key. An own server — Ollama, LM Studio — is asked without a key: an address like
+`http://localhost:11434/v1` and a model from its list.
 
-The Maintenance tab shows the detected GPU, recommended profile, progress, speed, and ETA. Installer output is routed automatically to the left `Activity log`; there is no empty terminal area on the right. Rows are marked `Recommended`, `Optional`, or `Not needed`; non-recommended actions remain legible and available.
+The model is waited for 15 seconds, a long text longer, the minutes of a meeting up to two minutes. No answer or a wrong one — the text of the engine is pasted; the
+history keeps both texts.
 
-`builder_main.cmd` and the GUI use the same install scripts. The builder is for the first portable build, recovery, and manual maintenance; the GUI repairs the small Live dependency set automatically, while other modules remain available in `Maintenance`.
+### Dictionary
 
-## 3. API Keys
+The Dictionary section, the file `config\dictionary.txt`. One entry a row of the section: AS SAID → AS WRITTEN, the left
+field empty for a term. ROW adds an entry, NOTE a note, × removes one; the search narrows the list; the section takes the
+whole height of the window. The file holds the same entries, one a line:
 
-API modes read keys from `config`.
-
-```text
-config/
-  api_key_*.txt
+```
+Kubernetes
+PyTorch
+git hub actions -> GitHub Actions
+kilometres per hour -> km/h
+# units
+degrees celsius -> °C
 ```
 
-Reset App does not delete these files. Cleanup must also protect working configs.
-
-The **HuggingFace key** is separate and optional (`config\api_key_huggingface.txt`, the "HuggingFace key" row on the `Maintenance` page). Without it the models download anonymously, only slower; with a key HuggingFace lifts the rate limit. Getting one takes a minute: huggingface.co → sign in or sign up → avatar → Settings → Access Tokens → New token, type Read → copy and paste it into the key row. In Studio the same key unlocks speaker separation: with the same account open the `pyannote/speaker-diarization-community-1` page and accept the model terms.
-
-## 4. Main Window
-
-Main tabs:
-
-- `Live` - dictation, overlay, API/Local sources, models, and OpenAI cleanup.
-- `Files` - file queue, models, transcription language, post-processing/cleanup, subtitles, and export.
-- `Settings` - theme, app language, tray, Notion/Obsidian integrations, global options, and settings reset.
-- `Maintenance` - recommended profile, runtimes, payloads, models, and service actions.
-
-The left side contains the log and queue. The right side contains workflow settings. Inactive backend cards are hidden or dimmed so API, Local Models, and CUDA settings are not confused.
-
-Right-click the compact top overlay for an 85%-opaque quick menu. Its first actions are `Past dictations` and `Paste last dictation`, followed by Live dictation mode, file recording mode, `Input`/`Output`, the main window, Settings, and Exit. The quick overlay window shows the latest 20 entries. Tray `All dictations` opens the scrollable cache of up to 200 completed Live dictations; the oldest entries are removed automatically at the limit. Click a two-line card to paste it back into the previously active window; use its compact round buttons to copy or delete it. In Live mode the ready overlay shows the microphone; in file mode it shows a red Record symbol and `Start recording`. During a file recording, Pause omits that interval from the WAV while keeping the microphone open, Stop saves, and Cancel discards the temporary recording. The overlay and tray have no tooltips because every action is labeled or uses standard transport symbols.
-
-The default overlay scale for a fresh installation is 70%. Later changes are saved. The mouse wheel scrolls the Settings page without changing the scale value under the pointer.
-
-The `Right Alt + F12` hotkey is activated automatically with the application. Local STT has a separate **Preload local model** option: it speeds up the first dictation but reserves RAM/VRAM in advance. It does not control the overlay, tray, or hotkey readiness.
-
-## 5. App Language and Transcription Language
-
-These are separate settings.
-
-- **App language** changes the interface.
-- **Transcription language** tells the engine what language is spoken in the recording.
-
-Use `Auto` when the language is unknown. If the recording is definitely Russian or English, choose the exact language.
-
-Live dictation has a separate **Primary language**. Its default is `Window layout`: when dictation starts, the app reads the current Windows keyboard layout of the actual target window where text will later be pasted (`ru` or `en`). Russian, English and Auto explicitly override it. The shared **Term dictionary** is visible on both the `Live` and file-operation tabs in every API/Local mode. It contains only exact spellings of names, abbreviations and formats, separated by commas. The dictionary is sent to Live and file STT as provider keyterms/prompt where the selected engine supports prompting, and protects spellings during optional transcript formatting. GigaAM ONNX accepts neither prompts nor hotwords, so the dictionary does not change its raw recognition. The separate **Recording description** field is free-form context about the topic, participants, purpose and important facts; the dictionary does not need to be repeated there.
-
-## 6. File Transcription
-
-1. Open `Files`.
-2. Add files or a folder with the separate round picker buttons beside `Add…`.
-   Use the checkboxes in the first queue column to target particular files. If no rows are checked, Start processes the complete queue; bulk remove/cleanup actions still fall back to ordinary row selection.
-3. Choose the file engine: OpenAI, Local Models, or CUDA in Studio.
-4. Choose the transcription language.
-5. For OpenAI, choose a transcription profile; for local processing, choose the model and backend.
-6. Enable required export formats.
-7. Start processing.
-
-Results are saved next to the source file by default. This is better for large archives because the transcript stays with the original recording.
-
-A folder is added with all its subfolders: supported files join the queue as a flat list and each transcript is saved next to its file in that folder. The full format list (17 audio and 18 video) is shown in the tooltips of `Files…`, `Folder…` and the `Formats` label. External files selected through the picker or drag-and-drop are not copied into the project. The queue retains their original paths and processes them in place. Only WAV files recorded by Audion itself are created automatically in `input`. The `Input` and `Output` buttons share the remaining width and open those project folders.
-
-## 7. Supported Formats
-
-The app relies on FFmpeg, so common audio and video formats are preferred:
-
-- audio: WAV, MP3, M4A, AAC, FLAC, OGG, OPUS;
-- video: MP4, MOV, MKV, WEBM, AVI.
-
-If a file uses an exotic container, convert it to WAV, MP3, or MP4 first.
-
-## 8. API Workflow
-
-OpenAI is the fastest path for high-quality cloud transcription and text cleanup. In Live, the OpenAI model is not selected manually: Realtime uses `gpt-realtime-whisper`, and batch fallback uses `gpt-4o-mini-transcribe`. xAI and ElevenLabs are currently used as fixed realtime Live providers.
-
-Important settings:
-
-- valid API key for the selected provider;
-- OpenAI file transcription profile;
-- post-processing model;
-- cleanup prompt when text cleanup is enabled.
-
-OpenAI file profiles:
-
-- `Fast / economical` -> `gpt-4o-mini-transcribe`;
-- `Max accuracy` -> `gpt-4o-transcribe`;
-- `With diarization` -> `gpt-4o-transcribe-diarize`.
-
-Each profile has a tooltip explaining the tradeoff. The model refresh button remains useful for post-processing and cleanup models.
-
-## 9. Local Models Workflow
-
-Local Models keep audio out of external APIs. They are useful for private work, long recordings, and machines with an installed GPU/CPU backend.
-
-Local models:
-
-- GigaAM - preferred local choice for the Russian UI layout;
-- whisper.cpp - CPU fallback in Live and CUDA/cuBLAS GPU pack in Studio;
-- backend: auto, CUDA, DirectML, or CPU fallback;
-- GigaAM Live keeps the model warm until the app exits;
-- GigaAM cuts long recordings into pieces of up to 25 seconds at the quietest points (by Silero VAD, installed with the GigaAM ONNX pack; by signal energy without it). Nothing is discarded, quiet echoing speech still reaches the model, and every piece gets start and end times;
-- unload/buffer threshold applies to whisper.cpp live scenarios.
-
-Install the required runtimes/payloads and models from the `Maintenance` page before using this mode (or accept the first-start window). The GigaAM/ONNX Runtime wheels ship in the distribution's `wheelhouse`: `GigaAM ONNX pack` installs `onnx-asr` and the ONNX Runtime provider from them, preloads `gigaam-v3-e2e-ctc`/`gigaam-v3-e2e-rnnt` into `models\huggingface` and fetches Silero VAD. On Windows, auto uses DirectML as the lightweight universal backend; Studio uses CUDA on NVIDIA.
-
-**Speaker separation** in local modes is switched on by the `Speaker separation` card on the `Files` tab (the same state as the `Transcription + diarization` fork in API mode). The path without a HuggingFace key is installed by the `Speaker separation (no key)` module: sherpa-onnx and two ONNX models, about 65 MB, runs on the CPU and takes roughly a fifth to a half of the recording's length. This engine needs the number of speakers in the `Speakers` field (2 to 20). It has no automatic mode on purpose: sherpa-onnx has no calibrated threshold, on one and the same recording it finds anywhere from one to seven people depending on the setting, and we chose not to tune the app to a single recording. Without a number separation does not run, the transcript is saved without labels, and the journal keeps a warning. Separation without a key is coarse: it splits unlike voices and may merge similar ones. On a test recording of three people in one room it agreed with Community-1 on three quarters of the segments and took two similar voices for one; Community-1 found all three on the same recording with no hint.
-
-### 9.1. Local Backend Installation
-
-Audion chooses the backend by actually loading provider DLLs/runtimes, not just by GPU name.
-
-- **DirectML**: the lightweight Windows fallback for Live and a reserve path for Studio. `GigaAM ONNX pack` installs it as `onnxruntime-directml`; no external SDK is required. Keep the NVIDIA/AMD/Intel driver current.
-- **CUDA**: the NVIDIA path for Studio. Install the current NVIDIA driver and Studio runtime/payloads from `Setup`/`builder_main.cmd`, then run `GigaAM ONNX pack`. ONNX Runtime uses `onnxruntime-gpu`; CUDA/cuDNN/MSVC DLLs must be visible to the process, and Audion also calls `onnxruntime.preload_dlls()`.
-- **TensorRT**: not used in the current project profile. If ONNX Runtime exposes a TensorRT provider, Audion does not select it as a recommended backend.
-
-## 10. CUDA Workflow in Studio
-
-CUDA is available only in Studio. It targets NVIDIA GPUs and covers GigaAM ONNX CUDA, whisper.cpp CUDA/cuBLAS, and faster-whisper/pyannote.
-
-The `CUDA` card includes a Faster-Whisper profile switch:
-
-- `Quality` - the default mode. It uses regular Faster-Whisper/CTranslate2 without batched inference. GPU load is calmer, and it is safer for rough speech, quiet intros, production chatter, and later diarization because the timeline is usually more detailed.
-- `Speed` - enables BatchedInferencePipeline with `batch_size=16`. This mode keeps CUDA/GPU much busier and speeds up long files or file queues, but it depends more on VAD, can merge larger segments, and can occasionally miss quiet boundary phrases. Use it when you need a fast run and can dedicate the GPU to the job.
-
-Typical flow:
-
-1. Install `whisper.cpp pack` (CUDA/cuBLAS) and `whisper.cpp Large V2 model`; the first-start window does this by itself.
-2. When speaker labels are needed: enter the HuggingFace key on the `Maintenance` page, accept the terms of `pyannote/speaker-diarization-community-1`, and install `GPU diarization`. Without a key the install does not start and says why.
-3. Run verify.
-4. Turbo remains the fast profile for comparisons against large-v2.
-5. Choose the Studio GPU engine: GigaAM CUDA, whisper.cpp cuBLAS, or faster-whisper CUDA.
-6. Run a short smoke test on a small file.
-7. Process long recordings after the smoke passes.
-
-RTX 5070 smoke confirmed the target Studio GigaAM CUDA and Studio whisper.cpp CUDA/cuBLAS profiles. On a machine without NVIDIA GPU, CUDA smoke can only check imports.
-
-## 11. Live Dictation
-
-Live dictation can be started from the `Live` tab, the record button above the log, or the tray.
-
-Modes:
-
-- **API models** - OpenAI batch, OpenAI Realtime, xAI Realtime, or ElevenLabs Realtime. The OpenAI model is selected by the app and is not exposed as a catalog.
-- **Local Models** - GigaAM or whisper.cpp with the selected backend.
-
-Choose the source first (`API models` or `Local Models`), then choose the concrete provider or local model. The inactive card remains dimmed so the screen does not feel empty while still avoiding accidental configuration changes.
-
-When `On startup` is enabled, dictation starts with the app.
-
-## 12. Overlay
-
-After startup, the overlay remains at the top and reserves the full controller's 420-680 px native width. In idle, a window mask leaves only the centered 120×12 px oval visible and interactive. Hover clears the mask and immediately reveals the full-width Record capsule with a stationary microphone icon at its exact center. Clicking fades the icon over roughly 220 ms and swaps in the recording controls inside the same bounds without resizing or moving the window. The minimum/default height is 52 px. Stop, Cancel, or the safety timeout returns it to the thin oval. It disappears only when the application exits or overlay display is disabled.
-
-The left `Activity log` stays empty until dictation, an error, or a maintenance operation occurs. The armed state and `Right Alt + F12` reminder are shown in the microphone tooltip and status bar instead of being written as startup log entries.
-
-The safe global start hotkey is `Right Alt + F12`. It contains no Windows key, so Windows Search cannot steal the paste target.
-
-The right side of the overlay contains an elapsed-time counter and two controls:
-
-- `Stop` ends recording, waits for the final STT result, pastes the complete text, and then closes the overlay;
-- the left `×` cancels the session and discards its collected text. Streaming text remains in the overlay and is not pasted into the target application before `Stop`;
-- `Stop` pastes the complete result as one block. A configurable safety interval (15 minutes by default) finalizes a forgotten continuous recording automatically.
-
-The overlay accepts clicks on these controls without taking keyboard focus away from the dictation target.
-
-The actual microphone level is shown to the left of the text, while cloud transport state appears on the right (`connecting`, `ready`, `sending audio`, `receiving text`). Long text is elided on the left according to its rendered width, keeping the latest dictated words visible.
-
-The far-left `⋮` kebab is the drag handle and is already visible beside the ready microphone before recording starts. Move the overlay without starting voice capture; the selected position is reused for subsequent appearances until the application exits.
-
-The `Live` tab allows you to:
-
-- enable or disable the overlay;
-- adjust overlay height;
-- control overlay behavior during live dictation.
-
-## 13. Live Text Cleanup
-
-Enable `Live Cleanup` for long dictation sessions.
-
-Default cleanup is conservative and punctuation-first: it restores punctuation, capitalization, sentence boundaries and paragraphs without paraphrasing, reordering ideas or replacing words with synonyms. Only obvious fillers, false starts and accidental repetitions may be removed.
-
-Settings:
-
-- cleanup model;
-- cleanup prompt;
-- sentence count threshold.
-
-The app can periodically turn raw dictated text into a cleaner document.
-
-## 14. Export
-
-Export is available from the GUI and tray.
-
-Formats:
-
-- Markdown;
-- TXT;
-- JSON;
-- SRT;
-- WebVTT.
-
-Actions:
-
-- save the log to Markdown through a file picker;
-- export a transcript;
-- send material to Notion;
-- send material to Obsidian.
-
-## 15. Tray
-
-The tray is for quick actions while the main window is hidden.
-
-Minimizing the window hides the app in the tray. Closing the window exits the app completely, stops background work, and removes the tray icon.
-
-Available actions:
-
-- show or hide the app;
-- start or stop live dictation;
-- export the log to Markdown;
-- send results to Notion or Obsidian.
-
-Tray behavior can be disabled in `Settings`.
-
-## 16. Settings Persistence
-
-The app saves the following between restarts:
-
-- theme;
-- app language;
-- checkboxes;
-- filled fields;
-- selected models;
-- model lists;
-- live settings;
-- export settings;
-- tray, integrations, and global app behavior settings.
-
-Combo boxes do not change on mouse wheel, so accidental scrolling cannot alter workflow settings.
-
-## 17. Reset App
-
-`Reset App` restores default program settings. Use it when the interface or workflow was accidentally configured into a bad state.
-
-Reset App must not delete:
-
-- API keys;
-- installed runtimes;
-- payloads;
-- downloaded models;
-- user work files.
-
-## 18. Cleanup
-
-`cleanup_project.cmd` removes what can be restored on another system: temporary build artifacts, runtime, `Tools`, models, `install\download`, `install\wheels`, and working payload folders.
-
-It also clears `input`, `output`, `logs`, `report`, `workspace`, and `release`. This is expected: `input` is a temporary working area for files, not a user archive.
-
-Working configs, API keys, install scripts, `system_core`, `Docs`, `tests`, and important root project files are protected. After cleanup, the empty structure is recreated through `install\init_folders.cmd`.
-
-The GUI module catalog and `builder_main.cmd` are synchronized. The target profiles were smoke-tested on RTX 5070: Live GigaAM DirectML, Live whisper.cpp CPU fallback, Studio GigaAM CUDA, and Studio whisper.cpp CUDA/cuBLAS.
-
-## 19. Recommendations
-
-- Use API models for short and simple jobs.
-- Use Local Models for private or long local work.
-- Use Studio and CUDA for large archives on NVIDIA GPUs.
-- Save output next to the source file.
-- Do not confuse app language with transcription language.
-- Run a short smoke test before processing multi-hour recordings.
-
-## 20. Troubleshooting
-
-- Check the log on the left.
-- Make sure FFmpeg is installed.
-- Check API keys for OpenAI, xAI, or ElevenLabs.
-- For Local Models, check the model and runtime.
-- For CUDA, check the NVIDIA driver and that the CUDA/cuBLAS `whisper.cpp pack` with the Large V2 model is installed; PyTorch is only needed for diarization.
-- Long GigaAM recordings are cut into pieces of up to 25 seconds automatically. If a piece still fails with a DirectML error, update the GPU driver or switch the backend to CPU.
-- If speaker separation fails (pyannote missing, no HuggingFace key, model terms not accepted), the transcript is still saved and the journal shows `WARN: speaker separation skipped` with the reason and a hint.
-- If models were installed by hand and the `Mode readiness` matrix is not green, open `Maintenance`: the row marked `Not installed` shows what is missing.
-- Use Reset App if the issue looks like broken UI configuration.
-
-## Live Session Checklist
-
-Select the correct microphone, input language, recognition engine, and text destination before starting. Record a short sample and listen for clipping, silence, wrong device routing, or excessive background noise. Confirm that live text appears in the intended window and that stop releases the device.
-
-For overlay use, verify screen position, focus behavior, opacity, and click-through settings before a production session. The overlay must not hide an error or continue displaying stale text after recognition stops.
-
-## Local And API Boundaries
-
-API engines require network access, a valid provider key, and the selected model. Local engines require the installed backend, model payload, and supported CPU/DirectML/CUDA profile. Do not diagnose a local model failure by changing an unrelated API key.
-
-When privacy requires offline processing, confirm that the selected route is local and that no provider fallback is enabled. Logs and exported transcripts may contain sensitive speech and should follow the same retention rules as source audio.
-
-## Long Sessions
-
-Check free disk space, output folder, model memory usage, and power settings. Keep the system awake and prevent overlapping capture applications from taking exclusive control of the device. Review segment boundaries and timestamps periodically rather than waiting until the end of a long recording.
-
-## Failure Recovery
-
-Preserve the log, selected engine/model, device, language, and a short reproducible sample. Restart only the failed session or backend when possible. Use Reset App only for corrupted UI/settings state; it is not a substitute for reinstalling a missing runtime or model.
-
-## Interface As Documentation
-
-Where the project exposes declarative GUI settings or configuration maps, treat them as structured documentation sources for controls, defaults, tooltips, and backend choices. The guide adds the human sequence: select the correct microphone and language, understand whether audio leaves the machine, monitor a long session, and preserve recoverable output.
-
-For release acceptance, compare the rendered interface, persisted settings, actual engine request, export result, and this guide. A new control must explain its effect on latency, quality, privacy, memory, or output rather than existing only as a label.
+- **A term** — a word, an abbreviation, a shortening or a unit as it is written. The clouds are told it (xAI and
+  ElevenLabs as key terms, OpenAI after the stop in its prompt), the text modes and the minutes keep it, the transcription
+  of files takes it.
+- **A replacement** `said -> written` (or `→`, `=>`) — made in the text of every dictation by whole words, whatever the
+  case; it works for GigaAM too, which cannot be told words.
+- `#` at the start of a line — a note.
+
+The dictionary saves itself a second after typing and applies from the next dictation.
+
+### Microphone and Panel
+
+- The microphone — Dictations or Recordings → ADVANCED → DEVICES → MICROPHONE, tray menu → "Microphone ›": DEFAULT is
+  the Windows default microphone.
+- The panel — Dictations → ADVANCED → DEVICES → PANEL: TOP or BOTTOM of the screen (the tray menu or ⌄ of the capsule →
+  "Place of the panel ›"); SHOWN AT REST (tray menu → "Show the floating panel"): off — the capsule appears only for a
+  dictation or a recording.
+
+The capsule, the tray and the window share one choice: changed in one place, it is shown in the others at once. ADVANCED
+is open until the first work of its page — a dictation, a recording, a run of files — then folds into one line by itself;
+after that it stays as it is left: the chevron on the right or a press on its head opens and folds it.
+
+## Tray
+
+The left button on the icon opens the window. The right one — the menu:
+
+- **Paste the last dictation** — into the window that was in front;
+- **History** — the Dictations section;
+- **Start a recording (Right Alt + F11)** — with a red dot while a recording goes;
+- **Engine of dictation ›**, **Microphone ›**, **Place of the panel ›**, **Show the floating panel**;
+- **Open Audion Voice Tools**, **Settings**, **Quit**.
+
+Closing the window with its cross leaves the program in the tray: dictation works. Quit is only in the tray menu.
+
+## The Dictations Section
+
+Dictations by days, the newest on top; the search finds by the beginnings of words, whatever the case. Point at a
+dictation — its buttons appear: copy, recognize again (GigaAM of this machine, the text is replaced), listen, download
+the sound to Downloads, delete (the record from the library, the sound to the Recycle Bin). The tip of the text tells
+where it was pasted, the engine, the mode, the length, how long the paste was waited for.
+
+The right button: **Paste again**, **Copy the text of the engine — before working over** (dictations with a mode),
+**Pin on top** — a pinned one keeps its sound past its term.
+
+The sound of dictations is kept 7 days (SETTINGS → SOUND OF DICTATIONS: 7 DAYS, 30 DAYS, ALWAYS, DO NOT KEEP); the text
+stays always. Dictations of 2.3 come into the history by themselves, without sound.
+
+## The Recordings Section and the Recorder
+
+- **Right Alt + F11**, the RECORD button of the section or RECORDING in the capsule — start. The capsule turns red: time,
+  level; ❚❚ — pause (the microphone stays open, nothing is written), the red square — save, × — cancel (the file goes to
+  the Recycle Bin).
+- A recording is 48 kHz mono in `library\recordings\YEAR\MONTH\`. After a crash of the program an unfinished recording
+  is recovered at the next start. Dictation works during a recording.
+- Once saved, a recording goes to transcription by itself with the choices of the Files section (Recordings → ADVANCED →
+  AFTER RECORDING: TRANSCRIBE AT ONCE or BY HAND; CHOOSE opens Files).
+
+The buttons of a recording card: listen, open the transcript, **minutes of the meeting**, show in the folder, download
+to Downloads, transcribe (again).
+
+**The minutes of the meeting** are made by the model of Dictations → ADVANCED → TEXT AND SUMMARY from the transcript: the file
+`NAME.protocol.md` next to the recording, opened by itself. Made, the button opens them; the right button makes them
+again, the old ones go to the Recycle Bin.
+
+## The Files Section
+
+1. ADD FILES or ADD A FOLDER — recordings and videos: m4a, mp3, wav, flac, ogg, opus, aac, wma, mp4, mov, mkv, webm, avi,
+   mxf.
+2. The choices of the run — ADVANCED, the blocks LOCAL MODELS, API: SERVICES AND MODELS, RECOGNITION, RESULT:
+   - **LOCAL MODELS** — GIGAAM · ONNX (Russian speech), WHISPER TURBO · WHISPER.CPP (English and mixed), WHISPER LARGE-V2
+     · WHISPER.CPP (more accurate on hard recordings, many times heavier). One not installed is shown dimmed. With an
+     NVIDIA card the choice is GIGAAM and WHISPER LARGE-V2, no turbo: on CUDA turbo repeats phrases (over five minutes of
+     English speech one phrase came 25 times in a row, 42 % of the words wrong), while large-v2 is as fast there and gets
+     7 % of the words wrong;
+   - **API: SERVICES AND MODELS** — OpenAI, xAI, Gemini, AssemblyAI, GigaChat, each with its own key; a press on a service
+     sends the files to the cloud; the OpenAI model comes from the list of the service, `gpt-transcribe` by default; xAI and AssemblyAI choose their model
+     themselves;
+   - **LANGUAGE** — AUTO, RU, EN;
+   - **SPEAKERS** — DO NOT SPLIT, AUTO (Community-1 where it is installed, Sortformer otherwise), COMMUNITY-1 (more
+     accurate, needs the Hugging Face key), SORTFORMER (up to four speakers, no key); longer: a pass of its own after
+     recognition. **HOW MANY** — the number of speakers when it is known: Community-1 takes it. With a cloud — DO NOT
+     SPLIT or SPLIT: the service splits itself;
+   - **PAUSES (VAD)** with GigaAM — where a long recording is cut into pieces of 12–25 seconds: SILERO VAD — in the pauses
+     of speech, BY TIME — at the quietest moment; no sound is thrown away either way;
+   - **FILES** — MD, TXT, SRT, VTT, JSON;
+   - **DONE ONES** — SKIP a file whose transcript is already there, or REDO.
+3. RUN. The progress of every file is in the list and in the journal; STOP at the bottom stops, the finished pieces are
+   not lost: the next run continues the file from them.
+
+The transcript lies next to the source: `NAME.md`, `.txt`, `.srt`, `.vtt`, `.transcript.json`. The window remembers
+the choices of the run; recordings are transcribed with them too.
+
+## The Journal Section
+
+The logs of the program by days — errors stay visible after a restart. The journal panel on the right: LOGS opens the
+`logs` folder, CONFIG — the `config` folder; copy the whole text, clear (the files stay), expand to the whole window.
+
+## SETUP
+
+- **Components** — what is installed, what is recommended for this machine, whether there is a newer one, how much to
+  download; INSTALL ALL puts in place everything recommended, in order. The heavy part for NVIDIA is offered only with an
+  NVIDIA card; Whisper for files there is Whisper on CUDA with the large-v2 model, and Whisper for files on the CPU with
+  the turbo model is "not needed on this machine".
+- **KEYS OF THE SERVICES** — Hugging Face, OpenAI, xAI, ElevenLabs, AssemblyAI, Google Gemini, GigaChat: typed past the journal,
+  CHECK asks the service itself. A key is kept in `config\api_key_*.txt` and is never shown — only "there" and its last
+  characters.
+- **MICROPHONE** — a check: the microphone is listened to for a few seconds, the level is shown as it comes; nothing is
+  recorded.
+
+## SETTINGS
+
+Here is what is set once:
+
+- **HOTKEYS** — a table: dictation Right Alt + F12, its cancel Esc, recording Right Alt + F11.
+- **SOUND OF DICTATIONS** — how long the sound is kept.
+- **COLOURS** — four themes of the window; **FONT OF THE WINDOW**, **FONT OF THE JOURNAL** — the family and the size, the
+  chevrons of the spinner step it by half a point; BACK TO THE DEFAULTS brings back the theme, the fonts and the sizes.
+
+The engine, the models, the text mode, the microphone and the panel are under ADVANCED of the Dictations page, the
+dictionary in its own section.
+
+The language of the window — RU or EN in the header.
+
+## What Goes to the Network
+
+- The sound of a dictation — only with a cloud engine, and only to its service.
+- The text of a dictation — only with a text mode other than "Original text", and only to the address of the model.
+- The transcript of a recording — to the model, when you make the minutes of the meeting.
+- Recordings and files are recognized on this machine unless CLOUD is chosen on the Files page.
+- The list of models of a service — the window asks it only for the list, with its own key.

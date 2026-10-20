@@ -1,0 +1,154 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="using:AudionVoiceTools.Views"
+        x:Class="AudionVoiceTools.MainWindow"
+        Title="Audion Voice Tools"
+        Width="1400" Height="860" MinWidth="1100" MinHeight="660"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource AppBg}"
+        Foreground="{DynamicResource TextMain}"
+        FontFamily="{DynamicResource FontUi}"
+        Icon="avares://AudionVoiceTools/Assets/app.ico"
+        FontSize="{DynamicResource FontBase}">
+  <!--
+    The manager of Audion Voice Tools, in the layout of the Audion windows (the shell of Audion Media Tools): the program
+    and its look in the header, the sections as a band under it, the section on the left, the journal on the right, the
+    state at the bottom. Dictation itself is the capsule and the hotkey: they live with this window closed.
+  -->
+  <Grid RowDefinitions="Auto,*">
+
+  <Border Grid.Row="0" Classes="headband">
+    <Grid ColumnDefinitions="Auto,*,Auto">
+      <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+        <TextBlock Text="AUDION VOICE TOOLS" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+        <TextBlock x:Name="VersionText" Classes="caption"/>
+      </StackPanel>
+      <!-- What dictation runs on and what is installed, in the middle (MainWindow.Components.cs). -->
+      <views:FitRow x:Name="ComponentRow" Grid.Column="1" Spacing="6" Margin="16,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+        <!-- SETUP: the engines and models the program works with (MainWindow.Setup.cs) - a button of its own, apart from
+             the switches of the window itself; the dot says that something recommended is not installed. -->
+        <ToggleButton x:Name="SetupButton" Classes="switch" Margin="0,0,12,0" VerticalAlignment="Center" AutomationProperties.AutomationId="setup"
+                      ToolTip.Tip="SETUP: движки и модели, с которыми работает программа - движок диктовки, FFmpeg, распознавание файлов, говорящие. Что стоит, что советуется этой машине, есть ли новее, установка и её ход.&#x0a;У каждого своя лицензия; они ставятся отдельно, с сайтов авторов, в папку программы - в Windows ничего не пишется. Что советуется этой машине, программа решает по видеокарте: тяжёлое для NVIDIA предлагается только при ней.">
+          <StackPanel Orientation="Horizontal" Spacing="6">
+            <Path Classes="icon" Tag="package"/>
+            <TextBlock Text="SETUP" VerticalAlignment="Center"/>
+            <Ellipse x:Name="SetupDot" Classes="dot bad" IsVisible="False" AutomationProperties.AutomationId="setup_missing"/>
+          </StackPanel>
+        </ToggleButton>
+        <ToggleButton x:Name="LangRu" Classes="switch" Content="RU" Margin="0,0,4,0" ToolTip.Tip="Язык окна: русский."/>
+        <ToggleButton x:Name="LangEn" Classes="switch" Content="EN" Margin="0,0,8,0" ToolTip.Tip="Язык окна: английский."/>
+        <ToggleButton x:Name="ThemeButton" Classes="switch icon" Margin="0" ToolTip.Tip="Тема: Audion Code Dark (по умолчанию), Audion Vault Dark, Audion Dark или Audion Light.">
+          <Path Classes="icon" Tag="sun"/>
+          <ToggleButton.Flyout>
+            <MenuFlyout Placement="BottomEdgeAlignedRight">
+              <MenuItem x:Name="ThemeCode" Header="Audion Code Dark" ToggleType="Radio"/>
+              <MenuItem x:Name="ThemeVault" Header="Audion Vault Dark" ToggleType="Radio"/>
+              <MenuItem x:Name="ThemeDark" Header="Audion Dark" ToggleType="Radio"/>
+              <MenuItem x:Name="ThemeLight" Header="Audion Light" ToggleType="Radio"/>
+            </MenuFlyout>
+          </ToggleButton.Flyout>
+        </ToggleButton>
+        <ToggleButton x:Name="SheetSettings" Classes="switch" Content="SETTINGS" Margin="8,0,4,0"
+                      AutomationProperties.AutomationId="sheet_settings" ToolTip.Tip="Настройки: хоткеи, хранение звука, цвета, шрифты."/>
+        <ToggleButton x:Name="SheetAbout" Classes="switch" Content="ABOUT" Margin="0"
+                      AutomationProperties.AutomationId="sheet_about" ToolTip.Tip="О программе: версия, папки, состав, автор."/>
+      </StackPanel>
+    </Grid>
+  </Border>
+
+  <Grid Grid.Row="1" x:Name="Shell" RowDefinitions="Auto,*,Auto" Margin="10,8,10,10" Focusable="True">
+
+    <!-- The sections: one band across the window, each with its sign and a line of what it is for. -->
+    <Grid Grid.Row="0" x:Name="SectionRow" Margin="0,0,0,6"/>
+
+    <Grid Grid.Row="1" x:Name="Zones" ColumnDefinitions="*,9,560">
+      <!-- Left: the chosen section (MainWindow.Dictations.cs, MainWindow.Files.cs). -->
+      <Border Grid.Column="0" x:Name="LeftZone" Classes="frame" MinWidth="520">
+        <Panel x:Name="SectionHost"/>
+      </Border>
+
+      <GridSplitter Grid.Column="1" ResizeDirection="Columns"/>
+
+      <!-- Right: the journal - the runs of files, the installers, the errors of the window. -->
+      <Border Grid.Column="2" x:Name="RightZone" Classes="card" Padding="9,7,8,8" MinWidth="420">
+        <Grid RowDefinitions="Auto,*,Auto">
+          <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,6">
+            <TextBlock Grid.Column="0" Classes="cardtitle" Text="ЖУРНАЛ" VerticalAlignment="Center"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+              <Button x:Name="LogsButton" Classes="small" Margin="0,0,4,0" AutomationProperties.AutomationId="journal_logs"
+                      ToolTip.Tip="Открыть папку logs: журналы программы и прогонов.">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                  <Path Classes="icon" Tag="file-text"/>
+                  <TextBlock Text="LOGS"/>
+                </StackPanel>
+              </Button>
+              <Button x:Name="ConfigButton" Classes="small" Margin="0,0,4,0" AutomationProperties.AutomationId="journal_config"
+                      ToolTip.Tip="Открыть папку config: настройки программы и окна.">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                  <Path Classes="icon" Tag="settings"/>
+                  <TextBlock Text="CONFIG"/>
+                </StackPanel>
+              </Button>
+              <Button x:Name="CopyLogButton" Classes="tool" Margin="0,0,4,0" ToolTip.Tip="Весь текст журнала - в буфер обмена.">
+                <Path Classes="icon" Tag="copy"/>
+              </Button>
+              <Button x:Name="ClearLogButton" Classes="tool" Margin="0,0,4,0" ToolTip.Tip="Очистить журнал. Файлы журналов в logs остаются.">
+                <Path Classes="icon" Tag="eraser"/>
+              </Button>
+              <Button x:Name="WideLogButton" Classes="tool" Margin="0" ToolTip.Tip="Развернуть журнал на всё окно и вернуть обратно.">
+                <Path Classes="icon" Tag="maximize-2"/>
+              </Button>
+            </StackPanel>
+          </Grid>
+
+          <Border Grid.Row="1" Grid.RowSpan="2" Classes="listbg" CornerRadius="5"/>
+          <ScrollViewer Grid.Row="1" x:Name="LogScroll" HorizontalScrollBarVisibility="Disabled">
+            <!-- Pages of text one under another: only the last page is laid out when lines arrive. -->
+            <StackPanel x:Name="LogPages" Margin="8,6" TextElement.FontFamily="{DynamicResource FontGrid}"
+                        TextElement.FontSize="{DynamicResource FontLog}" TextElement.Foreground="{DynamicResource LogPlain}"/>
+          </ScrollViewer>
+
+          <!-- The live line of a run: how far it is right now, behind a dot that breathes. -->
+          <Grid Grid.Row="2" x:Name="ActivityRow" ColumnDefinitions="Auto,*" Margin="9,0,8,7" IsVisible="False">
+            <Ellipse Grid.Column="0" x:Name="ActivityDot" Classes="livedot" Margin="0,1,8,0"/>
+            <TextBlock Grid.Column="1" x:Name="ActivityText" FontFamily="{DynamicResource FontGrid}" FontSize="{DynamicResource FontLog}"
+                       Foreground="{DynamicResource LogPlain}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+          </Grid>
+        </Grid>
+      </Border>
+    </Grid>
+
+    <!-- SETTINGS or ABOUT, in place of the sections; the state below stays in sight. -->
+    <Border Grid.Row="0" Grid.RowSpan="2" x:Name="SheetHost" Classes="frame" IsVisible="False">
+      <!-- The scroll bar starts below the cross (App.axaml, ScrollViewer#SheetScroll); the cards keep clear of the cross. -->
+      <Panel>
+        <ScrollViewer x:Name="SheetScroll" Margin="22,18" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel x:Name="SheetBody" Spacing="6" MaxWidth="1120" HorizontalAlignment="Center" Margin="0,0,24,0"/>
+        </ScrollViewer>
+        <Button x:Name="SheetClose" Classes="tool" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,12,0"
+                ToolTip.Tip="Закрыть и вернуться к разделам (Esc).">
+          <Path Classes="icon" Tag="x"/>
+        </Button>
+      </Panel>
+    </Border>
+
+    <!-- The state: what the program is doing, how far a run is, and STOP while it goes. -->
+    <Grid Grid.Row="2" x:Name="StateRow" ColumnDefinitions="*,Auto" Margin="2,7,0,0" MinHeight="26">
+      <TextBlock Grid.Column="0" x:Name="StatusText" Classes="status" Text="Готово." TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="0,0,18,0"/>
+      <Grid Grid.Column="1" x:Name="StateRight" ColumnDefinitions="*,Auto,Auto" Width="560">
+        <ProgressBar Grid.Column="0" x:Name="ProgressBar" Minimum="0" Maximum="100" Height="6" Margin="10,0,12,0" VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch" IsVisible="False"/>
+        <TextBlock Grid.Column="1" x:Name="ClockText" Classes="num fact idle" Text="" Margin="0,0,12,0" VerticalAlignment="Center"/>
+        <Button Grid.Column="2" x:Name="StopButton" Classes="small burn" IsVisible="False" AutomationProperties.AutomationId="run_stop"
+                ToolTip.Tip="Остановить идущий прогон. Файл, который распознаётся сейчас, не пропадёт: следующий прогон продолжит его с готовых кусков.">
+          <StackPanel Orientation="Horizontal" Spacing="6">
+            <Path Classes="icon" Tag="square"/>
+            <TextBlock Text="СТОП"/>
+          </StackPanel>
+        </Button>
+      </Grid>
+    </Grid>
+  </Grid>
+  </Grid>
+</Window>

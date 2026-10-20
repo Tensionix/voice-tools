@@ -2,7 +2,7 @@
 setlocal EnableExtensions EnableDelayedExpansion
 chcp 65001 >nul
 
-title Audion Voice AI Live - Builder
+title Audion Voice Tools - Builder
 
 set "BASE_DIR=%~dp0"
 if "%BASE_DIR:~-1%"=="\" set "BASE_DIR=%BASE_DIR:~0,-1%"
@@ -18,7 +18,7 @@ if not exist "%RUNTIME_DIR%" mkdir "%RUNTIME_DIR%" >nul 2>nul
 :MAIN
 cls
 echo ======================================================================
-echo   AUDION VOICE AI LIVE - BUILDER
+echo   AUDION VOICE TOOLS - BUILDER
 echo ======================================================================
 echo Root: %BASE_DIR%
 echo Edition: Live staged installers
@@ -26,7 +26,7 @@ echo.
 echo Recommended staged install order:
 echo.
 
-set "SCRIPT_COUNT=13"
+set "SCRIPT_COUNT=17"
 set "SCRIPT_01=init_folders.cmd"
 set "SCRIPT_02=Build_Portable_Env.cmd"
 set "SCRIPT_03=launcher-tools-update_fzf.cmd"
@@ -34,12 +34,7 @@ set "SCRIPT_04=Install-Portable-FFmpeg-BtbN.cmd"
 set "SCRIPT_05=Install-Portable-FFmpeg-Gyan.cmd"
 set "SCRIPT_06=Rebuild-Wheel-Cache.cmd"
 set "SCRIPT_07=Install-Live-Deps.cmd"
-set "SCRIPT_08=Install-GigaAM-ONNX.cmd"
-set "SCRIPT_09=Install-Live-Vulkan.cmd"
-set "SCRIPT_10=Restore-GigaAM-DirectML.cmd"
-set "SCRIPT_11=Restore-GigaAM-CUDA.cmd"
 set "SCRIPT_12=verify_portable_env.cmd"
-set "SCRIPT_13=Install-Diarization-Local.cmd"
 
 if exist "%FZF_EXE%" goto FZF_MENU
 goto FALLBACK_MENU
@@ -52,18 +47,13 @@ goto FALLBACK_MENU
 >>"%MENU_FILE%" echo [05] FFMPEG GYAN STABLE                  ^| step_05          ^| optional explicit Gyan provider
 >>"%MENU_FILE%" echo [06] WHEEL CACHE                         ^| step_06          ^| GigaAM common + DirectML/CPU wheels
 >>"%MENU_FILE%" echo [07] LIVE DEPS                           ^| step_07          ^| Live mic/Realtime deps
->>"%MENU_FILE%" echo [08] GIGAAM ONNX                         ^| step_08          ^| onnx-asr + provider + payloads
->>"%MENU_FILE%" echo [09] WHISPER.CPP CPU FALLBACK            ^| step_09          ^| full CPU pack, server, payloads and Turbo
->>"%MENU_FILE%" echo [10] RESTORE INTEL/AMD GPU               ^| step_10          ^| restore GigaAM ONNX provider to DirectML
->>"%MENU_FILE%" echo [11] RESTORE RTX CUDA                    ^| step_11          ^| restore GigaAM ONNX provider to CUDA
 >>"%MENU_FILE%" echo [12] VERIFY                              ^| step_12          ^| verify final portable environment
->>"%MENU_FILE%" echo [13] SPEAKER SEPARATION (NO KEY)         ^| step_13          ^| sherpa-onnx + 2 ONNX models, CPU, needs a speaker count
+>>"%MENU_FILE%" echo [14] DICTATION ENGINE                    ^| step_14          ^| transcribe.cpp 0.4.0 CPU + Vulkan, no model
+>>"%MENU_FILE%" echo.
+>>"%MENU_FILE%" echo      Models and the parts of a video card: the window offers them at its first start (SETUP)
 >>"%MENU_FILE%" echo.
 >>"%MENU_FILE%" echo [70] CLEAN INSTALL CACHE                 ^| cleanup          ^| clean install\download
 >>"%MENU_FILE%" echo [71] VERIFY                              ^| verify           ^| verify portable environment
->>"%MENU_FILE%" echo [72] COLLECT LICENSES                    ^| collect_licenses ^| collect third-party licenses
->>"%MENU_FILE%" echo [73] PRUNE LICENSES                      ^| prune_licenses   ^| prune stale license folders
->>"%MENU_FILE%" echo [74] DEDUP LICENSES                      ^| dedupe_licenses  ^| deduplicate license files
 >>"%MENU_FILE%" echo [75] CMD ENCODING CHECK                  ^| cmd_encoding     ^| check/fix CMD UTF-8 no-BOM CRLF
 >>"%MENU_FILE%" echo.
 >>"%MENU_FILE%" echo [94] OPEN licenses                       ^| open_licenses    ^| explorer licenses
@@ -92,12 +82,8 @@ if /I "%RAW%"=="step_04" set "RAW=04"
 if /I "%RAW%"=="step_05" set "RAW=05"
 if /I "%RAW%"=="step_06" set "RAW=06"
 if /I "%RAW%"=="step_07" set "RAW=07"
-if /I "%RAW%"=="step_08" set "RAW=08"
-if /I "%RAW%"=="step_09" set "RAW=09"
-if /I "%RAW%"=="step_10" set "RAW=10"
-if /I "%RAW%"=="step_11" set "RAW=11"
 if /I "%RAW%"=="step_12" set "RAW=12"
-if /I "%RAW%"=="step_13" set "RAW=13"
+if /I "%RAW%"=="step_14" set "RAW=14"
 goto ROUTE_CHOICE
 
 :FALLBACK_MENU
@@ -108,20 +94,15 @@ echo [04] FFmpeg Stable ^(driver-aware branch; Gyan provider fallback^)
 echo [05] FFmpeg Gyan Stable ^(optional explicit provider^)
 echo [06] Download/Rebuild wheel cache ^(GigaAM common + DirectML/CPU^)
 echo [07] Live mic/Realtime deps
-echo [08] GigaAM ONNX pack ^(onnx-asr + provider + payloads^)
-echo [09] whisper.cpp CPU fallback pack ^(server + payloads + Turbo^)
-echo [10] restore Audion Voice AI for Intel/AMD GPU ^(DirectML^)
-echo [11] restore Audion Voice AI for RTX CUDA ^(GigaAM ONNX CUDA^)
 echo [12] verify final portable environment
-echo [13] speaker separation without a HuggingFace key ^(sherpa-onnx, CPU^)
+echo [14] engine of dictation ^(transcribe.cpp 0.4.0, no model^)
+echo.
+echo      Models and the parts of a video card: the window offers them at its first start ^(SETUP^)
 echo.
 echo Maintenance:
 echo.
 echo [70] clean install\download
 echo [71] verify portable environment
-echo [72] collect third-party licenses
-echo [73] prune stale license folders
-echo [74] deduplicate license files
 echo [75] check/fix CMD encoding
 echo.
 echo Folders:
@@ -153,12 +134,9 @@ if /I "%RAW%"=="step_04" goto STEP_04
 if /I "%RAW%"=="step_05" goto STEP_05
 if /I "%RAW%"=="step_06" goto STEP_06
 if /I "%RAW%"=="step_07" goto STEP_07
-if /I "%RAW%"=="step_08" goto STEP_08
-if /I "%RAW%"=="step_09" goto STEP_09
-if /I "%RAW%"=="step_10" goto STEP_10
-if /I "%RAW%"=="step_11" goto STEP_11
 if /I "%RAW%"=="step_12" goto STEP_12
-if /I "%RAW%"=="step_13" goto STEP_13
+if /I "%RAW%"=="step_14" goto STEP_14
+if /I "%RAW%"=="14" goto STEP_14
 if /I "%RAW%"=="update_fzf" goto UPDATE_FZF
 if /I "%RAW%"=="cleanup" goto STEP_70
 if /I "%RAW%"=="70" goto CLEANUP
@@ -167,13 +145,6 @@ if /I "%RAW%"=="clean_download" goto CLEANUP
 if /I "%RAW%"=="download_cache" goto CLEANUP
 if /I "%RAW%"=="71" goto VERIFY
 if /I "%RAW%"=="verify" goto VERIFY
-if /I "%RAW%"=="72" goto COLLECT_LICENSES
-if /I "%RAW%"=="collect_licenses" goto COLLECT_LICENSES
-if /I "%RAW%"=="licenses" goto COLLECT_LICENSES
-if /I "%RAW%"=="73" goto PRUNE_LICENSES
-if /I "%RAW%"=="prune_licenses" goto PRUNE_LICENSES
-if /I "%RAW%"=="74" goto DEDUPE_LICENSES
-if /I "%RAW%"=="dedupe_licenses" goto DEDUPE_LICENSES
 if /I "%RAW%"=="75" goto CMD_ENCODING
 if /I "%RAW%"=="cmd_encoding" goto CMD_ENCODING
 if /I "%RAW%"=="Check-CmdEncoding" goto CMD_ENCODING
@@ -250,24 +221,9 @@ goto MAIN
 call "%BASE_DIR%\install\Install-Live-Deps.cmd"
 goto MAIN
 
-:STEP_08
-call "%BASE_DIR%\install\Install-GigaAM-ONNX.cmd"
-goto MAIN
-
-:STEP_09
-call "%BASE_DIR%\install\Install-Live-Vulkan.cmd"
-goto MAIN
-
-:STEP_10
-call "%BASE_DIR%\install\Restore-GigaAM-DirectML.cmd"
-goto MAIN
-
-:STEP_11
-call "%BASE_DIR%\install\Restore-GigaAM-CUDA.cmd"
-goto MAIN
-
-:STEP_13
-call "%BASE_DIR%\install\Install-Diarization-Local.cmd"
+:STEP_14
+rem The engine alone: the model of dictation is chosen in the window at its first start.
+call "%BASE_DIR%\install\Install-Dictation-Engine.cmd" -EngineOnly
 goto MAIN
 
 :STEP_12
@@ -291,18 +247,6 @@ goto MAIN
 
 :VERIFY
 call :RUN_SCRIPT "%BASE_DIR%\install\verify_portable_env.cmd"
-goto MAIN
-
-:COLLECT_LICENSES
-call :RUN_SCRIPT "%BASE_DIR%\system_core\license\Run-Collect-ThirdPartyLicenses.cmd" /NOPAUSE
-goto MAIN
-
-:PRUNE_LICENSES
-call :RUN_SCRIPT "%BASE_DIR%\system_core\license\Run-Prune-Stale-ThirdPartyLicenses.cmd" /NOPAUSE
-goto MAIN
-
-:DEDUPE_LICENSES
-call :RUN_SCRIPT "%BASE_DIR%\system_core\license\Run-Deduplicate-ThirdPartyLicenses.cmd" /NOPAUSE
 goto MAIN
 
 :CMD_ENCODING

@@ -31,14 +31,12 @@ import time
 from pathlib import Path
 from typing import Optional
 
-from ..core.editions import find_whispercpp_server, resolve_whispercpp_model
+from ..core.editions import find_whispercpp_server, resolve_whispercpp_model, whispercpp_file_model
 from ..core.jobs import (
     hidden_subprocess_creationflags,
     hidden_subprocess_startupinfo,
 )
 from ..core.paths import ProjectPaths
-
-DEFAULT_WHISPERCPP_MODEL = "turbo"
 
 # Model load (cold disk -> VRAM) dominates the first warm; the readiness poll
 # also doubles as the "alive but hangs" trigger from the fallback policy.
@@ -135,6 +133,12 @@ def _assign_kill_on_close_job(proc):
         return None
 
 
+def _joined(text) -> str:
+    """The text of whisper-server is its segments, a line each, and a segment may end inside a word ("об\\nновления"); a
+    segment that begins a word begins with its space. Joined without the breaks, the text is whole."""
+    return str(text or "").replace("\r", "").replace("\n", "").strip()
+
+
 def _close_job(job) -> None:
     if job is None:
         return
@@ -170,7 +174,8 @@ class WhisperCppServer:
         http_post=None,
     ) -> None:
         self.paths = paths
-        self.model = model or DEFAULT_WHISPERCPP_MODEL
+        # turbo on the CUDA pack is large-v2 (editions.whispercpp_file_model): turbo loops on CUDA.
+        self.model = whispercpp_file_model(paths, model)
         self.backend = backend or "auto"
         self.idle_unload_seconds = max(0, int(idle_unload_seconds or 0))
         self.host = host
@@ -323,7 +328,7 @@ class WhisperCppServer:
                 self._kill_proc()
                 raise WhisperCppServerError(str(exc)) from exc
             self._touch()
-            return str(payload.get("text", "") or "").strip()
+            return _joined(payload.get("text", ""))
 
     def transcribe_wav_verbose(
         self,
@@ -439,7 +444,7 @@ def cached_file_server(
     backend: str,
 ) -> WhisperCppServer:
     """Keep exactly one file-transcription model resident for the app process."""
-    key = (str(paths.root.resolve()), str(model or DEFAULT_WHISPERCPP_MODEL), str(backend or "auto"))
+    key = (str(paths.root.resolve()), whispercpp_file_model(paths, model), str(backend or "auto"))
     with _FILE_SERVER_CACHE_LOCK:
         for old_key, old_server in list(_FILE_SERVER_CACHE.items()):
             if old_key != key:

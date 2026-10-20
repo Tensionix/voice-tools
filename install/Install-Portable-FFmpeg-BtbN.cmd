@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
-title Audion Voice AI Live - Install Portable FFmpeg BtbN Release
+title Audion Voice Tools - Install Portable FFmpeg BtbN Release
 
 set "SCRIPT_DIR=%~dp0"
 if "%SCRIPT_DIR:~-1%"=="\" set "SCRIPT_DIR=%SCRIPT_DIR:~0,-1%"
@@ -33,7 +33,7 @@ shift
 goto PARSE
 :DONE_ARGS
 
-if exist "%ROOT%\system_core\powershell\pwsh.exe" set "PS_EXE=%ROOT%\system_core\powershell\pwsh.exe"
+if exist "%ROOT%\App\AudionPs.exe" set "PS_EXE=%ROOT%\App\AudionPs.exe"
 if not defined PS_EXE where pwsh.exe >nul 2>nul && set "PS_EXE=pwsh.exe"
 if not defined PS_EXE where powershell.exe >nul 2>nul && set "PS_EXE=powershell.exe"
 
@@ -41,7 +41,7 @@ if not defined PS_EXE goto ERR_NOPS
 if not exist "%PS1_FILE%" goto ERR_NOPS1
 
 echo ======================================================================
-echo   AUDION VOICE AI LIVE - INSTALL PORTABLE FFMPEG BTBN RELEASE
+echo   AUDION VOICE TOOLS - INSTALL PORTABLE FFMPEG BTBN RELEASE
 echo ======================================================================
 echo PS engine: %PS_EXE%
 echo Project:   %ROOT%

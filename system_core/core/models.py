@@ -2,7 +2,7 @@
 
 The JSON document produced from these models is the single source of truth.
 Markdown / SRT / VTT / TXT are all generated from it, so any consumer
-(Notion, Obsidian, re-export, speaker rename) reads JSON, never the sidecars.
+(re-export, speaker rename) reads JSON, never the sidecars.
 """
 
 from __future__ import annotations

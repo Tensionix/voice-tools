@@ -238,14 +238,14 @@ def get_diarization_provider(
         speakers = 0
     engine = str(_get(settings, "diarization", "engine", default="auto") or "auto").strip().lower()
 
-    if engine != "sherpa":
-        try:
-            from .diarization_pyannote import PyannoteDiarizationProvider, pyannote_ready
-        except ImportError:  # Live ships no Community-1 provider
-            pyannote_ready = None  # type: ignore[assignment]
-        if pyannote_ready is not None and (engine == "pyannote" or pyannote_ready(paths)):
+    # Community-1 first where it is installed (an NVIDIA card, a Hugging Face key); Sortformer otherwise - no key, four
+    # speakers at most. "sherpa" of an older config is the engine without a key, now Sortformer.
+    if engine not in {"sortformer", "sherpa"}:
+        from .diarization_pyannote import PyannoteDiarizationProvider, pyannote_ready
+
+        if engine == "pyannote" or pyannote_ready(paths):
             return PyannoteDiarizationProvider(paths, speakers=speakers)
 
-    from .diarization_sherpa import SherpaDiarizationProvider
+    from .diarization_sortformer import SortformerDiarizationProvider
 
-    return SherpaDiarizationProvider(paths, speakers=speakers)
+    return SortformerDiarizationProvider(paths, speakers=speakers)

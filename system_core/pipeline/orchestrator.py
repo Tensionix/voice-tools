@@ -33,6 +33,12 @@ from .timeline import merge_chunk_segments
 
 Logger = Callable[[str], None]
 Canceller = Callable[[], bool]
+# The share of a file done, 0..1: extraction, then the chunks, then the speakers and the sidecars.
+Progress = Callable[[float], None]
+
+
+class Cancelled(RuntimeError):
+    """The run was asked to stop: the file is not failed, its cached chunks resume it on the next run."""
 
 
 def _noop(_: str) -> None:
@@ -129,16 +135,21 @@ def _transcribe_chunks(
     options: TranscriptionOptions,
     log: Logger,
     cancel: Canceller,
+    progress: Progress = lambda _share: None,
 ) -> tuple[list[tuple[float, list[Segment]]], Optional[str], Optional[str], bool]:
     provider = registry.get_transcription_provider(paths, settings)
+    # A model other than the one asked is said: turbo taken by large-v2 on the CUDA pack.
+    if getattr(provider, "notice", ""):
+        log(f"NOTE: {provider.notice}")
     collected: list[tuple[float, list[Segment]]] = []
     language: Optional[str] = None
     model: Optional[str] = None
     diarized = False
 
-    for chunk in chunks:
+    for done, chunk in enumerate(chunks):
         if cancel():
-            raise RuntimeError("Operation cancelled by user.")
+            raise Cancelled("Operation cancelled by user.")
+        progress(0.05 + 0.85 * done / max(1, len(chunks)))
 
         cached = None
         if store and job_id is not None:
@@ -190,6 +201,7 @@ def process_file(
     job_id: Optional[int] = None,
     log: Logger = _noop,
     cancel: Canceller = lambda: False,
+    progress: Progress = lambda _share: None,
 ) -> dict[str, str]:
     """Run the full pipeline for one file and return written output paths."""
     source = source.resolve()
@@ -220,6 +232,7 @@ def process_file(
         log=log,
     )
     log(f"Split into {len(chunks)} chunk(s)")
+    progress(0.05)
 
     options = TranscriptionOptions(
         language=settings.get("language", "auto"),
@@ -227,20 +240,22 @@ def process_file(
         diarize=bool(settings.get("transcription", {}).get("diarize", False)),
         context=settings.get("context", ""),
         keyterms=shared_keyterms(settings),
-        vad_filter=True,
+        # FILES, PAUSES (VAD): the cut points of GigaAM; nothing is dropped either way.
+        vad_filter=bool(settings.get("transcription", {}).get("vad", True)),
     )
 
     chunk_segments, language, model, diarized = _transcribe_chunks(
-        paths, settings, chunks, store, job_id, options, log, cancel
+        paths, settings, chunks, store, job_id, options, log, cancel, progress
     )
+    progress(0.9)
 
     segments = merge_chunk_segments(chunk_segments)
     log(f"Merged timeline: {len(segments)} segment(s)")
 
-    # Separate diarization step (GPU/pyannote mode only).
+    # Separate diarization step (the local modes: Community-1 where installed, Sortformer otherwise).
     diar_provider = registry.get_diarization_provider(paths, settings)
     if diar_provider is not None and segments:
-        log("Running diarization")
+        log(f"Running diarization: {diar_provider.title or diar_provider.name}")
         try:
             segments = diar_provider.diarize(wav_path, segments)
             diarized = True
@@ -248,6 +263,9 @@ def process_file(
             # The transcript is already done; speaker labels are an extra pass.
             # Keep the text and say why the labels are missing.
             log(f"WARN: speaker separation skipped: {exc}")
+        # What the engine cannot do is said, not hidden: Sortformer's four places taken.
+        if getattr(diar_provider, "notice", ""):
+            log(f"NOTE: {diar_provider.notice}")
 
     doc = TranscriptDoc(
         source=SourceMeta(
@@ -271,7 +289,7 @@ def process_file(
     _maybe_generate_metadata(paths, settings, doc, log)
 
     outputs = _write_outputs(paths, source, settings, doc, log)
-    _maybe_export_connectors(paths, settings, doc, source, log)
+    progress(1.0)
 
     if not bool(pipeline_cfg.get("keep_workspace", False)):
         shutil.rmtree(work_dir, ignore_errors=True)
@@ -347,21 +365,6 @@ def _maybe_cleanup(
         return
     if result.markdown.strip():
         doc.cleaned_markdown = result.markdown.strip()
-
-
-def _maybe_export_connectors(
-    paths: ProjectPaths, settings: dict[str, Any], doc: TranscriptDoc, source: Path, log: Logger
-) -> None:
-    """Push to enabled export connectors (Notion/Obsidian). Isolated: any
-    connector failure is logged as a warning and never fails the file."""
-    from ..connectors import any_enabled, export_doc
-
-    if not any_enabled(paths, settings):
-        return
-    try:
-        export_doc(paths, settings, doc, source_path=source, log=log)
-    except Exception as exc:  # last-resort guard
-        log(f"[warn] connector export failed: {exc}")
 
 
 def _write_outputs(

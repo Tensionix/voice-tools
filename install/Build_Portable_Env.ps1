@@ -1,5 +1,5 @@
 <#
-    Audion Voice AI - portable Python environment builder.
+    Audion Voice Tools - portable Python environment builder.
 
     Downloads the CPython 3.12 embeddable package into .\runtime, enables pip +
     site-packages, then installs the base (API-mode) requirements. Local models

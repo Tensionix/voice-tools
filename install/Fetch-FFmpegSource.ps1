@@ -102,3 +102,13 @@ $record = [ordered]@{
 $recordPath = Join-Path $ffmpegDir 'ffmpeg-source.json'
 $record | ConvertTo-Json -Depth 3 | Set-Content -LiteralPath $recordPath -Encoding UTF8
 Write-Host ("[OK] Запись для сборщика лицензий: Tools\ffmpeg\ffmpeg-source.json")
+
+# Исходники прежних сборок - тех, что больше не стоят: обязательство GPL касается установленной, а лишний архив рядом
+# путает и сборщик лицензий, и «Состав» в ABOUT. Уходят только когда исходники этой сборки уже на месте.
+if (Test-Path -LiteralPath $archivePath) {
+    foreach ($old in @(Get-ChildItem -LiteralPath $toolsDir -Filter 'ffmpeg-*-source.tar.gz' -File -ErrorAction SilentlyContinue)) {
+        if ($old.Name -eq $archiveName) { continue }
+        Remove-Item -LiteralPath $old.FullName -Force -ErrorAction SilentlyContinue
+        if (-not (Test-Path -LiteralPath $old.FullName)) { Write-Host ("[OK] Исходники прежней сборки убраны: Tools\{0}" -f $old.Name) }
+    }
+}

@@ -1,4 +1,3 @@
-import ast
 import json
 import wave
 from pathlib import Path
@@ -15,30 +14,12 @@ from system_core.providers.cloud_stt import (
 from system_core.providers.registry import get_transcription_provider, stt_provider
 
 
-def _provider_order(const_name: str) -> list[str]:
-    source = (get_project_paths().system_core / "ui" / "settings_panel.py").read_text(
-        encoding="utf-8"
-    )
-    module = ast.parse(source)
-    for node in module.body:
-        if not isinstance(node, ast.Assign):
-            continue
-        if any(isinstance(target, ast.Name) and target.id == const_name for target in node.targets):
-            return [provider for provider, _label in ast.literal_eval(node.value)]
-    raise AssertionError(f"{const_name} not found")
-
-
 def _write_sample_wav(path: Path) -> None:
     with wave.open(str(path), "wb") as handle:
         handle.setnchannels(1)
         handle.setsampwidth(2)
         handle.setframerate(16000)
         handle.writeframes(b"\x00\x00" * 1600)
-
-
-def test_api_provider_orders_prefer_xai():
-    assert _provider_order("_FILE_STT_PROVIDERS")[0] == "xai"
-    assert _provider_order("_LIVE_API_PROVIDERS")[0] == "xai"
 
 
 def test_xai_key_uses_canonical_txt_file(monkeypatch, tmp_path):

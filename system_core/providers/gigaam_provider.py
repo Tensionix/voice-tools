@@ -17,7 +17,7 @@ try:  # numpy arrives with the GigaAM ONNX pack; the provider module itself must
 except ImportError:  # pragma: no cover - base runtime without local models
     np = None  # type: ignore[assignment]
 
-from ..core.local_hardware import recommended_gigaam_backend
+from ..core.local_hardware import preload_cuda_libraries, recommended_gigaam_backend
 from ..core.model_assets import GIGAAM_VAD_MODEL, gigaam_vad_available
 from ..core.models import Segment
 from ..core.paths import ProjectPaths
@@ -92,13 +92,7 @@ def _preload_cuda_dlls(providers: list[str] | None) -> None:
         import onnxruntime as ort  # type: ignore
     except Exception:
         return
-    preload = getattr(ort, "preload_dlls", None)
-    if not callable(preload):
-        return
-    try:
-        preload(cuda=True, cudnn=True, msvc=True)
-    except Exception:
-        pass
+    preload_cuda_libraries(ort)
 
 
 def _onnx_asr_load_kwargs(provider_key: tuple[str, ...]) -> dict[str, object]:

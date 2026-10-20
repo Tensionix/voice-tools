@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 from system_core.core.paths import get_project_paths
-from system_core.live.whispercpp_live import WhisperCppLiveTranscriber
-from system_core.providers.base import LiveOptions
 from system_core.providers.whispercpp_server import WhisperCppServer, WhisperCppServerError
 
 
@@ -68,6 +66,19 @@ def test_server_transcribes_via_warm_server(tmp_path):
 
     assert text == "hello world"
     assert commands and "-ng" not in commands[0]   # auto tries GPU first
+    server.close()
+
+
+def test_server_joins_segments_cut_inside_a_word(tmp_path):
+    paths, wav = _stage_server_pack(tmp_path)
+    server = WhisperCppServer(
+        paths,
+        launcher=lambda cmd: _FakeProc(exit_code=None),
+        http_get=lambda url, timeout: 200,
+        http_post=lambda url, wav_path, data, timeout: "Привет!\n Посмотри после об\nновления.\n",
+    )
+
+    assert server.transcribe_wav(wav, language="ru") == "Привет! Посмотри после обновления."
     server.close()
 
 
@@ -150,101 +161,3 @@ def test_server_forced_vulkan_does_not_demote_to_cpu(tmp_path):
     assert len(commands) == 1          # no CPU retry when GPU is forced
     assert "-ng" not in commands[0]
     server.close()
-
-
-def test_live_transcriber_prefers_warm_server(tmp_path):
-    paths = get_project_paths(tmp_path)
-    paths.workspace.mkdir(parents=True, exist_ok=True)
-
-    class _FakeServer:
-        def __init__(self):
-            self.calls = 0
-            self.closed = False
-
-        def available(self):
-            return True
-
-        def ensure_running(self):
-            return None
-
-        def transcribe_wav(self, wav, *, language=None, prompt=None):
-            self.calls += 1
-            return "warm text"
-
-        def close(self):
-            self.closed = True
-
-    server = _FakeServer()
-    live = WhisperCppLiveTranscriber(paths, server=server)
-    live.start(LiveOptions(sample_rate=16000))
-    live.feed(b"\x00\x01" * 40)
-    result = live.finish()
-    live.close()
-
-    assert result.text == "warm text"
-    assert server.calls == 1
-    assert server.closed is True
-
-
-def test_live_transcriber_warm_preloads_server(tmp_path):
-    paths = get_project_paths(tmp_path)
-
-    class _FakeServer:
-        def __init__(self):
-            self.warmed = 0
-
-        def available(self):
-            return True
-
-        def ensure_running(self):
-            self.warmed += 1
-
-        def close(self):
-            return None
-
-    server = _FakeServer()
-    live = WhisperCppLiveTranscriber(paths, server=server)
-    live.warm()
-    if live._warm_thread is not None:
-        live._warm_thread.join(timeout=5)
-    live.close()
-
-    assert server.warmed == 1
-
-
-def test_live_transcriber_falls_back_to_batch_when_server_fails(tmp_path):
-    paths = get_project_paths(tmp_path)
-    paths.workspace.mkdir(parents=True, exist_ok=True)
-
-    class _DeadServer:
-        def available(self):
-            return True
-
-        def ensure_running(self):
-            raise WhisperCppServerError("boom")
-
-        def transcribe_wav(self, wav, *, language=None, prompt=None):
-            raise WhisperCppServerError("boom")
-
-        def close(self):
-            return None
-
-    class _FakeBatch:
-        def __init__(self):
-            self.used = False
-
-        def transcribe(self, path, options):
-            self.used = True
-            from system_core.providers.base import TranscriptResult
-
-            return TranscriptResult(segments=[], provider="batch")
-
-    batch = _FakeBatch()
-    live = WhisperCppLiveTranscriber(paths, provider=batch, server=_DeadServer())
-    live.start(LiveOptions(sample_rate=16000))
-    live.feed(b"\x00\x01" * 40)
-    result = live.finish()
-    live.close()
-
-    assert batch.used is True
-    assert result.text == ""

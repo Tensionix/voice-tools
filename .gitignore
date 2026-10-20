@@ -5,6 +5,7 @@
 /install/download/
 /system_core/fzf.exe
 /system_core/_fzf_tmp/
+/system_core/7zip/
 /._runtime/
 
 # Secrets
@@ -42,3 +43,20 @@ __pycache__/
 /wheelhouse/
 /release_manifest.json
 /input/
+
+# The window on Avalonia (Source\): what a build leaves is not source, App\ is built
+/Source/bin/
+/Source/obj/
+/Source/Ps/bin/
+/Source/Ps/obj/
+/App/
+
+# The library of dictations and recordings: the owner's speech and texts
+/library/
+# The look of the window - the owner's, not the program's.
+/config/window_settings.json
+# The engine of dictation chosen in the capsule or the tray - the owner's too.
+/config/dictation.json
+/config/dictionary.txt
+# What install\Build-StartLauncher.ps1 writes on its way to Start.exe.
+/work/

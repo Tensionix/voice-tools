@@ -73,6 +73,18 @@ def _normalize_json_text(raw: str) -> str:
     return text.strip()
 
 
+def _reasoning(kwargs: dict[str, Any], effort: str) -> None:
+    """GPT-6 (Luna) is asked at the effort of its work: max for a summary, low for the cleanup of a text. The reasoning
+    spends tokens of the answer and time: the limits grow with it. Other models are asked as they always were."""
+    if not str(kwargs.get("model", "")).lower().startswith("gpt-6"):
+        return
+    kwargs["reasoning"] = {"effort": effort}
+    if effort in {"high", "xhigh", "max"}:
+        kwargs["max_output_tokens"] = max(int(kwargs.get("max_output_tokens", 0)), 32000)
+        if kwargs.get("timeout") is not None:
+            kwargs["timeout"] = max(float(kwargs["timeout"]), 600.0)
+
+
 def call_text(
     client: Any,
     *,
@@ -82,6 +94,7 @@ def call_text(
     max_output_tokens: int = 8000,
     max_retries: int = 4,
     timeout_sec: float | None = 180.0,
+    effort: str = "low",
 ) -> str:
     """Call the Responses API for free-form text output, with retries."""
     for attempt in range(1, max_retries + 1):
@@ -94,6 +107,7 @@ def call_text(
             }
             if timeout_sec is not None:
                 kwargs["timeout"] = timeout_sec
+            _reasoning(kwargs, effort)
             try:
                 resp = client.responses.create(**kwargs)
             except TypeError:
@@ -122,6 +136,7 @@ def call_json_object(
     max_output_tokens: int = 4000,
     max_retries: int = 4,
     timeout_sec: float | None = 120.0,
+    effort: str = "max",
 ) -> dict[str, Any]:
     """Call the Responses API and parse a strict JSON object, with retries."""
     last_raw = ""
@@ -136,6 +151,7 @@ def call_json_object(
             }
             if timeout_sec is not None:
                 kwargs["timeout"] = timeout_sec
+            _reasoning(kwargs, effort)
             try:
                 resp = client.responses.create(**kwargs)
             except TypeError:

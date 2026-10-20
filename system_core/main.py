@@ -25,7 +25,7 @@ def main() -> int:
 
     ffmpeg_ok = (paths.tools / "ffmpeg" / "bin").exists()
     payload = {
-        "project": "Audion Voice AI",
+        "project": "Audion Voice Tools",
         "project_root": str(paths.root),
         "python_executable": sys.executable,
         "python_version": sys.version.split()[0],
@@ -33,7 +33,7 @@ def main() -> int:
         "folders": {"input": str(paths.input), "output": str(paths.output)},
         "openai_key": (paths.config / "api_key_openai.txt").exists(),
         "ffmpeg_portable": ffmpeg_ok,
-        "message": "Audion Voice AI workspace ready (API mode).",
+        "message": "Audion Voice Tools workspace ready (API mode).",
     }
     print(json.dumps(payload, ensure_ascii=False, indent=2))
     return 0

@@ -1,10 +1,9 @@
 ﻿<#
 .SYNOPSIS
-  Audion Voice AI Live - install portable BtbN FFmpeg into Tools\ffmpeg.
+  Audion Voice Tools - install portable BtbN FFmpeg into Tools\ffmpeg.
 
 .DESCRIPTION
-  Adapted from Audion VapourSynth Engine Lite's working FFmpeg installer.
-  Pulls the latest matching win64 FFmpeg release-branch build, extracts to Tools\ffmpeg,
+  Resolves the selected win64 FFmpeg release-branch build, extracts to Tools\ffmpeg,
   exposes bin\ffmpeg.exe and bin\ffprobe.exe.
 
   Master/nightly assets are never selected. Source Auto = BtbN release branch
@@ -38,7 +37,7 @@ if (-not $AllowRollingBranch -and $Source -ne 'Gyan') {
 if ($AllowRollingBranch -and $Source -ne 'Gyan') {
     Write-Warning 'Explicit emergency mode enabled: a rolling BtbN release-branch build may be newer than the last exact FFmpeg stable tag.'
 }
-$Headers = @{ 'User-Agent' = 'Audion-Voice-AI-Live' }
+$Headers = @{ 'User-Agent' = 'Audion-Voice-Tools' }
 # A token lifts the GitHub limit from 60 requests an hour to 5000; without one
 # a full pattern run exhausts it and downloads start failing halfway.
 if ($env:GITHUB_TOKEN) { $Headers['Authorization'] = 'Bearer ' + $env:GITHUB_TOKEN }
@@ -48,10 +47,13 @@ Write-Host "[PRECHECK] 7-Zip ready: $SevenZipPath"
 
 $LegacyReleaseSeries = '7.1'
 $CurrentReleaseSeries = '8.0'
-$LatestReleaseSeries = '8.1'
+# The newest series from the LTS driver 610.88 and without NVIDIA, an older one below it - as the Gyan installer chooses
+# (its head says why, 18.10.2026); this is the emergency path - by default the Gyan installer takes over (exit 20).
+$LatestReleaseSeries = '9.0'
 $LegacyStableMinimumDriver = [version]'471.41'
 $CurrentStableMinimumDriver = [version]'570.0'
 $LatestStableMinimumDriver = [version]'610.0'
+$GoldenDriver = [version]'610.88'
 $UnsupportedDriverExitCode = 21
 $PreferredStableSeries = $LatestReleaseSeries
 
@@ -104,9 +106,10 @@ if ($nvidia.Present) {
     if ($parsedDriver -lt $CurrentStableMinimumDriver) {
         $PreferredStableSeries = $LegacyReleaseSeries
         Write-Host "[POLICY] NVIDIA driver $($nvidia.Driver): selecting BtbN $PreferredStableSeries compatible release branch."
-    } elseif ($parsedDriver -lt $LatestStableMinimumDriver) {
+    } elseif ($parsedDriver -lt $GoldenDriver) {
         $PreferredStableSeries = $CurrentReleaseSeries
         Write-Host "[POLICY] NVIDIA driver $($nvidia.Driver): selecting BtbN $PreferredStableSeries compatible release branch."
+        Write-Host "[WARN] NVIDIA driver $($nvidia.Driver) is below $GoldenDriver, the LTS driver the programs are built for: FFmpeg $PreferredStableSeries is installed so that NVENC works, and not every operation is possible."
     } else {
         $PreferredStableSeries = $LatestReleaseSeries
         Write-Host "[POLICY] NVIDIA driver $($nvidia.Driver): selecting BtbN $PreferredStableSeries compatible release branch."
@@ -118,7 +121,7 @@ if ($nvidia.Present) {
 if (-not (Test-Path $DLDir)) { New-Item -Path $DLDir -ItemType Directory -Force | Out-Null }
 
 Write-Host "======================================================================"
-Write-Host "  AUDION VOICE AI LIVE - INSTALL PORTABLE FFMPEG BTBN"
+Write-Host "  AUDION VOICE TOOLS - INSTALL PORTABLE FFMPEG BTBN"
 Write-Host "======================================================================"
 Write-Host "Project root: $Root"
 Write-Host "Target:       $FFDir"

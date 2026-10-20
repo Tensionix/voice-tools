@@ -14,9 +14,11 @@ from pathlib import Path
 from typing import Optional
 
 from ..core.editions import (
+    TURBO_MODELS,
     find_whispercpp_binary,
     resolve_whispercpp_model,
     whispercpp_cublas_backend_present,
+    whispercpp_file_model,
     whispercpp_vulkan_backend_present,
     whispercpp_model_file,
 )
@@ -27,16 +29,18 @@ from ..core.paths import ProjectPaths
 from .base import TranscriptResult, TranscriptionOptions, TranscriptionProvider
 from .whispercpp_server import WhisperCppServerError, cached_file_server
 
-DEFAULT_WHISPERCPP_MODEL = "turbo"
 REMOVED_WHISPERCPP_MODELS = {"large-v3", "ggml-large-v3.bin"}
 _GPU_FAILURE_MARKERS = ("cublas", "cuda", "vulkan", "gpu", "ggml_backend", "ggml_vulkan", "device")
 
 
 def missing_whispercpp_message(paths: ProjectPaths, model: str | None = None) -> str:
-    expected_model = whispercpp_model_file(model or DEFAULT_WHISPERCPP_MODEL)
+    expected_model = whispercpp_model_file(whispercpp_file_model(paths, model))
+    # The CUDA pack goes with large-v2 (SETUP: Whisper large-v2), the processor's with turbo (SETUP: Whisper for files).
+    installer = ("install/Install-WhisperCpp-Large-Models.cmd" if whispercpp_cublas_backend_present(paths)
+                 else "install/Install-Live-Vulkan.cmd")
     return (
         "whisper.cpp local pack is not installed. Run "
-        "install/Install-Live-Vulkan.cmd. Expected binary under "
+        f"{installer}. Expected binary under "
         f"{paths.tools / 'whispercpp'} and model {paths.models / expected_model}."
     )
 
@@ -52,10 +56,13 @@ class WhisperCppProvider(TranscriptionProvider):
         backend: str = "auto",
     ) -> None:
         self.paths = paths
-        model_value = str(model or DEFAULT_WHISPERCPP_MODEL).strip()
+        model_value = str(model or "").strip()
         if model_value.lower() in REMOVED_WHISPERCPP_MODELS:
-            model_value = DEFAULT_WHISPERCPP_MODEL
-        self.model = model_value
+            model_value = ""
+        # turbo loops on the CUDA pack: large-v2 recognizes there, and the journal of the run says so.
+        self.model = whispercpp_file_model(paths, model_value)
+        self.notice = (f"Whisper turbo is not used on CUDA (it repeats phrases there): {self.model} instead"
+                       if model_value.lower() in TURBO_MODELS and self.model.lower() not in TURBO_MODELS else "")
         self.backend = backend or "auto"
 
     def _resolve(self) -> tuple[Path, Path]:

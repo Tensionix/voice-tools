@@ -184,6 +184,24 @@ def whispercpp_vulkan_backend_present(paths: ProjectPaths) -> bool:
     return whispercpp_pack_kind(paths) == "vulkan"
 
 
+# turbo on the CUDA pack loops (the check on an RTX 5070 of 20.10.2026: one phrase 25 times over five minutes, 42 % of
+# the words wrong, against 7.4 % on the processor), and large-v2 is as fast there: files on CUDA go with large-v2 alone.
+TURBO_MODELS = {"turbo", "large-v3-turbo", "ggml-large-v3-turbo.bin"}
+
+
+def whispercpp_default_model(paths: ProjectPaths) -> str:
+    """The model whisper.cpp recognizes files with on the pack in place: large-v2 on the CUDA pack, turbo otherwise."""
+    return "large-v2" if whispercpp_pack_kind(paths) == "cublas" else "turbo"
+
+
+def whispercpp_file_model(paths: ProjectPaths, model: str | None = None) -> str:
+    """The model asked for, with turbo - and nothing asked - taken by large-v2 on the CUDA pack."""
+    value = str(model or "").strip()
+    if not value or (value.lower() in TURBO_MODELS and whispercpp_pack_kind(paths) == "cublas"):
+        return whispercpp_default_model(paths)
+    return value
+
+
 def whispercpp_model_file(model: str | None = None) -> str:
     key = str(model or "turbo").strip().lower()
     asset = whispercpp_model_asset(key)
@@ -193,7 +211,7 @@ def whispercpp_model_file(model: str | None = None) -> str:
 
 
 def resolve_whispercpp_model(paths: ProjectPaths, model: str | None = None) -> Path | None:
-    model_value = str(model or "turbo").strip()
+    model_value = str(model or whispercpp_default_model(paths)).strip()
     if model_value:
         candidate = Path(model_value)
         if candidate.exists():
@@ -206,7 +224,8 @@ def resolve_whispercpp_model(paths: ProjectPaths, model: str | None = None) -> P
     return mapped if mapped.exists() else None
 
 
-def vulkan_pack_installed(paths: ProjectPaths, *, model: str | None = "turbo") -> bool:
+def vulkan_pack_installed(paths: ProjectPaths, *, model: str | None = None) -> bool:
+    """A whisper.cpp pack with a model - the model of the pack when none is named."""
     return find_whispercpp_binary(paths) is not None and resolve_whispercpp_model(paths, model) is not None
 
 
@@ -217,7 +236,8 @@ def whispercpp_runtime_ready(
     backend: str = "auto",
     require_server: bool = False,
 ) -> bool:
-    """Strict readiness used by GUI buttons, including pack payloads/manifest."""
+    """Strict readiness used by GUI buttons, including pack payloads/manifest. model=None checks the pack alone;
+    backend "cpu" - the processor's pack, not the CUDA one."""
     root = whispercpp_root(paths)
     marker = root / "audion-whispercpp-pack.txt"
     common_payloads = ("ggml.dll", "ggml-base.dll", "whisper.dll")
@@ -225,7 +245,7 @@ def whispercpp_runtime_ready(
         return False
     if require_server and find_whispercpp_server(paths) is None:
         return False
-    if resolve_whispercpp_model(paths, model) is None:
+    if model is not None and resolve_whispercpp_model(paths, model) is None:
         return False
     if not all((root / name).exists() for name in common_payloads):
         return False
@@ -239,6 +259,8 @@ def whispercpp_runtime_ready(
         )
     if requested == "vulkan":
         return whispercpp_vulkan_backend_present(paths) and (root / "ggml-vulkan.dll").exists()
+    if requested == "cpu":
+        return kind != "cublas" and any(root.glob("ggml-cpu-*.dll"))
     if kind == "cublas":
         return (root / "ggml-cuda.dll").exists()
     return any(root.glob("ggml-cpu-*.dll"))

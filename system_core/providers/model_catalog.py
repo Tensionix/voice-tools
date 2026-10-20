@@ -21,18 +21,19 @@ ROLE_STT = "stt"          # file transcription via audio.transcriptions
 ROLE_CHAT = "chat"        # post-processing LLM
 
 # Sensible defaults (TZ decisions 3 & 5).
-DEFAULT_STT_MODEL = "gpt-4o-transcribe"
+DEFAULT_STT_MODEL = "gpt-transcribe"
 DEFAULT_DIARIZE_STT_MODEL = "gpt-4o-transcribe-diarize"
-DEFAULT_POSTPROCESS_MODEL = "gpt-5.4-mini"
+DEFAULT_POSTPROCESS_MODEL = "gpt-6-luna"
 
 # Curated fallback used when the API is unreachable.
 STT_FALLBACK = [
+    "gpt-transcribe",
     "gpt-4o-transcribe-diarize",
     "gpt-4o-transcribe",
     "gpt-4o-mini-transcribe",
     "whisper-1",
 ]
-CHAT_FALLBACK = ["gpt-4o", "gpt-4o-mini", "gpt-5.4-mini", "gpt-5.4-nano"]
+CHAT_FALLBACK = ["gpt-6-luna", "gpt-5.4-mini", "gpt-5.4-nano", "gpt-4o-mini"]
 
 _CACHE_TTL_SECONDS = 24 * 3600
 _EXCLUDE_MARKERS = ("tts", "embedding", "dall", "image", "moderation", "audio-preview")
@@ -48,13 +49,13 @@ def classify_model(model_id: str) -> set[str]:
     """Return the set of roles a model id qualifies for."""
     mid = model_id.lower()
     roles: set[str] = set()
-    if ("transcribe" in mid or "whisper" in mid) and "realtime" not in mid:
+    if ("transcribe" in mid or "whisper" in mid) and "realtime" not in mid and "live" not in mid:
         roles.add(ROLE_STT)
     # Chat/LLM models for post-processing. Exclude non-text and pure-audio endpoints.
     if mid.startswith(("gpt-", "o1", "o3", "o4", "chatgpt")) and not any(
         marker in mid for marker in _EXCLUDE_MARKERS
     ):
-        if "transcribe" not in mid and "whisper" not in mid and "realtime" not in mid:
+        if "transcribe" not in mid and "whisper" not in mid and "realtime" not in mid and "live" not in mid:
             roles.add(ROLE_CHAT)
     return roles
 

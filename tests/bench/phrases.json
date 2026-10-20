@@ -1,0 +1,25 @@
+{
+  "about": "The twenty phrases of the measure of the engines of dictation (AudionVoiceTools.exe --bench): ten in Russian alone, ten Russian with English terms. Without numbers, even in words: an engine may write a number in figures, and that is no error of hearing.",
+  "phrases": [
+    { "id": "r01", "group": "ru", "text": "Привет. Посмотри, пожалуйста, почему окно не открывается после обновления." },
+    { "id": "r02", "group": "ru", "text": "Сделай две колонки, параметры системы вынеси в бейдж, а описание убери в подсказку кнопки." },
+    { "id": "r03", "group": "ru", "text": "Запись совещания длинная, звук плохой, но расшифровка нужна к вечеру." },
+    { "id": "r04", "group": "ru", "text": "Не удаляй старые файлы, сначала перенеси их в корзину и напиши мне полный путь." },
+    { "id": "r05", "group": "ru", "text": "Проверь, как программа ведёт себя на машине без видеокарты, и запиши задержки по каждому этапу." },
+    { "id": "r06", "group": "ru", "text": "Хорошо, двигаемся дальше." },
+    { "id": "r07", "group": "ru", "text": "Если сервис не ответил вовремя, тот же дубль должна распознать локальная модель." },
+    { "id": "r08", "group": "ru", "text": "Перенеси встречу на пятницу, потому что проверка ещё не закончена." },
+    { "id": "r09", "group": "ru", "text": "Отправь мне короткий отчёт: что сделано, что не проверено и что нужно от меня." },
+    { "id": "r10", "group": "ru", "text": "Почему разделение по говорящим нашло меньше людей, чем было на записи?" },
+    { "id": "m01", "group": "mixed", "text": "Открой файл в Visual Studio Code и запусти pytest." },
+    { "id": "m02", "group": "mixed", "text": "Собери релиз через GitHub Actions и пришли ссылку на pull request." },
+    { "id": "m03", "group": "mixed", "text": "Проверь, работает ли CUDA на видеокарте NVIDIA, или остаётся только Vulkan." },
+    { "id": "m04", "group": "mixed", "text": "Окно на Avalonia должно открываться быстрее, чем старое на PySide." },
+    { "id": "m05", "group": "mixed", "text": "Сконвертируй видео через FFmpeg в ProRes и проверь звук в DaVinci Resolve." },
+    { "id": "m06", "group": "mixed", "text": "Ключ OpenAI лежит в папке config, а токен Hugging Face введи через SETUP." },
+    { "id": "m07", "group": "mixed", "text": "Задеплой воркер на Cloudflare и проверь записи DNS." },
+    { "id": "m08", "group": "mixed", "text": "Скажи Claude, чтобы он сделал коммит, но ничего не пушил в main." },
+    { "id": "m09", "group": "mixed", "text": "Модель Whisper turbo весит больше гигабайта, а GigaAM в формате GGUF гораздо меньше." },
+    { "id": "m10", "group": "mixed", "text": "Зайди на сервер по SSH, перезапусти Docker и посмотри логи." }
+  ]
+}

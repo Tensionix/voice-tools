@@ -1,4 +1,4 @@
-# Audion Voice AI Live
+# Audion Voice Tools
 
 <!-- audion:release -->
 <p align="center">
@@ -8,15 +8,14 @@
   <a href="https://github.com/Tensionix/voice-tools/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/Tensionix/voice-tools?style=flat-square&color=5fd08a&logo=apache&logoColor=white&cacheSeconds=3600"></a>
 </p>
 
-**Version 3.1.0** · 2026-10-20 · 73.6 MB
+**Version 3.1.0** · 2026-10-20 · 497.6 MB
 
-- [Direct download](https://dl.audion.dev/voice-tools/3.1.0/Audion_Voice_Tools_v3.1.0.zip) — unmetered, no rate limits
+- [Direct download](https://audion.dev/get/voice-tools/3.1.0/Audion_Voice_Tools_v3.1.0_Full.zip) — unmetered, no rate limits
 - [Project page](https://audion.dev/downloads/voice-tools) — every version and how to install
-- [GitHub release](https://github.com/Tensionix/voice-tools/releases/tag/v3.1.0)
 
 <p align="center"><img src="Docs/screenshot.png" alt="The program window" width="560"></p>
 
-`SHA-256: 17520709c68e8b96eac03e51a5489a58e62aacf758200d2453ee5f54497a4f79`
+`SHA-256: 5ae30787e78e886fc355afe48849c5cdf03d176892bd5e631687396ed65a0d50`
 
 ---
 
@@ -24,82 +23,95 @@ An **Audion** tool, published by [Tensionix](https://github.com/Tensionix).
 <!-- /audion:release -->
 
 
-[Русский](Docs/README_RU.md) · [User Guide](Docs/USER_GUIDE_EN.md)
+[English README](Docs/README_EN.md) · [User Guide](Docs/USER_GUIDE_EN.md) | [Русский README](Docs/README_RU.md) · [Руководство](Docs/USER_GUIDE_RU.md)
 
 **Contents**
 
 - [Why It Exists](#why-it-exists)
-- [What Has to Be Installed Separately](#what-has-to-be-installed-separately)
-- [Editions](#editions)
-- [The Principle](#the-principle)
 - [What It Can Do](#what-it-can-do)
+- [What Has to Be Installed Separately](#what-has-to-be-installed-separately)
+- [The Principle](#the-principle)
+- [Where Things Are](#where-things-are)
 - [Next](#next)
 - [Technical Reference](#technical-reference)
   - [FFmpeg and the NVIDIA Driver](#ffmpeg-and-the-nvidia-driver)
   - [Portability](#portability)
 
-Transcribing recordings, live dictation, cleaning up text, and exporting working
-notes. The light edition — for a laptop and everyday work.
+Dictation into any window and transcription of recordings — one program for Windows. Press the hotkey, speak — the text
+lands where the cursor is. Recordings of meetings and videos from disk become text, subtitles and the minutes of the
+meeting next to the source.
 
 ## Why It Exists
 
-Transcription is needed in two entirely different situations.
+Speech recognition is needed in two different situations.
 
-**Quickly, right now.** Dictate a paragraph, transcribe a ten-minute recording,
-get the text immediately. Response time is what matters, and a cloud service fits
-best.
+**Quick and now.** Dictate a message, a letter, a task — and go on working at once. What matters is the response and that
+the program stays out of the way: a capsule at the top of the screen, a hotkey, the text at the cursor, the clipboard
+given back as it was.
 
-**In bulk, offline.** An hour-long meeting, a whole day of dictaphone recording, a
-folder of files. Here autonomy matters more: the recording should not leave the
-machine, and the cost should not grow with every hour.
-
-The program does both, and switching between them is a matter of choosing an
-engine, not a different program.
-
-## What Has to Be Installed Separately
-
-**Model weights are not part of the distribution** — together they come to about
-3.3 GB. The weights carry their own licences, separate from the program's,
-so the user downloads them under their own account where that is required.
-
-Until the models are installed, transcription will not start: the window opens,
-but there is nothing to recognise with.
-
-**On the first start the app offers to download what is missing.** The
-"Download models and engines" window lists the modules with their download
-size, for Live that is GigaAM and whisper.cpp with the Turbo model, about
-3.3 GB. "Download and install" installs them one after another; progress is
-shown on the Maintenance page, and once everything is in place every mode
-there is green. "Later" postpones the question until the next start, "Don't
-ask again" hides the window for good. Modules can still be installed by hand
-on the same page.
-
-## Editions
-
-| edition | for what | engines |
-|---|---|---|
-| **Live** | laptop, everyday work | cloud services, GigaAM, whisper.cpp, speaker separation with a known speaker count |
-| Studio | workstation with an NVIDIA card | the same plus CUDA and automatic speaker separation |
-
-Live is the main version. Studio adds heavy local engines and speaker separation
-for machines with the hardware to run them.
-
-## The Principle
-
-**Reliable first, elegant second.** Batch transcription behaves predictably, and
-everything else rests on it. An overlay on top of other windows and instant
-on-the-fly parsing were both tried — and both broke the window itself. Heavy work
-is not hung on the thread that draws the interface.
+**A lot and for long.** An hour-long meeting, a recording of a whole day, a folder of videos. What matters more is that
+nothing gets lost and nothing leaves the machine without need: the recording is written to disk at once, recognized on
+this machine, and the text lies next to the source.
 
 ## What It Can Do
 
-Transcribing files and folders, live dictation, cleaning up transcribed text,
-exporting into working notes, a tray icon for quick access, resetting the
-application to its initial state.
+- **Dictation** — Right Alt + F12 starts and stops, Esc cancels. The capsule shows the level, the time and the last
+  words. A local model recognizes on this machine — GigaAM v3 for Russian by default, Parakeet and Whisper to choose
+  from — no network, no key — or a cloud with your own key: xAI, OpenAI, ElevenLabs.
+- **Text modes** — the ⌄ button of the capsule: Original text, Magic, Lightly, Thoroughly, As a list, Structured,
+  Minutes of the meeting. A language model shapes the text after the stop, before the paste: GPT-6 Luna by default, or
+  xAI, or an own server; the models come from the list of the service itself.
+- **Dictionary** — a section of its own, an entry a row: terms, abbreviations, shortenings and units as they are
+  written; replacements «said -> written».
+- **Dictation history** — by days, with search: copy, listen, recognize again, download the sound, paste again.
+- **Recorder** — Right Alt + F11: a recording from the microphone into the library, pause, recovery after a crash,
+  transcription right after the stop.
+- **Minutes of a meeting** — from the transcript of a recording: subject, gist, decisions, tasks with owners and dates,
+  open questions.
+- **Files** — recordings and videos from disk: GigaAM for Russian speech, Whisper for English and mixed speech, speaker
+  separation; MD, TXT, SRT, VTT and JSON next to the source.
+- **SETUP** — components with download and visible progress, service keys with a check, a microphone check.
+
+## What Has to Be Installed Separately
+
+**Engines and models are not part of the download**: each has its own licence, and they are installed from their
+authors' sites into the program folder.
+
+On the first start the window offers what is recommended for this machine: the dictation engine, FFmpeg, GigaAM and
+Whisper for files — without an NVIDIA card about 3.7 GB in all. "Later" postpones the question; everything is also in
+SETUP, which shows what is installed and how much is to be downloaded.
+
+**Whisper depends on the video card.** Without NVIDIA it is the turbo model on the CPU: of the Whisper models it is the
+only one a processor can carry. With an NVIDIA card Whisper for files is Whisper on CUDA with the large-v2 model, and the
+first start offers about 5.6 GB in all. Turbo is not downloaded on such a machine: on CUDA it repeats phrases — over five
+minutes of English speech one phrase came 25 times in a row and 42 % of the words were wrong — while large-v2 is as fast
+there (five minutes in 18 seconds) and gets 7 % of the words wrong. A turbo left from the CPU goes to the Recycle Bin
+when Whisper on CUDA is installed.
+
+With an NVIDIA card SETUP also offers the heavy part — optional: GigaAM on CUDA, speaker separation on the video card
+(Community-1, a Hugging Face key is needed).
+
+## The Principle
+
+**The window never waits.** The microphone, recognition, the paste, the cloud and the model of a mode run on their own
+threads; the window and the capsule only show what is going on.
+
+**Nothing gets lost.** The cloud did not answer — GigaAM on this machine recognizes the same take. The model of a mode did
+not answer or answered with something else — the text of the engine is pasted. A cancelled dictation keeps its sound, a
+recording is recovered after a crash. Every such case is marked in the history.
+
+## Where Things Are
+
+| Folder | What is there |
+|---|---|
+| `library\` | the library: dictations and recordings (`library.sqlite3`), recordings in `recordings\YEAR\MONTH\` with their transcripts |
+| `config\` | settings: dictation (`dictation.json`), dictionary (`dictionary.txt`), window (`window_settings.json`), files (`app_settings.yaml`); service keys — `api_key_*.txt` |
+| `logs\` | logs by days |
+| `Tools\`, `models\` | engines and models installed from SETUP |
 
 ## Next
 
-* [User Guide](Docs/USER_GUIDE_EN.md) — step by step, engines, formats.
+* [User Guide](Docs/USER_GUIDE_EN.md) — dictation, modes, dictionary, recordings, files, SETUP step by step.
 
 ---
 
@@ -112,8 +124,22 @@ hardware-encoding headers, and each demands its own minimum driver. The newest
 build on an old driver does not accelerate anything — it breaks the hardware path.
 So the build is chosen to match the driver, not by version number.
 
+| NVIDIA driver | FFmpeg the program installs |
+|---|---|
+| no NVIDIA card | the newest stable Gyan build, 9.0.2 at least |
+| **610.88** (LTS) and newer | the newest stable Gyan build, 9.0.2 at least |
+| 570.0 – 610.87 | 8.0.1 — not every operation is possible |
+| 551.76 – 569.xx | 7.1 — not every operation is possible |
+| below 551.76 | none: the installer stops and says why |
+
+610.88 is the LTS driver the programs are built for. When 9.1 is out, 9.1 is
+installed; if a new build fails the NVENC test on the driver, the installer goes
+back to 9.0.2. Below 610.88 an older branch is installed so that NVENC works, and
+the installer says that not every operation is possible. The build is picked at
+installation: when the driver changes, FFmpeg installed again is picked for it.
+
 ### Portability
 
-Application state lives in the project folder, not in the system. A separate
-command returns the application to its initial state without touching the
-downloaded models.
+The program lives in its folder: nothing is written into Windows, no installation is needed. The window is
+`App\AudionVoiceTools.exe` with its own .NET runtime, started by `Start.exe`. Files are transcribed by the console command
+`voice_cli.cmd` on the Python of `runtime\` in the same folder.

@@ -19,6 +19,8 @@ from .editions import (
     find_whispercpp_server,
     resolve_whispercpp_model,
     whispercpp_cuda_ready,
+    whispercpp_default_model,
+    whispercpp_pack_kind,
 )
 from .model_assets import gigaam_vad_available, whispercpp_model_assets
 from .paths import ProjectPaths
@@ -148,8 +150,9 @@ def vulkan_capability(paths: ProjectPaths) -> CapabilityStatus:
     cli = find_whispercpp_cli(paths)
     server = find_whispercpp_server(paths)
     common = ("ggml.dll", "ggml-base.dll", "whisper.dll")
-    studio = current_edition(paths) == EDITION_STUDIO
-    if studio:
+    # The pack in place decides, not the edition: SETUP of 3.0 puts the CUDA pack (Install-WhisperCpp-CUDA.cmd) in place
+    # of the CPU one on an NVIDIA card, whatever configpp_settings.yaml calls the edition.
+    if whispercpp_pack_kind(paths) == "cublas":
         backend_ok = all(
             (root / name).exists()
             for name in ("ggml-cuda.dll", "cudart64_12.dll", "cublas64_12.dll")
@@ -158,6 +161,8 @@ def vulkan_capability(paths: ProjectPaths) -> CapabilityStatus:
     else:
         backend_ok = any(root.glob("ggml-cpu-*.dll"))
         backend = "auto"
+    # The model the pack goes with is the one required: large-v2 on the CUDA pack, turbo on the processor's.
+    required_model = whispercpp_default_model(paths)
     model_checks: list[CapabilityCheck] = []
     for asset in whispercpp_model_assets():
         path = asset.path(paths)
@@ -168,7 +173,7 @@ def vulkan_capability(paths: ProjectPaths) -> CapabilityStatus:
                 model is not None,
                 asset.label_key,
                 str(model or path),
-                required=asset.required,
+                required=asset.key == required_model,
             )
         )
     checks = (
@@ -231,26 +236,22 @@ def cuda_capability(paths: ProjectPaths) -> CapabilityStatus:
 
 
 def speakers_capability(paths: ProjectPaths) -> CapabilityStatus:
-    from ..providers.diarization_sherpa import (
-        EMBEDDING_FILE,
-        SEGMENTATION_FILE,
-        sherpa_model_dir,
-    )
+    """Speaker separation without a key: Sortformer - its binding, the engine of dictation, its model."""
+    from ..providers.diarization_sortformer import sortformer_library, sortformer_model
 
-    root = sherpa_model_dir(paths)
     checks = (
-        CapabilityCheck("sherpa_onnx", _has("sherpa_onnx"), "cap_check_sherpa_onnx"),
+        CapabilityCheck("speakers_binding", _has("transcribe_cpp"), "cap_check_speakers_binding"),
         CapabilityCheck(
-            "speakers_segmentation",
-            (root / SEGMENTATION_FILE).is_file(),
-            "cap_check_speakers_segmentation",
-            str(root / SEGMENTATION_FILE),
+            "speakers_engine",
+            sortformer_library(paths).is_file(),
+            "cap_check_speakers_engine",
+            str(sortformer_library(paths)),
         ),
         CapabilityCheck(
-            "speakers_embedding",
-            (root / EMBEDDING_FILE).is_file(),
-            "cap_check_speakers_embedding",
-            str(root / EMBEDDING_FILE),
+            "speakers_model",
+            sortformer_model(paths).is_file(),
+            "cap_check_speakers_model",
+            str(sortformer_model(paths)),
         ),
     )
     return _cap("speakers", "cap_speakers", "cap_speakers_desc", checks, module_key="speakers")

@@ -33,6 +33,37 @@ def normalize_keyterms(
     return tuple(result)
 
 
+def read_dictionary_file(path: object) -> tuple[str, ...] | None:
+    """The dictionary of SETTINGS of the window of 3.0 (config/dictionary.txt, Source/Core/Vocabulary.cs) as terms.
+
+    A line is a term; "said -> written" is a replacement of the window, and what it writes is a term when it has a
+    letter in it; "#" is a note. None - no file: the settings keep their own term_dictionary.
+    """
+    from pathlib import Path
+
+    file = Path(str(path))
+    if not file.is_file():
+        return None
+    try:
+        text = file.read_text(encoding="utf-8-sig")
+    except OSError:
+        return None
+    terms: list[str] = []
+    for raw in text.splitlines():
+        line = " ".join(raw.split())
+        if not line or line.startswith("#"):
+            continue
+        cuts = [(line.find(arrow), arrow) for arrow in ("->", "\u2192", "=>") if line.find(arrow) >= 0]
+        if cuts:
+            at, arrow = min(cuts)
+            said, written = line[:at].strip(), line[at + len(arrow):].strip()
+            if said and written and any(char.isalpha() for char in written):
+                terms.append(written)
+        else:
+            terms.append(line)
+    return normalize_keyterms(terms)
+
+
 def build_stt_prompt(
     description: str,
     keyterms: object,

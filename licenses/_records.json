@@ -39,8 +39,177 @@
     ]
   },
   {
+    "name": "Avalonia",
+    "version": "12.1.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "d7d2a4e8aa6da19c99514ad28abbf6ecd48d5aeb6c141007aa7b3dc4d2ec3292",
+    "legal_document_hashes": [
+      "17d462d275b1834addfd4cc5d3a5394841b4aac745065fd99270a3a97d12bcf7"
+    ]
+  },
+  {
+    "name": "Avalonia.Angle.Windows.Natives",
+    "version": "2.1.27548.20260419",
+    "license": "BSD-3-Clause",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "8efc9089ce08fb495edaaab34a9abd4c207c647bcf659c8cbc45629f893c3aa0",
+    "legal_document_hashes": [
+      "bf4da21bd20bcfb5b60b7ecc67fa864a79be049e21d6178076887f178dd6c71a"
+    ]
+  },
+  {
+    "name": "Avalonia.Desktop",
+    "version": "12.1.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "67918349d1ee949992bcbdf55598531cf08bb5139d2849421b07e67ba2c8932b",
+    "legal_document_hashes": [
+      "17d462d275b1834addfd4cc5d3a5394841b4aac745065fd99270a3a97d12bcf7"
+    ]
+  },
+  {
+    "name": "Avalonia.Fonts.Inter",
+    "version": "12.1.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "3862838fafd10968472ffc9ffc12fe39a066db10ba3f80e9362736e06f1a4697",
+    "legal_document_hashes": [
+      "17d462d275b1834addfd4cc5d3a5394841b4aac745065fd99270a3a97d12bcf7"
+    ]
+  },
+  {
+    "name": "Avalonia.FreeDesktop",
+    "version": "12.1.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "650893d49ccfa5497567cc041b432a18d4458ba012752bd617e513b9ddde2d5e",
+    "legal_document_hashes": [
+      "17d462d275b1834addfd4cc5d3a5394841b4aac745065fd99270a3a97d12bcf7"
+    ]
+  },
+  {
+    "name": "Avalonia.FreeDesktop.AtSpi",
+    "version": "12.1.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "6c039d32954613d34a330bfdfd1b8bc1732349b99bb182e2717159604327a75f",
+    "legal_document_hashes": [
+      "17d462d275b1834addfd4cc5d3a5394841b4aac745065fd99270a3a97d12bcf7"
+    ]
+  },
+  {
+    "name": "Avalonia.HarfBuzz",
+    "version": "12.1.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "f84492a2f69bafbadf04e9980b912ab918fe21be539bc5f131a178a4e7982f92",
+    "legal_document_hashes": [
+      "17d462d275b1834addfd4cc5d3a5394841b4aac745065fd99270a3a97d12bcf7"
+    ]
+  },
+  {
+    "name": "Avalonia.Native",
+    "version": "12.1.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "536042aa3760c3901789bf6634cef44fdf701e2bd1fdd6f8b7f6de4ef931ecac",
+    "legal_document_hashes": [
+      "17d462d275b1834addfd4cc5d3a5394841b4aac745065fd99270a3a97d12bcf7"
+    ]
+  },
+  {
+    "name": "Avalonia.Remote.Protocol",
+    "version": "12.1.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "5dd00cd52942a23188249bea543f2ccca72d112ff52f5e4e7e3b53e257ce585e",
+    "legal_document_hashes": [
+      "17d462d275b1834addfd4cc5d3a5394841b4aac745065fd99270a3a97d12bcf7"
+    ]
+  },
+  {
+    "name": "Avalonia.Skia",
+    "version": "12.1.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "3dc25cc6a9f3f537c977ea25996db41a48dd261a85abe9423a88becbe5d80930",
+    "legal_document_hashes": [
+      "17d462d275b1834addfd4cc5d3a5394841b4aac745065fd99270a3a97d12bcf7"
+    ]
+  },
+  {
+    "name": "Avalonia.Themes.Fluent",
+    "version": "12.1.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "920cd4a6f6a05fe44462cf6631618af1aa45e12026bf7554c553fa7d9edc9c7e",
+    "legal_document_hashes": [
+      "17d462d275b1834addfd4cc5d3a5394841b4aac745065fd99270a3a97d12bcf7"
+    ]
+  },
+  {
+    "name": "Avalonia.Win32",
+    "version": "12.1.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "323932cd985214f62281490dc30ef19bea14e1e98894d26b3968e078a7c0650e",
+    "legal_document_hashes": [
+      "17d462d275b1834addfd4cc5d3a5394841b4aac745065fd99270a3a97d12bcf7"
+    ]
+  },
+  {
+    "name": "Avalonia.X11",
+    "version": "12.1.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "bd3a54bd779e630d1dbc2007f1329f9de8a516726e5cb88480df65d7c7782ece",
+    "legal_document_hashes": [
+      "17d462d275b1834addfd4cc5d3a5394841b4aac745065fd99270a3a97d12bcf7"
+    ]
+  },
+  {
     "name": "certifi",
-    "version": "2026.7.22",
+    "version": "2026.10.19",
     "license": "MPL-2.0",
     "source": "site-packages",
     "license_files": [
@@ -92,7 +261,7 @@
   },
   {
     "name": "FFmpeg",
-    "version": "8.0.1-full_build-www.gyan.dev",
+    "version": "9.0.2-full_build-www.gyan.dev",
     "license": "GPL v3",
     "source": "optional-tool",
     "license_files": [
@@ -106,7 +275,7 @@
   },
   {
     "name": "filelock",
-    "version": "4.0.0",
+    "version": "4.2.4",
     "license": "MIT",
     "source": "wheelhouse",
     "license_files": [
@@ -132,7 +301,7 @@
   },
   {
     "name": "fsspec",
-    "version": "2026.7.0",
+    "version": "2026.9.0",
     "license": "BSD-3-Clause",
     "source": "wheelhouse",
     "license_files": [
@@ -170,8 +339,35 @@
     ]
   },
   {
+    "name": "HarfBuzzSharp",
+    "version": "8.3.1.3",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "fa3328f27a3f7eb4f12a67b64f31796df33e89cd66794f3c30b3a52dda555ea0",
+    "legal_document_hashes": [
+      "4319f2fc2c635aa1d97672ec2ea84a93bc99ea4e9d4cfbeccd046be0a90c2415"
+    ]
+  },
+  {
+    "name": "HarfBuzzSharp.NativeAssets.Win32",
+    "version": "8.3.1.3",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "ad04de6c2bcffa6779dbb2110f68eefd282abaeb660ca28dcc16869e11c96c84",
+    "legal_document_hashes": [
+      "4319f2fc2c635aa1d97672ec2ea84a93bc99ea4e9d4cfbeccd046be0a90c2415",
+      "eb2375b37d758843f0fab75b96f3bdf9f5c98e433b1869af903dfe00f460c873"
+    ]
+  },
+  {
     "name": "hf-xet",
-    "version": "1.6.0",
+    "version": "1.7.0",
     "license": "Apache-2.0",
     "source": "wheelhouse",
     "license_files": [
@@ -197,7 +393,7 @@
   },
   {
     "name": "httpcore2",
-    "version": "2.13.0",
+    "version": "2.15.1",
     "license": "BSD-3-Clause",
     "source": "site-packages",
     "license_files": [
@@ -223,7 +419,7 @@
   },
   {
     "name": "httpx2",
-    "version": "2.13.0",
+    "version": "2.15.1",
     "license": "BSD-3-Clause",
     "source": "site-packages",
     "license_files": [
@@ -236,7 +432,7 @@
   },
   {
     "name": "huggingface_hub",
-    "version": "1.32.0",
+    "version": "2.2.0",
     "license": "Apache-2.0",
     "source": "wheelhouse",
     "license_files": [
@@ -245,6 +441,19 @@
     "license_fingerprint": "3d559482c3bcee17f2c0c7e90fa5d3fa9ee4625c6954560594de9ac5adaff2f9",
     "legal_document_hashes": [
       "50e6751797c50dedd75ef1b8a0d9e42f5f8472e9fbce91f34718e9f97b0c780a"
+    ]
+  },
+  {
+    "name": "Humanizer.Core",
+    "version": "2.14.1",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "017562f6217a9b16ce2553de6502a478b81231f1b43756aa5c494dd7de1f6597",
+    "legal_document_hashes": [
+      "1b57d7a9abb6c62fa9148e0ad26d221acfca77fb09dce2efae727b78710b3630"
     ]
   },
   {
@@ -262,7 +471,7 @@
   },
   {
     "name": "iniconfig",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "license": "MIT",
     "source": "site-packages",
     "license_files": [
@@ -271,6 +480,32 @@
     "license_fingerprint": "0fedc61afba6e82fefd9ca319ed4c1e15c80bce64546704d128bbafb7ab90a99",
     "legal_document_hashes": [
       "3409fa91f7ace557894632676656e32264fe5ef7581535725dc9a23774551bd4"
+    ]
+  },
+  {
+    "name": "Inter",
+    "version": "3.019",
+    "license": "OFL-1.1",
+    "source": "embedded-asset",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "64c6abff57f3c23b88e6b7a326ae5cfa1147609bc47ee7d1f8250a693ee96b3c",
+    "legal_document_hashes": [
+      "5cfd4b1a4302f0828b4d2756b7927f37008767a0f1ec2c30f1238cbc9c43fdea"
+    ]
+  },
+  {
+    "name": "JetBrains Mono",
+    "version": "2.211",
+    "license": "OFL-1.1",
+    "source": "embedded-asset",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "c7facead91bc38a824f1473566f7815f8eff2175ca1fec767c28eb611a65f129",
+    "legal_document_hashes": [
+      "c1ab7c666206842a02b35b30770dac0d7a10156ed401c9defc3f02a754d89e90"
     ]
   },
   {
@@ -287,6 +522,423 @@
     ]
   },
   {
+    "name": "Json.More.Net",
+    "version": "2.1.1",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "65b8b7b5575525f0761c2c04165e68277b76b29e50e9fcf20105cb5d7acdfc49",
+    "legal_document_hashes": [
+      "baebca0309090f4eca1b7a82c836cc91e48b2b92139c2280fb0ff69af922c2ae"
+    ]
+  },
+  {
+    "name": "JsonPointer.Net",
+    "version": "5.3.1",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "f8bdef6de5a4295b9da9be7f7fdeb735718e220263f1766f50c1b9845654d8a2",
+    "legal_document_hashes": [
+      "baebca0309090f4eca1b7a82c836cc91e48b2b92139c2280fb0ff69af922c2ae"
+    ]
+  },
+  {
+    "name": "JsonSchema.Net",
+    "version": "7.4.0",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "7077f33216c908822e84947cf43cea7ff16058203e018cbc938e00956c8bedf8",
+    "legal_document_hashes": [
+      "baebca0309090f4eca1b7a82c836cc91e48b2b92139c2280fb0ff69af922c2ae"
+    ]
+  },
+  {
+    "name": "Lucide",
+    "version": "1.48.0",
+    "license": "ISC AND MIT",
+    "source": "embedded-asset",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "47d3d9ed3e61dda526c5a2461991b39e9030ee993060079af76c65677eb8801b",
+    "legal_document_hashes": [
+      "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+    ]
+  },
+  {
+    "name": "Markdig.Signed",
+    "version": "0.44.0",
+    "license": "BSD-2-Clause",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "5ab9a43f0b1ede2fc8b995edf04b514957d621782a50b27e805abae55676ed01",
+    "legal_document_hashes": [
+      "9606385fa9e0938d16ec8e858c6388bfe7dbaf9f8d344d37c68f6f1b82db16b3"
+    ]
+  },
+  {
+    "name": "MicroCom.Runtime",
+    "version": "0.11.6",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "df69c0b431654a22898dfb4920de038f05d29c465b3b5b680b909fdf3ab4440f",
+    "legal_document_hashes": [
+      "b55cda818ffa577849a592cdb09dd7efe3a369690cd90d4639439e79ae9170a2"
+    ]
+  },
+  {
+    "name": "Microsoft.ApplicationInsights",
+    "version": "2.23.0",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "13d3c79a34868ac1f68d61c4047abc46b2d83f0c178b1567f743f0308f222db1",
+    "legal_document_hashes": [
+      "76475c17c79bbce4bbfb5b7624839ca56351753005d0ac1b8c2e3b345c84d7e8"
+    ]
+  },
+  {
+    "name": "Microsoft.Bcl.AsyncInterfaces",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "1d14a143da6acc4e9150618bc30b39b706b67a40bcc6751e8ecee1d297b87f7a",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "Microsoft.CodeAnalysis.Common",
+    "version": "5.0.0",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "5117d122185b8adf5f545f218a4c6347222672a8eb91281aad3fb4d39b3f1dc4",
+    "legal_document_hashes": [
+      "af2fe9392f066771834951244e7359fc8d522f883442a990fe388bfeef82f4d5"
+    ]
+  },
+  {
+    "name": "Microsoft.CodeAnalysis.CSharp",
+    "version": "5.0.0",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "878cb83217ad1f5940a6998e95210455f16b732cfc8e2330ad2d26686abefa19",
+    "legal_document_hashes": [
+      "af2fe9392f066771834951244e7359fc8d522f883442a990fe388bfeef82f4d5"
+    ]
+  },
+  {
+    "name": "Microsoft.Data.Sqlite",
+    "version": "10.0.13",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "b3bd306b80b421c5e2706c1fdc90400a78b3b279a364e6771ee3a84b9cb4c024",
+    "legal_document_hashes": [
+      "73140e5049ffa426d6c9ffc9129615da649bc52d46d05e7c6a614180ce1fef84"
+    ]
+  },
+  {
+    "name": "Microsoft.Data.Sqlite.Core",
+    "version": "10.0.13",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "9ffbb532b2b38e3ec9ae91690ae524a014fde65be7da0171eaf40c3b2013811b",
+    "legal_document_hashes": [
+      "73140e5049ffa426d6c9ffc9129615da649bc52d46d05e7c6a614180ce1fef84"
+    ]
+  },
+  {
+    "name": "Microsoft.Extensions.ObjectPool",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "d9f6cf01fd0b40d32c9fe8ce15f0e9deada2ce8087c9a6ced4c5cf287e81b783",
+    "legal_document_hashes": [
+      "6f255652633e260317673150a72aae48f33597b3c3c8d7ac3ca7e179add880bc"
+    ]
+  },
+  {
+    "name": "Microsoft.Management.Infrastructure",
+    "version": "3.0.0",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "facc8e470c5f27ac2020f00802981911600829d2fc9aff7ef3b9504db19a37ae",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.Management.Infrastructure.CimCmdlets",
+    "version": "7.6.7",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "a83285d53a8bddba9e99260e4a628ab4d8d242d00cd67ccaebe39a575ac5e0a3",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.Management.Infrastructure.Runtime.Win",
+    "version": "3.0.0",
+    "license": "see LICENSE.txt of the package",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "b6bf429d1985bf680c4a5070dc686e599d75270babbb94af89928716a15b35d6",
+    "legal_document_hashes": [
+      "6b39d18b415106dc09a1692446ad9e44fb41e7944412d5afb0c289f912929c14"
+    ]
+  },
+  {
+    "name": "Microsoft.NETCore.App.Runtime.win-x64",
+    "version": "10.0.13",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "cedbe796343121b119bc022839827dadce16619abe9ae08ad9b3d65b240af93c",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a",
+      "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310"
+    ]
+  },
+  {
+    "name": "Microsoft.PowerShell.Commands.Diagnostics",
+    "version": "7.6.7",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "f15962d1f86d9ab08349627a063505c8b7704e3ba005709f8560deea00b696ec",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.PowerShell.Commands.Management",
+    "version": "7.6.7",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "b6b4bad3f223c26903f6864fc669a4f29f6d1a68b38b47769596e03616dbb8cf",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.PowerShell.Commands.Utility",
+    "version": "7.6.7",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "80c04d6f8701361efd7d439a26b07b68deb1728db71a5fc05184864e450d5f41",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.PowerShell.ConsoleHost",
+    "version": "7.6.7",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "ac7af010fd08bd99c3633ef238ffc31229190673208701f98ec64d46b012af8d",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.PowerShell.CoreCLR.Eventing",
+    "version": "7.6.7",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "e0dcf14a84c6523badc5918e2b564d29c8dde708904ea63ec6f82fb386b31995",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.PowerShell.MarkdownRender",
+    "version": "7.2.1",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "5b9821045da862c30418c557f41a046e95501e86269d6f0197b0cce96cda9e2e",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.PowerShell.Native",
+    "version": "700.0.2",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "ed10b6a0b07eaf0d859e6444148f9f98e342f930c6c86d5973b79565d59b1597",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.PowerShell.SDK",
+    "version": "7.6.7",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "183fbf4736dbc5c8ffea3bf56635385eac6bd2010a822f80fd5b6f9ed7742f01",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.PowerShell.Security",
+    "version": "7.6.7",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "bce25bb2c16d9f1df2d33f3c76abf0574ead6b760a2674b470456874b21dd64c",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.Security.Extensions",
+    "version": "1.4.0",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "750d83d0f561e8f6cafffc523f93ef27f3d8084888c26aefaee04b8af040c3ec",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.Win32.Registry.AccessControl",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "109c13603842447122b3723f95d1e4737a88f62344928f4640488bd7346d0331",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "Microsoft.Win32.SystemEvents",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "99b1a659542919983579855d65e07145d9c87a47a5ef93dd81bc6feeb0ba19b8",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "Microsoft.Windows.Compatibility",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "63ca9360fdab55aa4f4935e1f4ac12242cfee5c4824f23f45e0d6f9fa8cdef65",
+    "legal_document_hashes": [
+      "5f1c08dad55c5d20c28001f359b83d9e8ee02bef11124a0ae935ad7853d73b36"
+    ]
+  },
+  {
+    "name": "Microsoft.WSMan.Management",
+    "version": "7.6.7",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "af6e56c53fa502d5185896a332924e198668e65891306eac8c90018e2857bfe1",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "Microsoft.WSMan.Runtime",
+    "version": "7.6.7",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "e2a8a944fcc321fd2740dabdd973ffb7194aef33a904e5f115d92f209ac71766",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
     "name": "mpmath",
     "version": "1.3.0",
     "license": "BSD",
@@ -297,6 +949,45 @@
     "license_fingerprint": "003a5df6fb3860cd4b262244462eeec275cc2fd410840ad55c8d2c275c1a1272",
     "legal_document_hashes": [
       "c26cae81da4508e5e249985777a33821f183223ebb74d7f8cfbf90fe7eef2fb7"
+    ]
+  },
+  {
+    "name": "NAudio.Core",
+    "version": "2.2.1",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "3b0fee0d8d3b50269d5cce1e5c25b755adcd576e115884d7432d4c58222bace6",
+    "legal_document_hashes": [
+      "f1b558b23fed1ba9459c7a076e1afbc8f45dcbaa18205033ff401fd8f4d04453"
+    ]
+  },
+  {
+    "name": "NAudio.Wasapi",
+    "version": "2.2.1",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "88a911b5721dd98befccc5bda77f7b450ece7170fc42e8bfb12d5c61c75b6b56",
+    "legal_document_hashes": [
+      "f1b558b23fed1ba9459c7a076e1afbc8f45dcbaa18205033ff401fd8f4d04453"
+    ]
+  },
+  {
+    "name": "Newtonsoft.Json",
+    "version": "13.0.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "6da2f481d0941f969541686e50793b6044f592f075269c819093b398fcbee3d4",
+    "legal_document_hashes": [
+      "d7f83bbea3264a8e23d7739e44d9db1a4994b357274df6f00876eb2e623827ad"
     ]
   },
   {
@@ -344,7 +1035,7 @@
   },
   {
     "name": "onnxruntime",
-    "version": "1.30.0",
+    "version": "1.31.0",
     "license": "MIT",
     "source": "wheelhouse",
     "license_files": [
@@ -373,7 +1064,7 @@
   },
   {
     "name": "openai",
-    "version": "3.15.0",
+    "version": "3.35.1",
     "license": "Apache-2.0",
     "source": "site-packages",
     "license_files": [
@@ -435,7 +1126,7 @@
   },
   {
     "name": "pluggy",
-    "version": "1.6.0",
+    "version": "1.7.0",
     "license": "MIT",
     "source": "site-packages",
     "license_files": [
@@ -461,20 +1152,20 @@
   },
   {
     "name": "pycparser",
-    "version": "3.0",
+    "version": "3.11",
     "license": "BSD-3-Clause",
     "source": "site-packages",
     "license_files": [
       "licenses/THIRD_PARTY_NOTICES.txt"
     ],
-    "license_fingerprint": "1ea81b8aa4f84d7bb44c11ca399840849bea1932611038dd258b527bb5bd1616",
+    "license_fingerprint": "365b38b95b629866546c02af5c368a31ffa684211826f4b884274410b0784646",
     "legal_document_hashes": [
-      "b345a9762fdc5175d3d486d344cdcbb79078aee7c00e47fcc756ef2c4f5dcb61"
+      "5be5ebd3dece39db29ac8d217fa9c4007da6afd676779a0b815bc9ffcdd2818d"
     ]
   },
   {
     "name": "pydantic",
-    "version": "2.13.5",
+    "version": "2.14.1",
     "license": "MIT",
     "source": "site-packages",
     "license_files": [
@@ -487,7 +1178,7 @@
   },
   {
     "name": "pydantic_core",
-    "version": "2.46.5",
+    "version": "2.50.1",
     "license": "MIT",
     "source": "site-packages",
     "license_files": [
@@ -510,45 +1201,6 @@
     "legal_document_hashes": [
       "a9d66f1d526df02e29dce73436d34e56e8632f46c275bbdffc70569e882f9f17",
       "ea74b9158f4587191549080d5713701859bf6f7b61ce491020338128131847f3"
-    ]
-  },
-  {
-    "name": "PySide6",
-    "version": "6.11.2",
-    "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
-    "source": "site-packages",
-    "license_files": [
-      "licenses/THIRD_PARTY_NOTICES.txt"
-    ],
-    "license_fingerprint": "c9fd5c25fdbf48b7e60450e4fc14dee2e62764f385f3bf886214ff8118724519",
-    "legal_document_hashes": [
-      "9b1f50aae6267f9d5e0ceb6775ee86450262c25ec7c0573e151fe5d3f18a4700"
-    ]
-  },
-  {
-    "name": "PySide6_Addons",
-    "version": "6.11.2",
-    "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
-    "source": "site-packages",
-    "license_files": [
-      "licenses/THIRD_PARTY_NOTICES.txt"
-    ],
-    "license_fingerprint": "717d26a710526d180506133a5080b8e433292ae44b548cf2651b6ec292be1479",
-    "legal_document_hashes": [
-      "9b1f50aae6267f9d5e0ceb6775ee86450262c25ec7c0573e151fe5d3f18a4700"
-    ]
-  },
-  {
-    "name": "PySide6_Essentials",
-    "version": "6.11.2",
-    "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
-    "source": "site-packages",
-    "license_files": [
-      "licenses/THIRD_PARTY_NOTICES.txt"
-    ],
-    "license_fingerprint": "51e9fceb6746042423f8b053ac0c8bb0e2b5da0b34098235fc16a9935b96c04e",
-    "legal_document_hashes": [
-      "9b1f50aae6267f9d5e0ceb6775ee86450262c25ec7c0573e151fe5d3f18a4700"
     ]
   },
   {
@@ -579,7 +1231,7 @@
   },
   {
     "name": "python-slugify",
-    "version": "9.0.0",
+    "version": "9.1.3",
     "license": "MIT",
     "source": "site-packages",
     "license_files": [
@@ -604,16 +1256,70 @@
     ]
   },
   {
-    "name": "shiboken6",
-    "version": "6.11.2",
-    "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
-    "source": "site-packages",
+    "name": "runtime.native.System.Data.SqlClient.sni",
+    "version": "4.4.0",
+    "license": "MIT",
+    "source": "dotnet-package",
     "license_files": [
       "licenses/THIRD_PARTY_NOTICES.txt"
     ],
-    "license_fingerprint": "07bc43a345849d4484d87ce4047dd217758b99c79f79d927bd3d864a31019b3d",
+    "license_fingerprint": "8ec54488ade565dee8f8dccab09cfb3f456a5eae879568cc190195b8c29b8074",
     "legal_document_hashes": [
-      "9b1f50aae6267f9d5e0ceb6775ee86450262c25ec7c0573e151fe5d3f18a4700"
+      "43af03efb295de93fb84b7d70a3fabcd47cb0e66be96d7cabf919c7a2b9d22fe",
+      "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310"
+    ]
+  },
+  {
+    "name": "runtime.win-x64.runtime.native.System.Data.SqlClient.sni",
+    "version": "4.4.0",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "6b6c98a736907f10908d3e8b861f3524f4b593792ffadda8f185a2b264f937c0",
+    "legal_document_hashes": [
+      "52bd2f19fdfde1128ecc91ce72a12f2bc2ac8e0de1039f02f80fde19a15890d1"
+    ]
+  },
+  {
+    "name": "Simple Icons",
+    "version": "16.32.0",
+    "license": "CC0-1.0 (Vivaldi icon: CC-BY-4.0); logos are trademarks of their owners",
+    "source": "embedded-asset",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "7c3be354c8bc85d00d1a1fb1c18eb52d0e4077552dadc1205885ed83026e36be",
+    "legal_document_hashes": [
+      "c4f8eec82e69499389178a0e6e430e96ac48dd50fac8f2efa8d4c1a7c423ec0b"
+    ]
+  },
+  {
+    "name": "SkiaSharp",
+    "version": "3.119.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "ab1d09c6dea450e119224906b2cab940374ba002e3396dd42bf08a2ce4971dbd",
+    "legal_document_hashes": [
+      "4319f2fc2c635aa1d97672ec2ea84a93bc99ea4e9d4cfbeccd046be0a90c2415"
+    ]
+  },
+  {
+    "name": "SkiaSharp.NativeAssets.Win32",
+    "version": "3.119.4",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "ca58f3b824b2f68539c75c8e3f10b62f923c8d50b27afa178d269bf0bea57f78",
+    "legal_document_hashes": [
+      "4319f2fc2c635aa1d97672ec2ea84a93bc99ea4e9d4cfbeccd046be0a90c2415",
+      "eb2375b37d758843f0fab75b96f3bdf9f5c98e433b1869af903dfe00f460c873"
     ]
   },
   {
@@ -645,6 +1351,58 @@
     ]
   },
   {
+    "name": "SQLitePCLRaw.bundle_e_sqlite3",
+    "version": "2.1.13",
+    "license": "Apache-2.0",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "08fe2c15163032e1a25bf68e159d06605ffe6dd4c830f2f51f4c1a1c54ef5658",
+    "legal_document_hashes": [
+      "26479ea3e872ab05749e48f759197da158627323f9ad3cb51e9b5bdf74695807"
+    ]
+  },
+  {
+    "name": "SQLitePCLRaw.core",
+    "version": "2.1.13",
+    "license": "Apache-2.0",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "8b2f6c76d85477db7800c6e1ccd193d54481b297db6711eace6b7ef0a4731e5a",
+    "legal_document_hashes": [
+      "26479ea3e872ab05749e48f759197da158627323f9ad3cb51e9b5bdf74695807"
+    ]
+  },
+  {
+    "name": "SQLitePCLRaw.lib.e_sqlite3",
+    "version": "2.1.13",
+    "license": "Apache-2.0",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "39a9b10147fb092dc35d2ca41bd01ffe306d3b1c00bc17f791bea360ea977e25",
+    "legal_document_hashes": [
+      "26479ea3e872ab05749e48f759197da158627323f9ad3cb51e9b5bdf74695807"
+    ]
+  },
+  {
+    "name": "SQLitePCLRaw.provider.e_sqlite3",
+    "version": "2.1.13",
+    "license": "Apache-2.0",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "b8876d28b30e04bbff8c10edcd83b273aab41867fb904216c779e5e4f90817f1",
+    "legal_document_hashes": [
+      "26479ea3e872ab05749e48f759197da158627323f9ad3cb51e9b5bdf74695807"
+    ]
+  },
+  {
     "name": "sympy",
     "version": "1.14.0",
     "license": "BSD",
@@ -657,6 +1415,441 @@
       "007bc30a58fa40a996e772047120de4eaf31f5110e4f9c3b5f93fcdfbe2eaca1",
       "82b1038521b0696c63c90b31ed4a0a2c9c4c16871c648b157b07ca44b6f18f8d",
       "ea9b7901b93a0e360da655d75454527c26cbc835b42ee739f7b1018f81afcb1a"
+    ]
+  },
+  {
+    "name": "System.CodeDom",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "1e0230fd57d10eccd684bf2eb350c8b41aa23f9c0ecad73410ebd6414d0ef13b",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.ComponentModel.Composition",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "f79b46021e4e1074a178a234c06d4867246689cc4c88b25bdbf093007f6c240a",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.ComponentModel.Composition.Registration",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "b561cbcd918d61b76e9ce028f4c6ef4165f28e172463612be913690c2ac2438b",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Configuration.ConfigurationManager",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "85bbbee3a7478981f24dc758693b5163dab476e91ed4ff490f118e814ee3b6ff",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Data.Odbc",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "9cc256532e361215e33e1e6f96b912aa2b2f4afafa0a8170dee210e8850e899b",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Data.OleDb",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "96ea56b3e22238586f34ef751b3c553bfccc19b56c488dd8bfcb671267f41140",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Data.SqlClient",
+    "version": "4.9.1",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "b48f4f387cbbd153ef8955b2b528cb6f6058eefb1a82b219a5a2849ab25a53e7",
+    "legal_document_hashes": [
+      "0d3ce3c026c143716a86badd8c101e39aa546d2a2adb3324321faa7e7454add8"
+    ]
+  },
+  {
+    "name": "System.Diagnostics.EventLog",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "4ba768b2cba12ed3dedee1aaff4459ca6e6a42bd2399bd9087a41ebae8bb2d24",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Diagnostics.PerformanceCounter",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "96bb52db7ad3ddb98055579ae150bd1537fb95d1ec4a075c032ee5779d9640dc",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.DirectoryServices",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "be562893b521d1669d49607d79a491b76cdaebb15798c51e420e66897d5c6ea0",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.DirectoryServices.AccountManagement",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "ad88d5943df27316205bc38b9999f0a225930f3026a857def1e50b105dfd8d76",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.DirectoryServices.Protocols",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "43f23f45ea63a0316a517ef36d9b8d9a06a3a4fd408d8441bbe94346dc8efa74",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Drawing.Common",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "54ae9ca7272cc15de4223549d08382507eb8e86f0bf6779cbb1c1e90a7ca55a4",
+    "legal_document_hashes": [
+      "8750e8af0d782cc1c7e387ad18a7480f8f6adbf3b6e889edfe0b6231d9cdb77a",
+      "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310"
+    ]
+  },
+  {
+    "name": "System.IO.Packaging",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "87021dfae4072b1a2ea9a745ee859fe8ef99785f43e3567ae5324e0891ca53a2",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.IO.Ports",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "0f6f21ba92cfb980621e76b38e26f79187f5ba9c0c9749acfc4b6c37bcf77a29",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Management",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "4fcfa115249070f240ac9042c495ffb9ce93eb981f75aaff4d2c4b93ed20c4f7",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Management.Automation",
+    "version": "7.6.7",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "09348cced297557327a956d41e7282c73c69ab2c74794e2218fd2ed5e129929f",
+    "legal_document_hashes": [
+      "882c3d656c343cb6d0744e34d9c6d2401c4a986efd1c02f1bb46f54f24615c52"
+    ]
+  },
+  {
+    "name": "System.Net.Http.WinHttpHandler",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "799517efe649e2171a0e8507630b930a6fb6d0f100321137bba829f2510f53b9",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Reflection.Context",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "db08c935c06da253719e2e59f4b2a5ad2aa47d3ff2a1b26a0a77356b038fcc65",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Runtime.Caching",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "0dff8c1b277fb2109a04e22c11c42bfc2b9acf9247793fbf74cfd3e882e816c7",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Security.Cryptography.Pkcs",
+    "version": "10.0.13",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "61b5c44fbaf174ae4ab01d9462f63d8b9063da819fa6261e353dd808613923a9",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Security.Cryptography.ProtectedData",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "6137c2d1f7e5fbe0d02f5e5fc2ef3213caa3aeb5c98244d76b5361e65b155d1c",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Security.Cryptography.Xml",
+    "version": "10.0.13",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "d1ed1cf897467b949438e4b336c4fd05615fd5ae09eea13f8b03921535890dbb",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Security.Permissions",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "bf8b62eb841364ecd1f79be7c38c5a4489aa851388d4a843cfa01f70195cf1fe",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.ServiceModel.Http",
+    "version": "10.0.652802",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "5841ed7ea9ae17756a401d9fdd4e93bf19d2351eb1c1b7297c4e28ff9e366a01",
+    "legal_document_hashes": [
+      "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310",
+      "f6edb4d00a2732e383cd4b9ff9605932d656a8a5e688ce4d1a96ebd7c920e9be"
+    ]
+  },
+  {
+    "name": "System.ServiceModel.NetFramingBase",
+    "version": "10.0.652802",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "0bf2b19ef62d3942df24bb21918e3bfd136e585d6ade445f4e467ed3e65c8aae",
+    "legal_document_hashes": [
+      "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310",
+      "f6edb4d00a2732e383cd4b9ff9605932d656a8a5e688ce4d1a96ebd7c920e9be"
+    ]
+  },
+  {
+    "name": "System.ServiceModel.NetTcp",
+    "version": "10.0.652802",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "fbd987647b0ae71300046658a208c0792b0cf4c0294ce3214bead75c40579dbc",
+    "legal_document_hashes": [
+      "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310",
+      "f6edb4d00a2732e383cd4b9ff9605932d656a8a5e688ce4d1a96ebd7c920e9be"
+    ]
+  },
+  {
+    "name": "System.ServiceModel.Primitives",
+    "version": "10.0.652802",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "f5722c0549c0fb2cef99189fdaa83d4c33dcc1f9494cd3a5d518ca067b94675c",
+    "legal_document_hashes": [
+      "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310",
+      "f6edb4d00a2732e383cd4b9ff9605932d656a8a5e688ce4d1a96ebd7c920e9be"
+    ]
+  },
+  {
+    "name": "System.ServiceModel.Syndication",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "d42076031ff08a395595f2fd08b9cd0bddf0b5554bd3c7222b01794f906f7a7d",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.ServiceProcess.ServiceController",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "91275a4c53c7cdacf258c4d9df564c158361754eff42e546d64133337d870e1a",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Speech",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "f3b75e0c7f1a1d542a7c8d61095b696e2b082bf53c716c80d8a84ee6774d0f24",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
+    ]
+  },
+  {
+    "name": "System.Web.Services.Description",
+    "version": "8.1.2",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "c9e48d07954ddf069923b907805737a6b1079a931d6bf72ff47c23f85c51fe14",
+    "legal_document_hashes": [
+      "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310",
+      "f6edb4d00a2732e383cd4b9ff9605932d656a8a5e688ce4d1a96ebd7c920e9be"
+    ]
+  },
+  {
+    "name": "System.Windows.Extensions",
+    "version": "10.0.5",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "bb0cf203c8fff724cc8347eb9ddbbfdd1e51d5317835d08b5d991ae063ae04b8",
+    "legal_document_hashes": [
+      "c6926930d0181fa515076603e1305461b1bce5275a8b35337d75d2eef3acad4a"
     ]
   },
   {
@@ -673,6 +1866,19 @@
     ]
   },
   {
+    "name": "Tmds.DBus.Protocol",
+    "version": "0.94.1",
+    "license": "MIT",
+    "source": "dotnet-package",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "887064ffb3bd7f79d9979853f251893dbd5a9060a7ccbf0648058b36ba3b0d78",
+    "legal_document_hashes": [
+      "db2c46998b8b762dfa0b0f4bee00fcd5dfb6622b2729e3ffac583bd7f50d8047"
+    ]
+  },
+  {
     "name": "tqdm",
     "version": "4.70.1",
     "license": "MPL-2.0 AND MIT",
@@ -686,8 +1892,24 @@
     ]
   },
   {
+    "name": "transcribe.cpp",
+    "version": "present-in-release",
+    "license": "MIT (transcribe.cpp, ggml, Silero VAD, miniz)",
+    "source": "optional-tool",
+    "license_files": [
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "license_fingerprint": "532514176cc9938ee66bcd6e0e42f88f0f390bc168ae8a459019404f90c7efa4",
+    "legal_document_hashes": [
+      "51c19c8be941a3fb00ccf58f0bf9053de9f7237a0b37327896eabad32dffe873",
+      "6f20fa7672b00e2e975c291df737cf227addf3ad32e36fef3fe0f416e4664d3d",
+      "86a53633b56f6b029d3cb42158bcc7aac0cdff898aceb13e83b93e368bbc4ac6",
+      "94f29bbed6a22c35b992c5c6ebf0e7c92f13b836b90f36f461c9cf2f0f1d010d"
+    ]
+  },
+  {
     "name": "truststore",
-    "version": "0.10.4",
+    "version": "0.10.5",
     "license": "MIT",
     "source": "site-packages",
     "license_files": [

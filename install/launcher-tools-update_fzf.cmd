@@ -14,9 +14,9 @@ set "TMP=%CORE%\_fzf_tmp"
 set "ZIP=%DL%\fzf_windows_amd64.zip"
 set "PS_EXE="
 
-where pwsh.exe >nul 2>nul && set "PS_EXE=pwsh.exe"
+if exist "%ROOT%\App\AudionPs.exe" set "PS_EXE=%ROOT%\App\AudionPs.exe"
+if not defined PS_EXE where pwsh.exe >nul 2>nul && set "PS_EXE=pwsh.exe"
 if not defined PS_EXE where powershell.exe >nul 2>nul && set "PS_EXE=powershell.exe"
-if not defined PS_EXE if exist "%ROOT%\system_core\powershell\pwsh.exe" set "PS_EXE=%ROOT%\system_core\powershell\pwsh.exe"
 
 if not exist "%DL%\" mkdir "%DL%" >nul 2>nul
 

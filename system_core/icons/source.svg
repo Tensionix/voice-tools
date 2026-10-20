@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" fill="none">
+  <title>Audion Voice Tools</title>
+  <desc>A Shure SM7B style broadcast microphone facing right, in side profile: a large rounded foam windscreen of a deeper tone than the body, a round lock knob on the yoke cheek, a short stand adapter. Flat saturated gradients.</desc>
+  <defs>
+    <linearGradient id="tile" x1="100" y1="0" x2="924" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#26334C"/>
+      <stop offset=".5" stop-color="#151D31"/>
+      <stop offset="1" stop-color="#0A1120"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop stop-color="#65E6FF"/>
+      <stop offset=".5" stop-color="#18B6EE"/>
+      <stop offset="1" stop-color="#147BE8"/>
+    </linearGradient>
+    <linearGradient id="warm" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop stop-color="#FFD152"/>
+      <stop offset=".5" stop-color="#FF8B31"/>
+      <stop offset="1" stop-color="#F2554D"/>
+    </linearGradient>
+    <linearGradient id="foam" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop stop-color="#3A7DF5"/>
+      <stop offset=".5" stop-color="#2459D8"/>
+      <stop offset="1" stop-color="#1B41B0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="224" fill="url(#tile)"/>
+  <g id="centred" transform="translate(51 23)">
+  <g id="right-facing" transform="translate(1024 0) scale(-1 1)">
+    <g id="microphone" transform="translate(-34 30) rotate(25 512 512)">
+      <path id="stand-adapter" d="M682 586H726V676L712 690H682Z" fill="url(#cyan)"/>
+      <path id="housing" d="M534 268H882L914 300V492L882 524H534Z" fill="url(#cyan)"/>
+      <path id="windscreen" d="M534 236H300A126 126 0 0 0 174 362V430A126 126 0 0 0 300 556H534Z" fill="url(#foam)"/>
+      <path id="collar" d="M502 236H534V556H502Z" fill="url(#warm)"/>
+      <path id="yoke-cheek" d="M646 416A58 58 0 0 1 762 416L744 596H664Z" fill="url(#warm)"/>
+      <circle id="lock-knob" cx="704" cy="416" r="42" fill="#FFD152" stroke="#0A1120" stroke-width="10"/>
+      <circle id="knob-centre" cx="704" cy="416" r="13" fill="#0A1120"/>
+    </g>
+  </g>
+  </g>
+</svg>

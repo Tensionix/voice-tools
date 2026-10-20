@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Audion Voice Tools on Avalonia, the shell of Audion Media Tools: the program lives in the tray - the capsule, the
+    hotkey by Raw Input, the microphone by WASAPI, the engine of Handy (transcribe.cpp) called directly, the paste on an
+    STA thread of its own - and its manager of dictations and files runs voice_cli.cmd (system_core\cli.py) for files.
+    The window thread waits for nothing.
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>AudionVoiceTools</AssemblyName>
+    <RootNamespace>AudionVoiceTools</RootNamespace>
+    <AssemblyTitle>Audion Voice Tools</AssemblyTitle>
+    <Product>Audion Voice Tools</Product>
+    <!-- The number has one owner, config\version.json: the window shows it from there, and the exe says the same. -->
+    <VersionFile>$(MSBuildProjectDirectory)\..\config\version.json</VersionFile>
+    <Version>$([System.Text.RegularExpressions.Regex]::Match($([System.IO.File]::ReadAllText('$(VersionFile)')), '"version"\s*:\s*"([^"]+)"').Groups[1].Value)</Version>
+    <ApplicationIcon>..\system_core\icons\app.ico</ApplicationIcon>
+    <SatelliteResourceLanguages>en;ru</SatelliteResourceLanguages>
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Source\Ps is a project of its own - the PowerShell of the program: its files are not part of the window. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);Ps\**</DefaultItemExcludes>
+    <DebugType Condition="'$(Configuration)' != 'Debug'">none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="12.1.4" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.1.4" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.4" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="12.1.4" />
+    <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
+    <!-- The library (Core\Library.cs): SQLite with FTS5, the native e_sqlite3 of the package. -->
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.13" />
+  </ItemGroup>
+
+  <!-- JetBrains Mono (SIL OFL) and the brand ship inside; the mark of the window is the same file the exe carries. -->
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="..\system_core\icons\app.ico" Link="Assets\app.ico" />
+  </ItemGroup>
+
+  <!-- Portable: the dictionary of the window travels next to the executable (App\config\i18n.json). -->
+  <ItemGroup>
+    <None Include="config\i18n.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

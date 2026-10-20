@@ -1,0 +1,261 @@
+{
+  "comment": "The models of dictation (transcribe.cpp): pinned by revision and SHA-256. The first is the default. Read by the window (Source\\Core\\DictationModels.cs), install\\Install-Dictation-Model.ps1 and system_core\\core\\modules.py.",
+  "models": [
+    {
+      "id": "gigaam-v3",
+      "title": "GigaAM v3",
+      "repo": "handy-computer/gigaam-v3-e2e-rnnt-gguf",
+      "revision": "3efd5b39882ceadca5570a8fb9fa1a2c801d6d6d",
+      "file": "gigaam-v3-e2e-rnnt-Q8_0.gguf",
+      "bytes": 273724832,
+      "sha256": "78d63b47723b7f8d78c6113a6ef983b5a86e2a86f6c273e1f5cb6967b1c4467a",
+      "module": "dictation",
+      "languages": "ru",
+      "licence": "MIT",
+      "about": {
+        "ru": "Лучшая модель для русского языка: точнее всех на русском и быстрая; английский может распознавать ненадёжно. По умолчанию.",
+        "en": "The best model for Russian: the most accurate on Russian, and fast; English may be unreliable. The default."
+      }
+    },
+    {
+      "id": "parakeet-en",
+      "title": "Parakeet EN",
+      "repo": "handy-computer/parakeet-unified-en-0.6b-gguf",
+      "revision": "843b1b175ace04f5a89d379c79e2518c0d065b25",
+      "file": "parakeet-unified-en-0.6b-Q8_0.gguf",
+      "bytes": 731357568,
+      "sha256": "4b50b6dd862bf6e346929aaf4f5eaacec003bfa3f56462d6c874b41ef2f38795",
+      "module": "dictation_parakeet_en",
+      "languages": "en",
+      "licence": "NVIDIA Open Model",
+      "about": {
+        "ru": "Лучший выбор для английской диктовки.",
+        "en": "Best all-around choice for English dictation."
+      }
+    },
+    {
+      "id": "parakeet-v3",
+      "title": "Parakeet V3",
+      "repo": "handy-computer/parakeet-tdt-0.6b-v3-gguf",
+      "revision": "d8d8c32cb2017c57e5307767343e97870f8a7f53",
+      "file": "parakeet-tdt-0.6b-v3-Q8_0.gguf",
+      "bytes": 739508576,
+      "sha256": "5859f77944efcd8eafa23a6350731960b2b55b2203df51f319665c807d802cc7",
+      "module": "dictation_parakeet_v3",
+      "languages": "25",
+      "licence": "CC-BY-4.0",
+      "about": {
+        "ru": "Быстрая и точная, хороший многоязычный выбор.",
+        "en": "Fast and accurate, great overall multilingual pick."
+      }
+    },
+    {
+      "id": "parakeet-ultra",
+      "title": "Parakeet Ultra",
+      "repo": "handy-computer/parakeet-ultra-gguf",
+      "revision": "a1539be1b849ea7463b88343e5277b373d0c4ea9",
+      "file": "parakeet-ultra-Q8_0.gguf",
+      "bytes": 740363168,
+      "sha256": "007a59761e9258779f189df396b50d12b83bb5b79e66df4b955c230d2f2a0a59",
+      "module": "dictation_parakeet_ultra",
+      "languages": "25",
+      "licence": "CC-BY-4.0",
+      "about": {
+        "ru": "Лучшая точность на 25 европейских языках.",
+        "en": "Best accuracy across 25 European languages."
+      }
+    },
+    {
+      "id": "canary-1b-v2",
+      "title": "Canary 1B v2",
+      "repo": "handy-computer/canary-1b-v2-gguf",
+      "revision": "692af661b140183b60e44f55ad03c59e1e77d078",
+      "file": "canary-1b-v2-Q8_0.gguf",
+      "bytes": 1144290016,
+      "sha256": "224f83d1bc487b3303b495a7d6874912fdece93de19d1a04b550829c30a5d289",
+      "module": "dictation_canary_1b_v2",
+      "languages": "25",
+      "licence": "CC-BY-4.0",
+      "about": {
+        "ru": "Самая точная небольшая модель для европейских языков.",
+        "en": "Most accurate small model for European languages."
+      }
+    },
+    {
+      "id": "cohere-transcribe",
+      "title": "Cohere Transcribe",
+      "repo": "handy-computer/cohere-transcribe-03-2026-gguf",
+      "revision": "7353b6040bdc1be9e5a3823d99d5fe12afe88264",
+      "file": "cohere-transcribe-03-2026-Q8_0.gguf",
+      "bytes": 2410655232,
+      "sha256": "931916663432fd895423a4291a8400221802b288967ca2d435fc5e3141c9e71e",
+      "module": "dictation_cohere_transcribe",
+      "languages": "14",
+      "licence": "Apache-2.0",
+      "about": {
+        "ru": "Стабильно сильна во многих языках, лучшая для греческого и польского.",
+        "en": "Consistently strong in many languages, best for Greek and Polish."
+      }
+    },
+    {
+      "id": "voxtral-mini-4b",
+      "title": "Voxtral Mini 4B Realtime",
+      "repo": "handy-computer/Voxtral-Mini-4B-Realtime-2602-gguf",
+      "revision": "7fd3d424fc558edca2c53808578b0541ef52a81a",
+      "file": "Voxtral-Mini-4B-Realtime-2602-Q8_0.gguf",
+      "bytes": 4731791648,
+      "sha256": "6fb22249463c1e7a600d920ad732e2dd0a231510e9db59fb8061d3d1d48d0c67",
+      "module": "dictation_voxtral_mini_4b",
+      "languages": "13",
+      "licence": "Apache-2.0",
+      "about": {
+        "ru": "Многоязычная, очень точна на итальянском и испанском; лучше с дискретной видеокартой.",
+        "en": "Multilingual, very accurate in Italian and Spanish; best on a discrete GPU."
+      }
+    },
+    {
+      "id": "qwen3-asr",
+      "title": "Qwen3-ASR 0.6B",
+      "repo": "handy-computer/Qwen3-ASR-0.6B-gguf",
+      "revision": "7e7c69a577fa2725dfedbe34b5e999336e30a19b",
+      "file": "Qwen3-ASR-0.6B-Q8_0.gguf",
+      "bytes": 850423456,
+      "sha256": "f081b2d5e23bd669d92cc331d722a8a0681943b8e6f34b48996fd5c319b5acd8",
+      "module": "dictation_qwen3_asr",
+      "languages": "30",
+      "licence": "Apache-2.0",
+      "about": {
+        "ru": "Лучшая для китайского, кантонского и азиатских языков вперемешку с английским.",
+        "en": "Best for Chinese, Cantonese, and Asian languages with English."
+      }
+    },
+    {
+      "id": "fun-asr-mlt",
+      "title": "Fun-ASR Nano Multilingual",
+      "repo": "handy-computer/Fun-ASR-MLT-Nano-2512-gguf",
+      "revision": "5db7c5bcebbc70d6c372e825399c3019f6089af7",
+      "file": "Fun-ASR-MLT-Nano-2512-Q8_0.gguf",
+      "bytes": 891271232,
+      "sha256": "d12476d8d9f2baa0ebf738fa955fa05ed33a654f1567289033a810c45d9d9002",
+      "module": "dictation_fun_asr_mlt",
+      "languages": "31",
+      "licence": "FunASR Model Open Source License 1.1",
+      "about": {
+        "ru": "Лучшая для японского, хороша на тайском, индонезийском и малайском.",
+        "en": "Best for Japanese, good at Thai, Indonesian, Malay."
+      }
+    },
+    {
+      "id": "sensevoice",
+      "title": "SenseVoice Small",
+      "repo": "handy-computer/SenseVoiceSmall-gguf",
+      "revision": "ff8f085a8fa2e5ccae0e849ef19ebc6dc18e608b",
+      "file": "SenseVoiceSmall-Q8_0.gguf",
+      "bytes": 252684608,
+      "sha256": "6c759ee4c9748c9b3f7a5a60ca74f0f7e685fb9d45d1378fce7cfd62f59adf29",
+      "module": "dictation_sensevoice",
+      "languages": "5",
+      "licence": "FunASR Model Open Source License 1.1",
+      "about": {
+        "ru": "Мгновенно распознаёт путунхуа, японский и корейский на любой машине; кантонский - слабо.",
+        "en": "Instant Mandarin, Japanese, Korean on any machine; weak Cantonese."
+      }
+    },
+    {
+      "id": "cohere-arabic",
+      "title": "Cohere Transcribe Arabic",
+      "repo": "handy-computer/cohere-transcribe-arabic-07-2026-gguf",
+      "revision": "11a54d6895f94cce78d0ece142b8e552e7822539",
+      "file": "cohere-transcribe-arabic-07-2026-Q8_0.gguf",
+      "bytes": 2410655136,
+      "sha256": "910de5c9c57f9fd8a280e1701f9cd96f63768878c1ca9e4ecf23638a5e0fef16",
+      "module": "dictation_cohere_arabic",
+      "languages": "2",
+      "licence": "Apache-2.0",
+      "about": {
+        "ru": "Лучшая для арабского и речи вперемешку арабского с английским.",
+        "en": "Best for Arabic and Arabic/English speakers."
+      }
+    },
+    {
+      "id": "whisper-small",
+      "title": "Whisper Small",
+      "repo": "handy-computer/whisper-small-gguf",
+      "revision": "4afdc7942ecf1997f359deae48a63506b062eac4",
+      "file": "whisper-small-Q8_0.gguf",
+      "bytes": 269751136,
+      "sha256": "9b9c8811bbcc82a7766f0fb0925614bdacb0923b2cc630daeac17108b655b860",
+      "module": "dictation_whisper_small",
+      "languages": "99",
+      "licence": "Apache-2.0",
+      "about": {
+        "ru": "Много языков в сравнительно небольшой модели.",
+        "en": "Wide language support in a relatively small model."
+      }
+    },
+    {
+      "id": "whisper-medium",
+      "title": "Whisper Medium",
+      "repo": "handy-computer/whisper-medium-gguf",
+      "revision": "60cfb00405a9a5bb85ee347ef93b68df7a311dc5",
+      "file": "whisper-medium-Q8_0.gguf",
+      "bytes": 831538144,
+      "sha256": "09e6a65e7de377aa5b10bae24608bc6f8ca2ed04b3993ef10d4a02bcd9a82adf",
+      "module": "dictation_whisper_medium",
+      "languages": "99",
+      "licence": "Apache-2.0",
+      "about": {
+        "ru": "Самый широкий набор языков, но может работать медленнее.",
+        "en": "Broadest language support, but may run a bit slow."
+      }
+    },
+    {
+      "id": "whisper-turbo",
+      "title": "Whisper Turbo",
+      "repo": "handy-computer/whisper-large-v3-turbo-gguf",
+      "revision": "18ada752005f5fddef499256f9a458d0b37a203a",
+      "file": "whisper-large-v3-turbo-Q8_0.gguf",
+      "bytes": 886381728,
+      "sha256": "257aa7ec9121c22c167d5e2c49e3e76b4ba0e6e27ebc13074eba0a80f8190220",
+      "module": "dictation_whisper_turbo",
+      "languages": "99",
+      "licence": "MIT",
+      "about": {
+        "ru": "Точна во многих языках; без видеокарты медленная.",
+        "en": "Accurate in many languages; slow without a GPU."
+      }
+    },
+    {
+      "id": "whisper-large-v3",
+      "title": "Whisper Large v3",
+      "repo": "handy-computer/whisper-large-v3-gguf",
+      "revision": "274ad1d1cf680b7ee53cc70f78461394cd3a344b",
+      "file": "whisper-large-v3-Q8_0.gguf",
+      "bytes": 1668741440,
+      "sha256": "2fa1a5f179f8a511a53e2108db270aa4af3ce08cd976af4180e2854666bb4ba3",
+      "module": "dictation_whisper_large_v3",
+      "languages": "99",
+      "licence": "Apache-2.0",
+      "about": {
+        "ru": "Больше всего языков с приемлемой точностью; лучше с видеокартой.",
+        "en": "Most languages at usable accuracy; best on a GPU."
+      }
+    },
+    {
+      "id": "whisper-large-v2",
+      "title": "Whisper Large v2",
+      "repo": "handy-computer/whisper-large-v2-gguf",
+      "revision": "86dd8fbcd7324624f86d826e7fc241f4922ee987",
+      "file": "whisper-large-v2-Q8_0.gguf",
+      "bytes": 1667964224,
+      "sha256": "704603cff0f82ddd7f7f51045e12e5c8f85a37a9edec72ab10fd8ede32220702",
+      "module": "dictation_whisper_large_v2",
+      "languages": "99",
+      "licence": "Apache-2.0",
+      "about": {
+        "ru": "Многоязычная, тяжёлая; из Whisper - выбор для русской речи.",
+        "en": "Multilingual, heavy; of the Whispers - the choice for Russian speech."
+      }
+    }
+  ]
+}

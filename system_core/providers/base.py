@@ -98,6 +98,8 @@ class DiarizationUnavailable(RuntimeError):
 
 class DiarizationProvider(ABC):
     name: str = "base"
+    # What the journal calls the engine: "Running diarization: Community-1".
+    title: str = ""
 
     @abstractmethod
     def diarize(self, audio_path: Path, segments: list[Segment]) -> list[Segment]:

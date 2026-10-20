@@ -179,7 +179,7 @@ if (-not $Provider -or $Provider.Count -eq 0) {
 
 New-Item -ItemType Directory -Force -Path $WheelRoot, $Tmp | Out-Null
 
-Write-Host "[Audion Voice AI] Rebuild wheel cache"
+Write-Host "[Audion Voice Tools] Rebuild wheel cache"
 Write-Host "Root: $Root"
 Write-Host "Edition: $edition"
 Write-Host "Providers: $($Provider -join ', ')"

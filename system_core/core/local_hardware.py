@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import importlib.util
+import os
 import platform
+import re
 import shutil
 import subprocess
 import ctypes
@@ -50,6 +52,8 @@ class LocalHardwareProfile:
     has_whispercpp: bool
     has_whispercpp_vulkan_backend: bool
     has_whispercpp_cublas_backend: bool = False
+    # Why an NVIDIA card here is not offered its parts (a card too old, a driver too old, no driver); "" - none such.
+    nvidia_note: str = ""
 
     @property
     def recommended_stack(self) -> str:
@@ -91,24 +95,73 @@ def _run(command: list[str]) -> str:
     return "\n".join(part for part in (result.stdout, result.stderr) if part).strip()
 
 
+# The parts of an NVIDIA card - torch 2.8.0+cu128 (install\constraints_cuda.txt), onnxruntime-gpu and the cuBLAS pack of
+# whisper.cpp, all of CUDA 12 - are offered only where they run: a card of compute capability 6.1 or newer (torch cu128
+# carries code from sm_61 up) and a driver of 528.33 or newer, the first driver of Windows CUDA 12 runs on. An older card
+# or driver is no NVIDIA card to the program: the processor, Vulkan and DirectML serve it (the owner, 20.10.2026: «модели
+# и NVIDIA-части - при определении в системе нужного GPU/драйвера»).
+NVIDIA_MIN_CAPABILITY = (6, 1)
+NVIDIA_MIN_DRIVER = (528, 33)
+
+
+def _version(text: str) -> tuple[int, ...] | None:
+    parts = re.findall(r"\d+", text)
+    return tuple(int(part) for part in parts[:2]) if parts else None
+
+
+def nvidia_fit(told: str) -> tuple[bool, str]:
+    """
+    Whether an NVIDIA card here takes its parts, from `nvidia-smi --query-gpu=name,compute_cap,driver_version
+    --format=csv,noheader`: (True, "") - one fits; (False, why) - none does; (False, "") - nvidia-smi named no card.
+    A driver too old to know the field compute_cap answers with an error instead of a row: too old for CUDA 12 as well.
+    """
+    why = ""
+    for line in told.splitlines():
+        cells = [cell.strip() for cell in line.split(",")]
+        if len(cells) < 3 or "NVIDIA" not in cells[0].upper():
+            if "compute_cap" in line or "not a valid field" in line.lower():
+                why = "the NVIDIA driver is too old for CUDA 12 (528.33 or newer is needed)"
+            continue
+        name, capability, driver = cells[0], _version(cells[1]), _version(cells[2])
+        if capability is None or capability < NVIDIA_MIN_CAPABILITY:
+            why = f"{name}: compute capability {cells[1]} - CUDA parts need 6.1 or newer"
+        elif driver is None or driver < NVIDIA_MIN_DRIVER:
+            why = f"{name}: driver {cells[2]} - CUDA parts need 528.33 or newer"
+        else:
+            return True, ""
+    return False, why
+
+
+def _nvidia_fit(names: tuple[str, ...]) -> tuple[bool, str]:
+    nvidia_smi = shutil.which("nvidia-smi")
+    if not nvidia_smi:
+        named = next((name for name in names if "nvidia" in name.lower()), "")
+        return False, f"{named}: the NVIDIA driver is not installed (no nvidia-smi)" if named else ""
+    return nvidia_fit(_run([nvidia_smi, "--query-gpu=name,compute_cap,driver_version", "--format=csv,noheader"]))
+
+
 def _emit(progress: LocalHardwareProgress | None, step: int, key: str) -> None:
     if progress is not None:
         progress(step, len(_DETECTION_STAGES), key)
 
 
-def _video_controller_names(progress: LocalHardwareProgress | None = None) -> tuple[str, ...]:
+def _video_controller_names(progress: LocalHardwareProgress | None = None, root: str = "") -> tuple[str, ...]:
     names: list[str] = []
     nvidia_smi = shutil.which("nvidia-smi")
     _emit(progress, 2, "local_hw_stage_nvidia")
     if nvidia_smi:
         out = _run([nvidia_smi, "-L"])
         for line in out.splitlines():
-            if line.strip():
-                names.append(line.strip())
+            # «GPU 0: NVIDIA GeForce RTX 5070 (UUID: GPU-…)» - the name alone; Windows names the same card once more below.
+            name = re.sub(r"\s*\(UUID:[^)]*\)\s*$", "", re.sub(r"^GPU\s+\d+:\s*", "", line.strip())).strip()
+            if name and name.lower() not in {one.lower() for one in names}:
+                names.append(name)
 
     _emit(progress, 3, "local_hw_stage_windows_gpu")
     if platform.system().lower() == "windows":
-        ps = shutil.which("powershell") or shutil.which("pwsh")
+        # The PowerShell the program carries first (App\AudionPs.exe), then the one of Windows.
+        own = Path(root) / "App" / "AudionPs.exe" if root else None
+        ps = str(own) if own is not None and own.exists() else shutil.which("powershell") or shutil.which("pwsh")
         if ps:
             out = _run([
                 ps,
@@ -118,7 +171,7 @@ def _video_controller_names(progress: LocalHardwareProgress | None = None) -> tu
             ])
             for line in out.splitlines():
                 line = line.strip()
-                if line and line not in names:
+                if line and line.lower() not in {one.lower() for one in names}:
                     names.append(line)
     return tuple(names)
 
@@ -139,14 +192,53 @@ def _onnx_providers() -> tuple[str, ...]:
         return ()
 
 
-def _preload_cuda_dlls(ort) -> None:
+def preload_cuda_libraries(ort) -> None:
+    """The CUDA, cuDNN and MSVC libraries, loaded before a CUDA session.
+
+    ort.preload_dlls takes them from torch\\lib when a torch of the same CUDA is installed (the speakers on the video
+    card bring one), else from the NVIDIA wheels, and loads the cuDNN libraries of its own time. A newer cuDNN loads parts
+    of itself only when a Conv runs (cuDNN 9.24: cudnn_engines_tensor_ir64_9.dll) and looks for them by name alone, or the
+    first Conv fails and ONNX Runtime falls back to the processor (RTX 5070, 20.10.2026). So the rest of the cuDNN set is
+    loaded from the folder ort took cudnn64_9.dll from - never from another folder: two cuDNN versions in one process
+    fail with "the specified procedure could not be found"."""
     preload = getattr(ort, "preload_dlls", None)
-    if not callable(preload):
+    if callable(preload):
+        try:
+            preload(cuda=True, cudnn=True, msvc=True)
+        except Exception:
+            pass
+    if platform.system().lower() != "windows":
+        return
+    folder = _loaded_library_folder("cudnn64_9.dll")
+    if folder is None:
         return
     try:
-        preload(cuda=True, cudnn=True, msvc=True)
-    except Exception:
+        os.add_dll_directory(str(folder))
+    except OSError:
         pass
+    if str(folder) not in os.environ.get("PATH", ""):
+        os.environ["PATH"] = str(folder) + os.pathsep + os.environ.get("PATH", "")
+    for dll in sorted(folder.glob("cudnn*64_9.dll")):
+        try:
+            ctypes.WinDLL(str(dll))
+        except OSError:
+            pass
+
+
+def _loaded_library_folder(name: str) -> Path | None:
+    """The folder a DLL already in this process was loaded from; None when it is not loaded."""
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.GetModuleHandleW.argtypes = [ctypes.c_wchar_p]
+    kernel32.GetModuleHandleW.restype = ctypes.c_void_p
+    kernel32.GetModuleFileNameW.argtypes = [ctypes.c_void_p, ctypes.c_wchar_p, ctypes.c_uint32]
+    kernel32.GetModuleFileNameW.restype = ctypes.c_uint32
+    handle = kernel32.GetModuleHandleW(name)
+    if not handle:
+        return None
+    buffer = ctypes.create_unicode_buffer(32768)
+    if not kernel32.GetModuleFileNameW(handle, buffer, len(buffer)):
+        return None
+    return Path(buffer.value).parent
 
 
 def _onnx_provider_loadable(ort, provider: str) -> bool:
@@ -159,7 +251,7 @@ def _onnx_provider_loadable(ort, provider: str) -> bool:
     if not dll_name:
         return True
     if provider == "CUDAExecutionProvider":
-        _preload_cuda_dlls(ort)
+        preload_cuda_libraries(ort)
     try:
         capi_dir = Path(ort.__file__).resolve().parent / "capi"
         ctypes.WinDLL(str(capi_dir / dll_name))
@@ -171,7 +263,7 @@ def _onnx_provider_loadable(ort, provider: str) -> bool:
 def _build_profile(root: str, progress: LocalHardwareProgress | None = None) -> LocalHardwareProfile:
     _emit(progress, 1, "local_hw_stage_start")
     paths = get_project_paths(Path(root))
-    names = _video_controller_names(progress)
+    names = _video_controller_names(progress, root)
     text = " ".join(names).lower()
     _emit(progress, 4, "local_hw_stage_onnx_runtime")
     has_onnxruntime = _has("onnxruntime")
@@ -185,9 +277,12 @@ def _build_profile(root: str, progress: LocalHardwareProgress | None = None) -> 
     has_whispercpp_vulkan_backend = whispercpp_vulkan_backend_present(paths)
     has_whispercpp_cublas_backend = whispercpp_cublas_backend_present(paths)
     _emit(progress, 8, "local_hw_stage_recommendation")
+    fit, note = _nvidia_fit(names)
     return LocalHardwareProfile(
         gpu_names=names,
-        has_nvidia=("nvidia" in text) or shutil.which("nvidia-smi") is not None,
+        # An NVIDIA card counts when its parts run on it: the card and its driver new enough (nvidia_fit).
+        has_nvidia=fit,
+        nvidia_note=note,
         has_intel=("intel" in text) or ("iris" in text) or ("arc" in text),
         has_amd=("amd" in text) or ("radeon" in text),
         has_cuda_runtime=has_cuda_runtime,

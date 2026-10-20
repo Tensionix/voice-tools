@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
-title Audion Voice AI Live - Install Portable FFmpeg Gyan Stable
+title Audion Voice Tools - Install Portable FFmpeg Gyan Stable
 
 set "SCRIPT_DIR=%~dp0"
 if "%SCRIPT_DIR:~-1%"=="\" set "SCRIPT_DIR=%SCRIPT_DIR:~0,-1%"
@@ -31,7 +31,7 @@ shift
 goto PARSE_ARGS
 :DONE_ARGS
 
-if exist "%ROOT%\system_core\powershell\pwsh.exe" set "PS_EXE=%ROOT%\system_core\powershell\pwsh.exe"
+if exist "%ROOT%\App\AudionPs.exe" set "PS_EXE=%ROOT%\App\AudionPs.exe"
 if not defined PS_EXE where pwsh.exe >nul 2>nul && set "PS_EXE=pwsh.exe"
 if not defined PS_EXE where powershell.exe >nul 2>nul && set "PS_EXE=powershell.exe"
 
@@ -49,7 +49,7 @@ if not exist "%DL%\" mkdir "%DL%" >nul 2>nul
 if not exist "%FFMPEG_BIN%\" mkdir "%FFMPEG_BIN%" >nul 2>nul
 
 echo ======================================================================
-echo   AUDION VOICE AI LIVE - INSTALL PORTABLE FFMPEG GYAN STABLE
+echo   AUDION VOICE TOOLS - INSTALL PORTABLE FFMPEG GYAN STABLE
 echo ======================================================================
 echo Root:    %ROOT%
 echo Target:  %FFMPEG_BIN%
@@ -63,6 +63,7 @@ if not defined PS_EXE goto ERR_POWERSHELL
 if not defined SEVENZIP_EXE goto ERR_7ZIP
 if not exist "%GYAN_INSTALLER%" goto ERR_DOWNLOADER
 
+:INSTALL
 echo [1/4] Downloading and extracting FFmpeg Gyan FULL build...
 call :TRY_PROVIDER "Gyan release full 7z" "%DL%\ffmpeg-gyan-release-full.7z" "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z" "7z"
 if not defined SRC_BIN (
@@ -190,6 +191,19 @@ call :PAUSE_IF_NEEDED
 exit /b 1
 
 :ERR_NVENC
+rem The newest build may ask a driver newer than the LTS 610.88: a build newer than the floor the programs are checked
+rem with (FloorRelease of Install-Portable-FFmpeg-Gyan.ps1) goes back to it, once. 8.0.1 and 7.1 - chosen for an older
+rem driver - and the floor itself do not.
+set "INSTALLED_FF="
+for /f "tokens=3" %%V in ('call "%FFMPEG_BIN%\ffmpeg.exe" -hide_banner -version 2^>nul') do if not defined INSTALLED_FF set "INSTALLED_FF=%%V"
+set "NEWER_THAN_FLOOR="
+if /I "%GYAN_VERSION%"=="auto" if defined INSTALLED_FF if not "%INSTALLED_FF:~0,2%"=="7." if not "%INSTALLED_FF:~0,2%"=="8." if not "%INSTALLED_FF:~0,5%"=="9.0.2" set "NEWER_THAN_FLOOR=1"
+if defined NEWER_THAN_FLOOR if not defined FLOOR_TRIED (
+  set "FLOOR_TRIED=1"
+  set "GYAN_VERSION=9.0.2"
+  echo [WARN] The newest FFmpeg failed the NVENC test with this driver: installing FFmpeg 9.0.2, the release the programs are checked with on the LTS driver 610.88.
+  goto INSTALL
+)
 echo [ERROR] FFmpeg was installed, but the NVIDIA NVENC smoke test failed.
 echo [ERROR] Check the selected FFmpeg release and NVIDIA driver compatibility.
 call :PAUSE_IF_NEEDED

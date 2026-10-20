@@ -15,11 +15,13 @@ from ..core.paths import ProjectPaths
 from ..core.persistence import JobStore
 from ..core.workspace_cleanup import remove_source_workspace
 from ..media.probe import is_supported
-from .orchestrator import outputs_exist, process_file
+from .orchestrator import Cancelled, outputs_exist, process_file
 
 Logger = Callable[[str], None]
 Canceller = Callable[[], bool]
 StatusSink = Callable[[Path, str], None]
+# The place of the run: the file (its index from 0 and the count) and its own share done, 0..1.
+ProgressSink = Callable[[Path, int, int, float], None]
 
 # Per-file status values emitted to `on_status` (mirror persistence statuses).
 ST_PROCESSING = "processing"
@@ -36,11 +38,18 @@ def _noop_status(_: Path, __: str) -> None:
     pass
 
 
+def _noop_progress(_: Path, __: int, ___: int, ____: float) -> None:
+    pass
+
+
 @dataclass
 class QueueSummary:
     completed: list[str] = field(default_factory=list)
     failed: list[tuple[str, str]] = field(default_factory=list)
     skipped: list[str] = field(default_factory=list)
+    # Asked to stop: the file under way stays "processing" - the next run takes it up from its cached chunks.
+    stopped: bool = False
+    found: int = 0
 
     @property
     def total(self) -> int:
@@ -78,6 +87,7 @@ def run_queue(
     log: Logger = _noop,
     cancel: Canceller = lambda: False,
     on_status: StatusSink = _noop_status,
+    on_progress: ProgressSink = _noop_progress,
 ) -> QueueSummary:
     pipeline_cfg = settings.get("pipeline", {})
     recursive = bool(pipeline_cfg.get("recursive", False))
@@ -85,7 +95,7 @@ def run_queue(
     force = bool(pipeline_cfg.get("force", False))
 
     sources = collect_sources(inputs, recursive=recursive)
-    summary = QueueSummary()
+    summary = QueueSummary(found=len(sources))
     if not sources:
         log("No supported media files found.")
         return summary
@@ -95,10 +105,12 @@ def run_queue(
         if recovered:
             log(f"Recovered {recovered} interrupted job(s) -> pending")
 
-        for source in sources:
+        for index, source in enumerate(sources):
             if cancel():
                 log("Queue cancelled.")
+                summary.stopped = True
                 break
+            on_progress(source, index, len(sources), 0.0)
 
             job = store.upsert_job(str(source), options=settings)
 
@@ -122,14 +134,24 @@ def run_queue(
             log(f"--- Processing: {source.name} ---")
             try:
                 outputs = process_file(
-                    paths, source, settings, store=store, job_id=job.id, log=log, cancel=cancel
+                    paths, source, settings, store=store, job_id=job.id, log=log, cancel=cancel,
+                    progress=lambda share, source=source, index=index: on_progress(source, index, len(sources), share),
                 )
                 store.mark_completed(job.id, outputs)
                 store.clear_chunks(job.id)
                 summary.completed.append(str(source))
                 on_status(source, ST_COMPLETED)
                 log(f"DONE: {source.name}")
+            except Cancelled:
+                summary.stopped = True
+                log(f"STOPPED: {source.name} - the next run goes on from its cached chunks")
+                break
             except Exception as exc:
+                if cancel():
+                    # A provider broke off by the stop: a stop all the same.
+                    summary.stopped = True
+                    log(f"STOPPED: {source.name}")
+                    break
                 message = f"{exc.__class__.__name__}: {exc}"
                 store.mark_failed(job.id, message)
                 summary.failed.append((str(source), message))

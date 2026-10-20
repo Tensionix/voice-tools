@@ -9,8 +9,7 @@ from system_core.core.paths import get_project_paths
 from system_core.providers import whispercpp_provider as wc
 from system_core.providers import gigaam_provider as gp
 from system_core.providers import registry
-from system_core.live.whispercpp_live import WhisperCppLiveTranscriber
-from system_core.providers.base import LiveOptions, TranscriptResult, TranscriptionOptions
+from system_core.providers.base import TranscriptionOptions
 from system_core.providers.gigaam_provider import DEFAULT_GIGAAM_FILE_MODEL, GigaAMLiveTranscriber, GigaAMTranscribeProvider
 from system_core.providers.whispercpp_provider import WhisperCppProvider
 
@@ -209,25 +208,34 @@ def test_gigaam_live_warm_reuses_process_cache(tmp_path, monkeypatch):
     ]
 
 
-class _FakeWhisperCppProvider:
-    def __init__(self):
-        self.seen_path = None
+def test_turbo_asked_on_the_cuda_pack_is_recognized_by_large_v2_and_said(tmp_path):
+    paths = _stage_whispercpp_pack(tmp_path)
+    (paths.tools / "whispercpp" / "audion-whispercpp-pack.txt").write_text("kind=cublas\n", encoding="utf-8")
+    (paths.models / "ggml-large-v2.bin").write_text("", encoding="utf-8")
 
-    def transcribe(self, path, options):
-        self.seen_path = path
-        assert path.exists()
-        return TranscriptResult(segments=[], provider="fake")
+    provider = registry.get_transcription_provider(
+        paths, {"compute_mode": "vulkan", "vulkan": {"engine": "whispercpp", "model": "turbo", "backend": "auto"}})
+
+    assert isinstance(provider, WhisperCppProvider)
+    assert provider.model == "large-v2" and provider._resolve()[1].name == "ggml-large-v2.bin"
+    assert "not used on CUDA" in provider.notice
+    # large-v2 asked is large-v2, nothing to say.
+    assert WhisperCppProvider(paths, "large-v2").notice == ""
 
 
-def test_whispercpp_live_transcriber_cleans_temp_wav(tmp_path):
-    paths = get_project_paths(tmp_path)
-    provider = _FakeWhisperCppProvider()
-    live = WhisperCppLiveTranscriber(paths, provider=provider)
+def test_turbo_stays_turbo_on_the_cpu_pack(tmp_path):
+    paths = _stage_whispercpp_pack(tmp_path)
+    (paths.tools / "whispercpp" / "audion-whispercpp-pack.txt").write_text("kind=cpu\n", encoding="utf-8")
 
-    live.start(LiveOptions(sample_rate=16000))
-    live.feed(b"\x00\x01" * 40)
-    result = live.finish()
+    provider = WhisperCppProvider(paths, "turbo")
+    assert provider.model == "turbo" and provider.notice == ""
+    assert provider._resolve()[1].name == "ggml-large-v3-turbo.bin"
+    assert WhisperCppProvider(paths).model == "turbo"
 
-    assert result.text == ""
-    assert provider.seen_path is not None
-    assert not provider.seen_path.exists()
+
+def test_the_cuda_pack_without_large_v2_points_at_its_installer(tmp_path):
+    paths = _stage_whispercpp_pack(tmp_path)
+    (paths.tools / "whispercpp" / "audion-whispercpp-pack.txt").write_text("kind=cublas\n", encoding="utf-8")
+
+    with pytest.raises(RuntimeError, match="Install-WhisperCpp-Large-Models.cmd"):
+        WhisperCppProvider(paths, "turbo").transcribe(tmp_path / "x.wav", TranscriptionOptions())
