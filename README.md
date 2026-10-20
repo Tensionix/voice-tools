@@ -2,20 +2,21 @@
 
 <!-- audion:release -->
 <p align="center">
-  <a href="https://audion.dev/downloads/voice-ai-live"><img alt="Windows" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0b6db8?style=flat-square&logo=windows&logoColor=white"></a>
-  <a href="https://github.com/Tensionix/voice-ai-live/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/Tensionix/voice-ai-live?style=flat-square&label=release&color=e08a63"></a>
-  <a href="https://github.com/Tensionix/voice-ai-live/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/Tensionix/voice-ai-live/total?style=flat-square&label=downloads&color=5fd08a"></a>
-  <a href="https://github.com/Tensionix/voice-ai-live/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/Tensionix/voice-ai-live?style=flat-square&color=5fd08a&logo=apache&logoColor=white&cacheSeconds=3600"></a>
+  <a href="https://audion.dev/downloads/voice-tools"><img alt="Windows" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0b6db8?style=flat-square&logo=windows&logoColor=white"></a>
+  <a href="https://github.com/Tensionix/voice-tools/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/Tensionix/voice-tools?style=flat-square&label=release&color=2a7488"></a>
+  <a href="https://github.com/Tensionix/voice-tools/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/Tensionix/voice-tools/total?style=flat-square&label=downloads&color=5fd08a"></a>
+  <a href="https://github.com/Tensionix/voice-tools/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/Tensionix/voice-tools?style=flat-square&color=5fd08a&logo=apache&logoColor=white&cacheSeconds=3600"></a>
 </p>
 
-**Version 2.3.0** · 2026-09-20 · 627.6 MB
+**Version 3.1.0** · 2026-10-20 · 497.6 MB
 
-- [Direct download](https://audion.dev/get/voice-ai-live/2.3.0/Audion_Voice_AI_Live_v2.3.0_Full.zip) — unmetered, no rate limits
-- [Project page](https://audion.dev/downloads/voice-ai-live) — every version and how to install
+- [Direct download](https://dl.audion.dev/voice-tools/3.1.0/Audion_Voice_Tools_v3.1.0_Full.zip) — unmetered, no rate limits
+- [Project page](https://audion.dev/downloads/voice-tools) — every version and how to install
+- [GitHub release](https://github.com/Tensionix/voice-tools/releases/tag/v3.1.0)
 
-<p align="center"><img src="docs/screenshot.png" alt="The program window" width="560"></p>
+<p align="center"><img src="Docs/screenshot.png" alt="The program window" width="560"></p>
 
-`SHA-256: 0ae001674e70d00d3d2eca6b46eb8ecfbe7bf7b04ec93af0c144e10bcdcd9ecd`
+`SHA-256: 5ae30787e78e886fc355afe48849c5cdf03d176892bd5e631687396ed65a0d50`
 
 ---
 
